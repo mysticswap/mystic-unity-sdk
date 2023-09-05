@@ -1,41 +1,74 @@
+using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Wallet : MonoBehaviour
+namespace Wallet
 {
-    [SerializeField]
-    private StringVariable walletAddress;
-    [SerializeField]
-    private StringVariable authenticationToken;
-    [SerializeField]
-    private string chainId = "5";
-    [SerializeField]
-    private string endpoint = "https://mystic-swap.herokuapp.com/marketplace-api/get-balance";
-
-
-    public void GetBalance()
+    public class Wallet : MonoBehaviour
     {
-        StartCoroutine(GetRequest($"{endpoint}?address={walletAddress.Value}&chainId={chainId}"));
-    }
+        [SerializeField]
+        private StringVariable walletAddress;
+        [SerializeField]
+        private StringVariable authenticationToken;
+        [SerializeField]
+        private string chainId = "5";
+        private const string uri = "https://mystic-swap.herokuapp.com/marketplace-api/";
 
-    private IEnumerator GetRequest(string uri)
-    {
-        Debug.Log($"Get Request: {uri}");
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
+        public void GetBalance()
         {
-            AttachHeader(webRequest, "Authorization", authenticationToken.Value);
-            yield return webRequest.SendWebRequest();
-
-            Debug.Log($"Response code: {webRequest.responseCode}");
-            Debug.Log($"Result status: {webRequest.result}");
-            Debug.Log($"Response text: {webRequest.downloadHandler.text}");
+            CallRequest(
+                EndpointRequest(
+                    "get-balance",
+                    "address=" + walletAddress.Value,
+                    "chainId=" + chainId));
         }
-    }
 
-    private void AttachHeader(UnityWebRequest webRequest, string key, string value)
-    {
-        webRequest.SetRequestHeader(key, value);
-    }
+        public void GetNfts()
+        {
+            CallRequest(
+                EndpointRequest(
+                    "get-nfts",
+                    "address=" + walletAddress.Value,
+                    "chainId=" + chainId));
+        }
 
+        private void CallRequest(string endpointRequest)
+        {
+            StartCoroutine(GetRequest(endpointRequest, authenticationToken.Value));
+        }
+
+        private static string EndpointRequest(string endpoint, params string[] parameter)
+        {
+            string parameters = null;
+            var index = 0;
+            foreach (var param in parameter)
+            {
+                parameters = index > 0 ? parameters += "&" + param : parameters += param;
+                index++;
+            }
+            return string.Format($"{uri}{endpoint}?{parameters}");
+        }
+
+        private IEnumerator GetRequest(string uri, string authenticationToken)
+        {
+            Debug.Log($"Get Request: {uri}");
+            using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
+            {
+                AttachHeader(webRequest, "Authorization", authenticationToken);
+                yield return webRequest.SendWebRequest();
+
+                Debug.Log($"Response code: {webRequest.responseCode}");
+                Debug.Log($"Result status: {webRequest.result}");
+                Debug.Log($"Response text: {webRequest.downloadHandler.text}");
+            }
+        }
+
+        private void AttachHeader(UnityWebRequest webRequest, string key, string value)
+        {
+            webRequest.SetRequestHeader(key, value);
+        }
+
+    }
 }
