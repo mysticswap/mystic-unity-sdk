@@ -9,5 +9,6 @@ public class EventManagerSample : MonoBehaviour
         MysticSDK sdk = MysticSDKManager.Instance.sdk;
         sdk.GetBalance();
         // sdk.GetNfts();
+        // Debugger.Instance.Log("Testing debugger", "This is debugger's description");
     }
 }

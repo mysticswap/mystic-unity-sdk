@@ -22,6 +22,7 @@ namespace Core
                     "get-balance",
                     "address=" + walletAddress.Value,
                     "chainId=" + chainId));
+            
         }
 
         public void GetNfts()
@@ -61,6 +62,7 @@ namespace Core
                 Debug.Log($"Response code: {webRequest.responseCode}");
                 Debug.Log($"Result status: {webRequest.result}");
                 Debug.Log($"Response text: {webRequest.downloadHandler.text}");
+                Debugger.Instance.Log(uri, webRequest.downloadHandler.text);
             }
         }
         
