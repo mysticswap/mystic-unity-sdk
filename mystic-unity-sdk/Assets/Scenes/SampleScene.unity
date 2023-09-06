@@ -251,9 +251,9 @@ MonoBehaviour:
   Response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1699722937}
-        m_TargetAssemblyTypeName: EventManagerSample, Assembly-CSharp
-        m_MethodName: TestEvent
+      - m_Target: {fileID: 1699722939}
+        m_TargetAssemblyTypeName: Wallet.Wallet, Assembly-CSharp
+        m_MethodName: GetNfts
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -305,7 +305,6 @@ MonoBehaviour:
   walletAddress: {fileID: 11400000, guid: 06046d61ef5cd6c49931704b2ca82921, type: 2}
   authenticationToken: {fileID: 11400000, guid: 29145f2d2040a83438398b1bb17b8a6b, type: 2}
   chainId: 5
-  endpoint: https://mystic-swap.herokuapp.com/marketplace-api/get-balance
 --- !u!114 &1699722940
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,12 +1,11 @@
-using System;
 using System.Collections;
-using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Wallet
+namespace Core
 {
-    public class Wallet : MonoBehaviour
+    public class MysticSDK : MonoBehaviour
     {
         [SerializeField]
         private StringVariable walletAddress;
@@ -64,7 +63,7 @@ namespace Wallet
                 Debug.Log($"Response text: {webRequest.downloadHandler.text}");
             }
         }
-
+        
         private void AttachHeader(UnityWebRequest webRequest, string key, string value)
         {
             webRequest.SetRequestHeader(key, value);
