@@ -989,7 +989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c248b468ecc3c744db7faec6e975304f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walletAddress: {fileID: 11400000, guid: 06046d61ef5cd6c49931704b2ca82921, type: 2}
+  walletAddress: {fileID: 11400000, guid: f0d1080e10f0f854dba4717f992dabb6, type: 2}
   authenticationToken: {fileID: 11400000, guid: 29145f2d2040a83438398b1bb17b8a6b, type: 2}
   chainId: 5
 --- !u!114 &1469168922
@@ -1020,6 +1020,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1503007368
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 565171663956538073, guid: d4ef2d9932841424eb1a167afaf0d480, type: 3}
+      propertyPath: m_Name
+      value: MetaMaskUnity
+      objectReference: {fileID: 0}
+    - target: {fileID: 565171663956538075, guid: d4ef2d9932841424eb1a167afaf0d480, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 565171663956538075, guid: d4ef2d9932841424eb1a167afaf0d480, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 565171663956538075, guid: d4ef2d9932841424eb1a167afaf0d480, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 565171663956538075, guid: d4ef2d9932841424eb1a167afaf0d480, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 565171663956538075, guid: d4ef2d9932841424eb1a167afaf0d480, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 565171663956538075, guid: d4ef2d9932841424eb1a167afaf0d480, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 565171663956538075, guid: d4ef2d9932841424eb1a167afaf0d480, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 565171663956538075, guid: d4ef2d9932841424eb1a167afaf0d480, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 565171663956538075, guid: d4ef2d9932841424eb1a167afaf0d480, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 565171663956538075, guid: d4ef2d9932841424eb1a167afaf0d480, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d4ef2d9932841424eb1a167afaf0d480, type: 3}
 --- !u!1 &1585328361
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,7 +1157,8 @@ GameObject:
   - component: {fileID: 1699722937}
   - component: {fileID: 1699722936}
   - component: {fileID: 1699722940}
-  - component: {fileID: 1699722939}
+  - component: {fileID: 1699722941}
+  - component: {fileID: 1699722942}
   m_Layer: 0
   m_Name: EventManager
   m_TagString: Untagged
@@ -1163,21 +1221,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1699722939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699722935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c248b468ecc3c744db7faec6e975304f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walletAddress: {fileID: 11400000, guid: 06046d61ef5cd6c49931704b2ca82921, type: 2}
-  authenticationToken: {fileID: 11400000, guid: 29145f2d2040a83438398b1bb17b8a6b, type: 2}
-  chainId: 5
 --- !u!114 &1699722940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1194,9 +1237,65 @@ MonoBehaviour:
   Response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1699722939}
-        m_TargetAssemblyTypeName: Wallet, Assembly-CSharp
+      - m_Target: {fileID: 1469168921}
+        m_TargetAssemblyTypeName: Core.MysticSDK, Assembly-CSharp
         m_MethodName: GetBalance
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1699722941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699722935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ff99f879d5f1c47a5a6a51d42a3a0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: f379aa3ce8748954b80975d9380f2a4b, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1699722937}
+        m_TargetAssemblyTypeName: EventManagerSample, Assembly-CSharp
+        m_MethodName: SetAddress
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1699722942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699722935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ff99f879d5f1c47a5a6a51d42a3a0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: a26a9166a6fc626469c72d73c836829a, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1699722937}
+        m_TargetAssemblyTypeName: EventManagerSample, Assembly-CSharp
+        m_MethodName: WalletDisconnect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1215,3 +1314,4 @@ SceneRoots:
   - {fileID: 1469168923}
   - {fileID: 331759138}
   - {fileID: 1585328364}
+  - {fileID: 1503007368}

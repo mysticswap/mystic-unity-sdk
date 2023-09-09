@@ -15,6 +15,16 @@ namespace Core
         private string chainId = "5";
         private const string uri = "https://mystic-swap.herokuapp.com/marketplace-api/";
 
+        public void SetAddress(string address)
+        {
+            walletAddress.SetValue(address);
+        }
+
+        public string GetAddress()
+        {
+            return walletAddress.Value;
+        }
+
         public void GetBalance()
         {
             CallRequest(
