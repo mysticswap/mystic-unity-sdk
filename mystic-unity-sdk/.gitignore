@@ -76,3 +76,4 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]ecrets/
 *[Ss]ecrets.meta
 /[Aa]ssets/[Tt]hirdparty/
+*[Tt]hirdparty.meta
