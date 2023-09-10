@@ -75,3 +75,4 @@ crashlytics-build.properties
 # Development purpose
 /[Aa]ssets/[Ss]ecrets/
 *[Ss]ecrets.meta
+/[Aa]ssets/[Tt]hirdparty/
