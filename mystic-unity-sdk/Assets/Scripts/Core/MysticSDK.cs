@@ -15,6 +15,8 @@ namespace Core
         private string chainId = "5";
         private const string uri = "https://mystic-swap.herokuapp.com/marketplace-api/";
 
+        public string JsonString { get; private set; }
+
         public void SetAddress(string address)
         {
             walletAddress.SetValue(address);
@@ -72,6 +74,7 @@ namespace Core
                 Debug.Log($"Response code: {webRequest.responseCode}");
                 Debug.Log($"Result status: {webRequest.result}");
                 Debug.Log($"Response text: {webRequest.downloadHandler.text}");
+                JsonString = webRequest.downloadHandler.text;
                 Debugger.Instance.Log(uri, webRequest.downloadHandler.text);
             }
         }

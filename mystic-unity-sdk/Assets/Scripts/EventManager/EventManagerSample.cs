@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 using Core;
 using MetaMask;
 using MetaMask.Unity;
@@ -57,6 +59,23 @@ public class EventManagerSample : MonoBehaviour
     {
         sdk.SetAddress(wallet.ConnectedAddress);
         Debugger.Instance.Log("Mystic SDK Wallet", $"Mystic Wallet address has been set to {sdk.GetAddress()}");
+    }
+
+    public void JsonTest()
+    {
+        OwnedNFT ownedNft = JsonUtility.FromJson<OwnedNFT>(sdk.JsonString);
+        var nftList = ownedNft.ownedNfts;
+        var sb = new StringBuilder();
+        foreach (var item in nftList)
+        {
+            sb.AppendLine(item.title);
+            sb.AppendLine(item.description);
+            sb.AppendLine(item.rawMetadata.image);
+            sb.AppendLine(item.balance.ToString());
+            sb.AppendLine();
+        }
+
+        Debugger.Instance.Log("test Json", sb.ToString());
     }
 
     // void OnWalletConnected(object sender, EventArgs e)
