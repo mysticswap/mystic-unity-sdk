@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 
 namespace Core
 {
@@ -14,7 +15,7 @@ namespace Core
         public int edition;
         public object attributes;
     }
-    
+
     [System.Serializable]
     public struct NFT
     {
@@ -30,7 +31,6 @@ namespace Core
         public int balance;
     }
 
-
     [System.Serializable]
     public struct OwnedNFT
     {
@@ -38,4 +38,43 @@ namespace Core
         public int totalCount;
         public string blockHash;
     }
+
+    [System.Serializable]
+    public struct Fees
+    {
+        public string recipient;
+        public int basisPoints;
+    }
+
+    [System.Serializable]
+    public struct Offer
+    {
+        public string itemtype;
+        public string token;
+        public string identifier;
+        public string amount;
+    }
+
+    [System.Serializable]
+    public struct Consideration
+    {
+        public string itemtype;
+        public string token;
+        public string identifier;
+        public string amount;
+    }
+    
+    [System.Serializable]
+    public struct CreateSwap
+    {
+        public int? endTime;
+        public int chainId;
+        public string offerer;
+        public string contractAddress;
+        public string? takerAddress;
+        public List<Fees>? fees;
+        public List<Offer> offer;
+        public List<Consideration> consideration;
+    }
+
 }
