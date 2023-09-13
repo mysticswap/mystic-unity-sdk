@@ -61,7 +61,7 @@ public class EventManagerSample : MonoBehaviour
         Debugger.Instance.Log("Mystic SDK Wallet", $"Mystic Wallet address has been set to {sdk.GetAddress()}");
     }
 
-    public void JsonTest()
+    public void FromJsonTest()
     {
         OwnedNFT ownedNft = JsonUtility.FromJson<OwnedNFT>(sdk.JsonString);
         var nftList = ownedNft.ownedNfts;
@@ -75,7 +75,60 @@ public class EventManagerSample : MonoBehaviour
             sb.AppendLine();
         }
 
-        Debugger.Instance.Log("test Json", sb.ToString());
+        Debugger.Instance.Log("test From Json", sb.ToString());
+    }
+
+    public void ToJsonTest()
+    {
+        var fees = new List<Fees>();
+        var offers = new List<Offer>();
+        var considerations = new List<Consideration>();
+        
+        var selectedFee = new Fees()
+        {
+            recipient = "0x123456789abcdef145216789fcfcf123456745d",
+            basisPoints = 500,
+        };
+        
+        var selectedOffer = new Offer()
+        {
+            itemtype = "ERC721",
+            token = "0x74cb5611e89078b2e5cb638a873cf7bddc588659",
+            identifier = "633",
+            amount = "1",
+        };
+
+        var selectedConsideration1 = new Consideration()
+        {
+            itemtype = "ERC721",
+            token = "0x74cb5611e89078b2e5cb638a873cf7bddc588659",
+            identifier = "34",
+            amount = "1",
+        };
+        var selectedConsideration2 = new Consideration()
+        {
+            itemtype = "NATIVE",
+            token = "0x123456789abcdef123456789abcdef123456789a",
+            identifier = "ETH",
+            amount = "500000000000000000",
+        };
+        
+        fees.Add(selectedFee);
+        offers.Add(selectedOffer);
+        considerations.Add(selectedConsideration1);
+        considerations.Add(selectedConsideration2);
+        var swap1 = new CreateSwap()
+        {
+            chainId = 1,
+            offerer = "0x123456789abcdef145216789abcdef123456787f",
+            contractAddress = "0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC",
+            fees = fees,
+            offer = offers,
+            consideration = considerations,
+        };
+
+        var swap1Json = JsonUtility.ToJson(swap1);
+        Debugger.Instance.Log("test To Json", swap1Json);
     }
 
     // void OnWalletConnected(object sender, EventArgs e)
