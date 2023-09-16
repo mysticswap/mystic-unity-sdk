@@ -78,6 +78,39 @@ public class EventManagerSample : MonoBehaviour
         Debugger.Instance.Log("test From Json", sb.ToString());
     }
 
+    public void SwapTest()
+    {
+        var selectedOffer = new Offer()
+        {
+            itemtype = "ERC721",
+            token = "0x229dd7144fec1008dddf5fcf779ec63c3d576aa7",
+            identifier = "47",
+            amount = "1",
+        };
+
+        var selectedConsideration = new Consideration()
+        {
+            itemtype = "NATIVE",
+            token = "0x0000000000000000000000000000000000000000",
+            identifier = "0",
+            amount = "10000000000000000",
+        };
+
+        var swap = new CreateSwap()
+        {
+            chainId = 5,
+            offerer = "0xCBD21691e26Da7FFA64cB1a6C47832fDAEE0Acce",
+            creatorAddress = "0xCBD21691e26Da7FFA64cB1a6C47832fDAEE0Acce", 
+            contractAddress = "0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC",
+            offer = new List<Offer>() { selectedOffer },
+            consideration = new List<Consideration>() { selectedConsideration },
+        };
+        
+        sdk.CreateSwap(swap);
+        Debugger.Instance.Log("Create Swap", $"{sdk.JsonResponse}");
+
+    }
+
     public void ToJsonTest()
     {
         var fees = new List<Fees>();

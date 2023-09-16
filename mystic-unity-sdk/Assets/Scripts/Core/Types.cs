@@ -70,6 +70,7 @@ namespace Core
         public int? endTime;
         public int chainId;
         public string offerer;
+        public string creatorAddress;
         public string contractAddress;
         public string? takerAddress;
         public List<Fees>? fees;
