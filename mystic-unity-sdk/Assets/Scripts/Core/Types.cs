@@ -78,4 +78,12 @@ namespace Core
         public List<Consideration> consideration;
     }
 
+    [System.Serializable]
+    public struct SwapData
+    {
+        public string signature;
+        public string swapId;
+        public string takerAddress;
+    }
+
 }
