@@ -143,7 +143,7 @@ namespace Core
             Debug.Log($"Response code: {webRequest.responseCode}");
             Debug.Log($"Result status: {webRequest.result}");
             Debug.Log($"Response text: {webRequest.downloadHandler.text}");
-            JsonString = webRequest.downloadHandler.text;
+            JsonResponse = webRequest.downloadHandler.text;
             Debugger.Instance.Log(uri, webRequest.downloadHandler.text);
         }
 
