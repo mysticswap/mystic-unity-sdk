@@ -164,6 +164,15 @@ public class EventManagerSample : MonoBehaviour
         Debugger.Instance.Log("test To Json", swap1Json);
     }
 
+    public void FetchSwapData()
+    {
+        var swapData = JsonUtility.FromJson<SwapData>(sdk.JsonResponse);
+        Debugger.Instance.Log("Swap Data",
+$"signature: {swapData.signature}\n" +
+            $"swapId: {swapData.swapId}\n" +
+            $"takerAddress: {swapData.takerAddress}");
+    }
+
     // void OnWalletConnected(object sender, EventArgs e)
     // {
     //     Debugger.Instance.Log("Metamask Wallet", "Wallet is connected!");
