@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -6,18 +5,18 @@ using UnityEngine.Networking;
 
 namespace Core
 {
-
     public class MysticSDK : MonoBehaviour
     {
         [SerializeField] private StringVariable walletAddress;
         [SerializeField] private StringVariable authenticationToken;
         [SerializeField] private string chainId = "5";
-        private const string uri = "https://mystic-swap.herokuapp.com/marketplace-api/";
+        private const string Uri = "https://mystic-swap.herokuapp.com/marketplace-api/";
+        private const string UriVerifySwap = "https://mystic-swap.herokuapp.com/verify-accepted/";
+        private const string UriVerifyCanceled = "https://mystic-swap.herokuapp.com/verify-cancelled/";
 
         public string JsonString { get; private set; }
         public string JsonPost { get; private set; }
         public string JsonResponse { get; private set; }
-
 
 
         public void SetAddress(string address)
@@ -34,6 +33,7 @@ namespace Core
         {
             CallRequest(
                 EndpointRequest(
+                    Uri,
                     "get-balance",
                     "address=" + walletAddress.Value,
                     "chainId=" + chainId));
@@ -43,19 +43,82 @@ namespace Core
         {
             CallRequest(
                 EndpointRequest(
+                    Uri,
                     "get-nfts",
                     "address=" + walletAddress.Value,
                     "chainId=" + chainId));
         }
 
-        public void CreateSwap(object request)
+        public void CreateSwap(CreateSwap request)
         {
             var requestBody = ConvertToJson(request);
             Debug.Log($"{requestBody}");
-            var _uri = "create-swap";
             StartCoroutine(
                 PostRequest(
-                    $"{uri}{_uri}", requestBody, authenticationToken.Value)
+                    EndpointRequest(Uri, "create-swap"), requestBody, authenticationToken.Value)
+            );
+        }
+
+        public void ValidateSwap(SwapData request)
+        {
+            var requestBody = ConvertToJson(request);
+            StartCoroutine(
+                PostRequest(
+                    EndpointRequest(Uri, "validate-swap"), requestBody, authenticationToken.Value)
+            );
+        }
+
+        public void AcceptSwap(SwapData request)
+        {
+            var requestBody = ConvertToJson(request);
+            StartCoroutine(
+                PostRequest(
+                    EndpointRequest(Uri, "accept-swap"), requestBody, authenticationToken.Value)
+            );
+        }
+
+        public void VerifySwap(string swapId)
+        {
+            CallRequest(
+                $"{UriVerifySwap}{swapId}");
+        }
+
+        public void CancelSwap(SwapData swapData)
+        {
+            var requestBody = ConvertToJson(swapData);
+            StartCoroutine(
+                PostRequest(
+                    EndpointRequest(
+                        Uri,
+                        "cancel-swap"), requestBody, authenticationToken.Value)
+            );
+        }
+
+        public void VerifyCancelled(string swapId)
+        {
+            CallRequest(
+                $"{UriVerifyCanceled}{swapId}");
+        }
+
+        public void RetrieveAllSwaps(int page, int limit)
+        {
+            CallRequest(
+                EndpointRequest(
+                    Uri,
+                    "all-swaps",
+                    $"page={page}",
+                    $"limit={limit}",
+                    $"chainId={chainId}")
+            );
+        }
+
+        public void RetrieveSwap(string swapid)
+        {
+            CallRequest(
+                EndpointRequest(
+                    Uri,
+                    "findSwap",
+                    $"swapId={swapid}")
             );
         }
 
@@ -64,17 +127,10 @@ namespace Core
             StartCoroutine(GetRequest(endpointRequest, authenticationToken.Value));
         }
 
-        private static string EndpointRequest(string endpoint, params string[] parameter)
+        private string EndpointRequest(string _uri, string endpoint, params string[] parameter)
         {
-            var parameters = string.Empty;
-            var index = 0;
-            foreach (var param in parameter)
-            {
-                parameters = index > 0 ? parameters += "&" + param : parameters += param;
-                index++;
-            }
-
-            return string.Format($"{uri}{endpoint}?{parameters}");
+            var parameters = string.Join("&", parameter);
+            return string.Format($"{_uri}{endpoint}?{parameters}");
         }
 
         private IEnumerator GetRequest(string uri, string authToken)
@@ -87,7 +143,7 @@ namespace Core
             Debug.Log($"Response code: {webRequest.responseCode}");
             Debug.Log($"Result status: {webRequest.result}");
             Debug.Log($"Response text: {webRequest.downloadHandler.text}");
-            JsonString = webRequest.downloadHandler.text;
+            JsonResponse = webRequest.downloadHandler.text;
             Debugger.Instance.Log(uri, webRequest.downloadHandler.text);
         }
 
@@ -97,7 +153,7 @@ namespace Core
             using UnityWebRequest webRequest = UnityWebRequest.Post(uri, request, "application/json");
             AttachHeader(webRequest, "Authorization", authToken);
             yield return webRequest.SendWebRequest();
-            
+
             Debug.Log($"Response code: {webRequest.responseCode}");
             Debug.Log($"Result status: {webRequest.result}");
             Debug.Log($"Result error: {webRequest.error}");

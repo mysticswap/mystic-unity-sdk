@@ -63,7 +63,7 @@ public class EventManagerSample : MonoBehaviour
 
     public void FromJsonTest()
     {
-        OwnedNFT ownedNft = JsonUtility.FromJson<OwnedNFT>(sdk.JsonString);
+        OwnedNFT ownedNft = JsonUtility.FromJson<OwnedNFT>(sdk.JsonResponse);
         var nftList = ownedNft.ownedNfts;
         var sb = new StringBuilder();
         foreach (var item in nftList)
@@ -100,15 +100,14 @@ public class EventManagerSample : MonoBehaviour
         {
             chainId = 5,
             offerer = "0xCBD21691e26Da7FFA64cB1a6C47832fDAEE0Acce",
-            creatorAddress = "0xCBD21691e26Da7FFA64cB1a6C47832fDAEE0Acce", 
+            creatorAddress = "0xCBD21691e26Da7FFA64cB1a6C47832fDAEE0Acce",
             contractAddress = "0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC",
             offer = new List<Offer>() { selectedOffer },
             consideration = new List<Consideration>() { selectedConsideration },
         };
-        
+
         sdk.CreateSwap(swap);
         Debugger.Instance.Log("Create Swap", $"{sdk.JsonResponse}");
-
     }
 
     public void ToJsonTest()
@@ -116,13 +115,13 @@ public class EventManagerSample : MonoBehaviour
         var fees = new List<Fees>();
         var offers = new List<Offer>();
         var considerations = new List<Consideration>();
-        
+
         var selectedFee = new Fees()
         {
             recipient = "0x123456789abcdef145216789fcfcf123456745d",
             basisPoints = 500,
         };
-        
+
         var selectedOffer = new Offer()
         {
             itemtype = "ERC721",
@@ -145,7 +144,7 @@ public class EventManagerSample : MonoBehaviour
             identifier = "ETH",
             amount = "500000000000000000",
         };
-        
+
         fees.Add(selectedFee);
         offers.Add(selectedOffer);
         considerations.Add(selectedConsideration1);
@@ -162,6 +161,15 @@ public class EventManagerSample : MonoBehaviour
 
         var swap1Json = JsonUtility.ToJson(swap1);
         Debugger.Instance.Log("test To Json", swap1Json);
+    }
+
+    public void FetchSwapData()
+    {
+        var swapData = JsonUtility.FromJson<SwapData>(sdk.JsonResponse);
+        Debugger.Instance.Log("Swap Data",
+$"signature: {swapData.signature}\n" +
+            $"swapId: {swapData.swapId}\n" +
+            $"takerAddress: {swapData.takerAddress}");
     }
 
     // void OnWalletConnected(object sender, EventArgs e)
