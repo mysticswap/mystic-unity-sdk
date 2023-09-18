@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -14,9 +13,6 @@ namespace Core
         private const string UriVerifySwap = "https://mystic-swap.herokuapp.com/verify-accepted/";
         private const string UriVerifyCanceled = "https://mystic-swap.herokuapp.com/verify-cancelled/";
 
-        public string JsonString { get; private set; }
-        public string JsonPost { get; private set; }
-        public string JsonResponse { get; private set; }
 
 
         public void SetAddress(string address)
@@ -29,102 +25,94 @@ namespace Core
             return walletAddress.Value;
         }
 
-        public void GetBalance()
+        public async Task<string> GetBalance()
         {
-            CallRequest(
-                EndpointRequest(
-                    Uri,
+            var result = await AsyncGetRequest(
+                EndpointRequest(Uri,
                     "get-balance",
                     "address=" + walletAddress.Value,
-                    "chainId=" + chainId));
+                    "chainId=" + chainId),
+                authenticationToken.Value);
+            return result;
         }
 
-        public void GetNfts()
+        public async Task<string> GetNfts()
         {
-            CallRequest(
-                EndpointRequest(
-                    Uri,
+            var result = await AsyncGetRequest(
+                EndpointRequest(Uri,
                     "get-nfts",
                     "address=" + walletAddress.Value,
-                    "chainId=" + chainId));
+                    "chainId=" + chainId),
+                authenticationToken.Value);
+            return result;
         }
 
-        public void CreateSwap(CreateSwap request)
+        public async Task<string> CreateSwap(CreateSwap request)
         {
             var requestBody = ConvertToJson(request);
-            Debug.Log($"{requestBody}");
-            StartCoroutine(
-                PostRequest(
-                    EndpointRequest(Uri, "create-swap"), requestBody, authenticationToken.Value)
-            );
+            var result = await AsyncPostRequest(
+                EndpointRequest(Uri, "create-swap"), requestBody, authenticationToken.Value);
+            return result;
         }
 
-        public void ValidateSwap(SwapData request)
+        public async Task<string> ValidateSwap(SwapData request)
         {
             var requestBody = ConvertToJson(request);
-            StartCoroutine(
-                PostRequest(
-                    EndpointRequest(Uri, "validate-swap"), requestBody, authenticationToken.Value)
-            );
+            var result = await AsyncPostRequest(
+                EndpointRequest(Uri, "validate-swap"), requestBody, authenticationToken.Value);
+            return result;
         }
 
-        public void AcceptSwap(SwapData request)
+        public async Task<string> AcceptSwap(SwapData request)
         {
             var requestBody = ConvertToJson(request);
-            StartCoroutine(
-                PostRequest(
-                    EndpointRequest(Uri, "accept-swap"), requestBody, authenticationToken.Value)
-            );
+            var result = await AsyncPostRequest(
+                EndpointRequest(Uri, "accept-swap"), requestBody, authenticationToken.Value);
+            return result;
         }
 
-        public void VerifySwap(string swapId)
+        public async Task<string> VerifySwap(string swapId)
         {
-            CallRequest(
-                $"{UriVerifySwap}{swapId}");
+            var result = await AsyncGetRequest($"{UriVerifySwap}{swapId}", authenticationToken.Value);
+            return result;
         }
 
-        public void CancelSwap(SwapData swapData)
+        public async Task<string> CancelSwap(SwapData request)
         {
-            var requestBody = ConvertToJson(swapData);
-            StartCoroutine(
-                PostRequest(
-                    EndpointRequest(
-                        Uri,
-                        "cancel-swap"), requestBody, authenticationToken.Value)
-            );
+            var requestBody = ConvertToJson(request);
+            var result = await AsyncPostRequest(
+                EndpointRequest(Uri, "cancel-swap"), requestBody, authenticationToken.Value);
+            return result;
         }
 
-        public void VerifyCancelled(string swapId)
+        public async Task<string> VerifyCancelled(string swapId)
         {
-            CallRequest(
-                $"{UriVerifyCanceled}{swapId}");
+            var result = await AsyncGetRequest($"{UriVerifyCanceled}{swapId}", authenticationToken.Value);
+            return result;
         }
 
-        public void RetrieveAllSwaps(int page, int limit)
+        public async Task<string> RetrieveAllSwaps(int page, int limit)
         {
-            CallRequest(
+            var result = await AsyncGetRequest(
                 EndpointRequest(
                     Uri,
                     "all-swaps",
                     $"page={page}",
                     $"limit={limit}",
-                    $"chainId={chainId}")
-            );
+                    $"chainId={chainId}"),
+                authenticationToken.Value);
+            return result;
         }
 
-        public void RetrieveSwap(string swapid)
+        public async Task<string> RetrieveSwap(string swapId)
         {
-            CallRequest(
+            var result = await AsyncGetRequest(
                 EndpointRequest(
                     Uri,
                     "findSwap",
-                    $"swapId={swapid}")
-            );
-        }
-
-        private void CallRequest(string endpointRequest)
-        {
-            StartCoroutine(GetRequest(endpointRequest, authenticationToken.Value));
+                    $"swapId={swapId}"),
+                authenticationToken.Value);
+            return result;
         }
 
         private string EndpointRequest(string _uri, string endpoint, params string[] parameter)
@@ -133,42 +121,51 @@ namespace Core
             return string.Format($"{_uri}{endpoint}?{parameters}");
         }
 
-        private IEnumerator GetRequest(string uri, string authToken)
-        {
-            Debug.Log($"Get Request: {uri}");
-            using UnityWebRequest webRequest = UnityWebRequest.Get(uri);
-            AttachHeader(webRequest, "Authorization", authToken);
-            yield return webRequest.SendWebRequest();
-
-            Debug.Log($"Response code: {webRequest.responseCode}");
-            Debug.Log($"Result status: {webRequest.result}");
-            Debug.Log($"Response text: {webRequest.downloadHandler.text}");
-            JsonResponse = webRequest.downloadHandler.text;
-            Debugger.Instance.Log(uri, webRequest.downloadHandler.text);
-        }
-
-        private IEnumerator PostRequest(string uri, string request, string authToken)
-        {
-            Debug.Log($"Post Request: {uri}");
-            using UnityWebRequest webRequest = UnityWebRequest.Post(uri, request, "application/json");
-            AttachHeader(webRequest, "Authorization", authToken);
-            yield return webRequest.SendWebRequest();
-
-            Debug.Log($"Response code: {webRequest.responseCode}");
-            Debug.Log($"Result status: {webRequest.result}");
-            Debug.Log($"Result error: {webRequest.error}");
-
-            JsonResponse = webRequest.downloadHandler.text;
-        }
-
-        private void AttachHeader(UnityWebRequest webRequest, string key, string value)
-        {
-            webRequest.SetRequestHeader(key, value);
-        }
-
         private string ConvertToJson(object obj)
         {
             return JsonUtility.ToJson(obj);
+        }
+
+        private async Task<string> AsyncGetRequest(string uri, string authToken)
+        {
+            UnityWebRequest webRequest = UnityWebRequest.Get(uri);
+            webRequest.SetRequestHeader("Authorization", authToken);
+            webRequest.SendWebRequest();
+            while (!webRequest.isDone)
+            {
+                await Task.Yield();
+            }
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debugger.Instance.Log("Web Request GET", $"Failed to request: {webRequest.error}");
+                return webRequest.error;
+            }
+            else
+            {
+                return webRequest.downloadHandler.text;
+            }
+        }
+
+        private async Task<string> AsyncPostRequest(string uri, string request, string authToken)
+        {
+            UnityWebRequest webRequest = UnityWebRequest.Post(uri, request, "application/json");
+            webRequest.SetRequestHeader("Authorization", authToken);
+            webRequest.SendWebRequest();
+            while (!webRequest.isDone)
+            {
+                await Task.Yield();
+            }
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debugger.Instance.Log("Web Request POST", $"Failed to request: {webRequest.error}");
+                return webRequest.error;
+            }
+            else
+            {
+                return webRequest.downloadHandler.text;
+            }
         }
     }
 }

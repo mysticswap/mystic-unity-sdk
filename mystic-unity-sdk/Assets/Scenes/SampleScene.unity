@@ -1612,9 +1612,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1469168921}
-        m_TargetAssemblyTypeName: Core.MysticSDK, Assembly-CSharp
-        m_MethodName: GetBalance
+      - m_Target: {fileID: 1699722937}
+        m_TargetAssemblyTypeName: EventManagerSample, Assembly-CSharp
+        m_MethodName: GetBalanceTest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

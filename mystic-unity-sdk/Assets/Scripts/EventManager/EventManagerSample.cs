@@ -11,6 +11,7 @@ public class EventManagerSample : MonoBehaviour
     // private MetaMaskUnity wallet = MetaMaskUnity.Instance.Wallet;
     private MetaMaskWallet wallet;
     private MysticSDK sdk;
+    private string jsonResponse;
 
     private void Awake()
     {
@@ -61,9 +62,11 @@ public class EventManagerSample : MonoBehaviour
         Debugger.Instance.Log("Mystic SDK Wallet", $"Mystic Wallet address has been set to {sdk.GetAddress()}");
     }
 
-    public void FromJsonTest()
+    public async void FromJsonTest()
     {
-        OwnedNFT ownedNft = JsonUtility.FromJson<OwnedNFT>(sdk.JsonResponse);
+        var result = await sdk.GetNfts();
+        jsonResponse = result;
+        OwnedNFT ownedNft = JsonUtility.FromJson<OwnedNFT>(jsonResponse);
         var nftList = ownedNft.ownedNfts;
         var sb = new StringBuilder();
         foreach (var item in nftList)
@@ -78,7 +81,7 @@ public class EventManagerSample : MonoBehaviour
         Debugger.Instance.Log("test From Json", sb.ToString());
     }
 
-    public void SwapTest()
+    public async void SwapTest()
     {
         var selectedOffer = new Offer()
         {
@@ -106,8 +109,9 @@ public class EventManagerSample : MonoBehaviour
             consideration = new List<Consideration>() { selectedConsideration },
         };
 
-        sdk.CreateSwap(swap);
-        Debugger.Instance.Log("Create Swap", $"{sdk.JsonResponse}");
+        var result = await sdk.CreateSwap(swap);
+        jsonResponse = result;
+        Debugger.Instance.Log("Create Swap", $"{result}");
     }
 
     public void ToJsonTest()
@@ -165,11 +169,17 @@ public class EventManagerSample : MonoBehaviour
 
     public void FetchSwapData()
     {
-        var swapData = JsonUtility.FromJson<SwapData>(sdk.JsonResponse);
+        var swapData = JsonUtility.FromJson<SwapData>(jsonResponse);
         Debugger.Instance.Log("Swap Data",
 $"signature: {swapData.signature}\n" +
             $"swapId: {swapData.swapId}\n" +
             $"takerAddress: {swapData.takerAddress}");
+    }
+
+    public async void GetBalanceTest()
+    {
+        var balance = await sdk.GetBalance();
+        Debugger.Instance.Log("test balance async", $"balance: {balance}");
     }
 
     // void OnWalletConnected(object sender, EventArgs e)
