@@ -214,9 +214,9 @@ public class EventManagerSample : MonoBehaviour
         
         var jsonResult = JsonUtility.ToJson(result);
         Debug.Log($"jsonResult: {jsonResult}");
-        
-        var signature = _signer.SignTypedDataV4(request)
-        
+
+        // var signature = _signer.SignTypedDataV4(request);
+
         // var signData = JsonUtility.FromJson<SignData>(jsonSwapTest.Value);
         // Debug.Log(signData.signTypedMessage);
         // var request = new MetaMaskEthereumRequest()
