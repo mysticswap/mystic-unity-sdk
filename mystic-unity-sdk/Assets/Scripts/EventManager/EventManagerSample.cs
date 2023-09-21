@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Core;
 using MetaMask;
+using MetaMask.Models;
 using MetaMask.Unity;
 using UnityEngine;
+
 
 public class EventManagerSample : MonoBehaviour
 {
@@ -12,12 +15,18 @@ public class EventManagerSample : MonoBehaviour
     private MetaMaskWallet wallet;
     private MysticSDK sdk;
     private string jsonResponse;
+    [SerializeField] private StringVariable jsonSwapTest;
+    [SerializeField] private StringVariable jsonSwapResponse;
+    [SerializeField] private StringVariable signature;
+    [SerializeField] private StringVariable swapId;
 
     private void Awake()
     {
         sdk = MysticSDKManager.Instance.sdk;
+        MetaMaskUnity.Instance.Initialize();
         // wallet.WalletConnectedHandler += OnWalletConnected;
     }
+
 
     public void TestEvent()
     {
@@ -39,6 +48,12 @@ public class EventManagerSample : MonoBehaviour
         Debug.Log("MM Connected");
 
         #endregion
+    }
+
+    public void MetaMaskConnect()
+    {
+        wallet = MetaMaskUnity.Instance.Wallet;
+        wallet.Connect();
     }
 
     public void WalletDisconnect()
@@ -81,13 +96,14 @@ public class EventManagerSample : MonoBehaviour
         Debugger.Instance.Log("test From Json", sb.ToString());
     }
 
+
     public async void SwapTest()
     {
         var selectedOffer = new Offer()
         {
             itemtype = "ERC721",
-            token = "0x229dd7144fec1008dddf5fcf779ec63c3d576aa7",
-            identifier = "47",
+            token = "0x037aca480459ae361a87b023f189532d80cb6769",
+            identifier = "64",
             amount = "1",
         };
 
@@ -171,15 +187,86 @@ public class EventManagerSample : MonoBehaviour
     {
         var swapData = JsonUtility.FromJson<SwapData>(jsonResponse);
         Debugger.Instance.Log("Swap Data",
-$"signature: {swapData.signature}\n" +
-            $"swapId: {swapData.swapId}\n" +
-            $"takerAddress: {swapData.takerAddress}");
+            $"signature: {swapData.signature}\n" +
+            $"swapId: {swapData.swapId}\n"
+        );
     }
 
     public async void GetBalanceTest()
     {
         var balance = await sdk.GetBalance();
         Debugger.Instance.Log("test balance async", $"balance: {balance}");
+    }
+
+    public async void SignSwapTest()
+    {
+        var msgParams = jsonSwapTest.Value;
+        var from = sdk.GetAddress();
+
+        var paramsArray = new string[] { from, msgParams };
+        var request = new MetaMaskEthereumRequest()
+        {
+            Method = "eth_signTypedData_v4",
+            Parameters = paramsArray
+        };
+        var result = await MetaMaskUnity.Instance.Wallet.Request(request);
+        MetaMaskResponse mmResult = new MetaMaskResponse();
+        
+        var jsonResult = JsonUtility.ToJson(result);
+        Debug.Log($"jsonResult: {jsonResult}");
+        
+        var signature = _signer.SignTypedDataV4(request)
+        
+        // var signData = JsonUtility.FromJson<SignData>(jsonSwapTest.Value);
+        // Debug.Log(signData.signTypedMessage);
+        // var request = new MetaMaskEthereumRequest()
+        // {
+        //
+        // };
+    }
+
+    public void MetaMaskDisconnect()
+    {
+        MetaMaskUnity.Instance.Wallet.Disconnect();
+    }
+
+    public async void SendTransaction()
+    {
+        var transactionParams = new MetaMaskTransaction
+        {
+            To = "0x037acA480459Ae361a87b023f189532d80cB6769",
+            From = MetaMaskUnity.Instance.Wallet.SelectedAddress,
+            Value = "0",
+            Data =
+                "0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c710000000000000000000000000000000000000000000000000000000000000001",
+            ChainId = "5"
+        };
+
+        var request = new MetaMaskEthereumRequest
+        {
+            Method = "eth_sendTransaction",
+            Parameters = new MetaMaskTransaction[] { transactionParams }
+        };
+        await MetaMaskUnity.Instance.Wallet.Request(request);
+    }
+
+
+    public async void ValidateSwapTest()
+    {
+        var swapData = new SwapData()
+        {
+            signature = signature.Value,
+            swapId = swapId.Value,
+        };
+
+        var result = await sdk.ValidateSwap(swapData);
+        Debugger.Instance.Log("ValidateSwapTest", result);
+    }
+
+    public async void VerifyAcceptedSwapTest()
+    {
+        var result = await sdk.VerifySwap(swapId.Value);
+        Debugger.Instance.Log("VerifyAcceptedSwapTest", result);
     }
 
     // void OnWalletConnected(object sender, EventArgs e)
