@@ -283,4 +283,24 @@ public class EventManagerSample : MonoBehaviour
     }
 
 
+    public async void TestGetMetadata()
+    {
+        MetadataArray metadataArray = new MetadataArray()
+        {
+            type = "NFT",
+            contractAddress = "0x74cb5611e89078b2e5cb638a873cf7bddc588659",
+            tokenId = "633"
+        };
+
+        Metadata metadata = new Metadata()
+        {
+            chainId = 1,
+            metadataArray = new List<MetadataArray>() { metadataArray }
+        };
+
+        var result = await sdk.GetMetadata(metadata);
+        Debugger.Instance.Log("Metadata", result);
+    }
+
+
 }

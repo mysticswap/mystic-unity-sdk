@@ -190,4 +190,19 @@ namespace Core
         public MetaMaskData data;
     }
 
+    [System.Serializable]
+    public struct MetadataArray
+    {
+        public string type;
+        public string contractAddress;
+        public string tokenId;
+    }
+
+    [System.Serializable]
+    public struct Metadata
+    {
+        public int chainId;
+        public List<MetadataArray> metadataArray;
+    }
+
 }

@@ -50,6 +50,15 @@ namespace Core
             return result;
         }
 
+
+        public async Task<string> GetMetadata(Metadata request)
+        {
+            var requestBody = ConvertToJson(request);
+            var result = await AsyncPostRequest(
+                EndpointRequest(Uri, "get-metadata"), requestBody, authenticationToken.Value);
+            return result;
+        }
+
         public async Task<string> CreateSwap(CreateSwap request)
         {
             /*
