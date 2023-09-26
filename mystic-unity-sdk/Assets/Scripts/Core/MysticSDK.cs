@@ -160,7 +160,7 @@ namespace Core
             var result = await AsyncGetRequest(
                 EndpointRequest(
                     Uri,
-                    "findSwap",
+                    "find-swap",
                     $"swapId={swapId}"),
                 authenticationToken.Value);
             return result;

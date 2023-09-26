@@ -270,4 +270,11 @@ public class EventManagerSample : MonoBehaviour
         Debugger.Instance.Log("VerifyAcceptedSwapTest", result);
     }
 
+    public async void TestRetrieveSwap()
+    {
+        var result = await sdk.RetrieveSwap("6512e56b1f61ba180f108927");
+        Debugger.Instance.Log("Retrieve Swap", result);
+    }
+
+
 }
