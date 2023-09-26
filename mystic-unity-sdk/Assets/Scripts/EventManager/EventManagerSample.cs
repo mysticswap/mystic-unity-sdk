@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Core;
 using MetaMask;
@@ -19,6 +20,7 @@ public class EventManagerSample : MonoBehaviour
     [SerializeField] private StringVariable jsonSwapResponse;
     [SerializeField] private StringVariable signature;
     [SerializeField] private StringVariable swapId;
+    public int Nonce = 0;
 
     private void Awake()
     {
@@ -103,7 +105,7 @@ public class EventManagerSample : MonoBehaviour
         {
             itemtype = "ERC721",
             token = "0x037aca480459ae361a87b023f189532d80cb6769",
-            identifier = "64",
+            identifier = "49",
             amount = "1",
         };
 
@@ -112,7 +114,7 @@ public class EventManagerSample : MonoBehaviour
             itemtype = "NATIVE",
             token = "0x0000000000000000000000000000000000000000",
             identifier = "0",
-            amount = "10000000000000000",
+            amount = "50000000000000000",
         };
 
         var swap = new CreateSwap()
@@ -126,7 +128,6 @@ public class EventManagerSample : MonoBehaviour
         };
 
         var result = await sdk.CreateSwap(swap);
-        jsonResponse = result;
         Debugger.Instance.Log("Create Swap", $"{result}");
     }
 
@@ -211,7 +212,7 @@ public class EventManagerSample : MonoBehaviour
         };
         var result = await MetaMaskUnity.Instance.Wallet.Request(request);
         MetaMaskResponse mmResult = new MetaMaskResponse();
-        
+
         var jsonResult = JsonUtility.ToJson(result);
         Debug.Log($"jsonResult: {jsonResult}");
 
@@ -269,9 +270,4 @@ public class EventManagerSample : MonoBehaviour
         Debugger.Instance.Log("VerifyAcceptedSwapTest", result);
     }
 
-    // void OnWalletConnected(object sender, EventArgs e)
-    // {
-    //     Debugger.Instance.Log("Metamask Wallet", "Wallet is connected!");
-    //     SetAddress();
-    // }
 }

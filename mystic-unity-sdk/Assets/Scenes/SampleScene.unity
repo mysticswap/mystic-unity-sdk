@@ -1971,6 +1971,7 @@ GameObject:
   - component: {fileID: 1699722948}
   - component: {fileID: 1699722949}
   - component: {fileID: 1699722950}
+  - component: {fileID: 1699722951}
   m_Layer: 0
   m_Name: EventManager
   m_TagString: Untagged
@@ -2018,10 +2019,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7584432818fe518448876ef072ca8de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jsonSwapTest: {fileID: 11400000, guid: 0964e92e453057740aaf20f2830b6b45, type: 2}
+  jsonSwapTest: {fileID: 11400000, guid: 604947095fc964441b903e49cc5f047a, type: 2}
   jsonSwapResponse: {fileID: 11400000, guid: a0dd8ea93f2136f418cc15ab2997d8c0, type: 2}
   signature: {fileID: 11400000, guid: d60317b4f46de3246aa1faa2588e841f, type: 2}
   swapId: {fileID: 11400000, guid: 4b03ffd8c04aaa74bbe737ddb28c1771, type: 2}
+  Nonce: 0
 --- !u!4 &1699722938
 Transform:
   m_ObjectHideFlags: 0
@@ -2336,6 +2338,34 @@ MonoBehaviour:
       - m_Target: {fileID: 1699722937}
         m_TargetAssemblyTypeName: EventManagerSample, Assembly-CSharp
         m_MethodName: TestingSomething
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1699722951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699722935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ff99f879d5f1c47a5a6a51d42a3a0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 149231fd6914225479ea29f52fa98b20, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1699722937}
+        m_TargetAssemblyTypeName: EventManagerSample, Assembly-CSharp
+        m_MethodName: SearchSignatureTest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

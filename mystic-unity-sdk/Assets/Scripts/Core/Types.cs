@@ -99,7 +99,7 @@ namespace Core
     [System.Serializable]
     public struct ValueComponents
     {
-        public int itemtype;
+        public int itemType;
         public string token;
         public string identifierOrCriteria;
         public string startAmount;
