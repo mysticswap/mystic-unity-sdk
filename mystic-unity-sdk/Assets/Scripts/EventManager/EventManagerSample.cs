@@ -276,5 +276,11 @@ public class EventManagerSample : MonoBehaviour
         Debugger.Instance.Log("Retrieve Swap", result);
     }
 
+    public async void TestRetrieveAllSwap()
+    {
+        var result = await sdk.RetrieveAllSwaps(1, 20);
+        Debugger.Instance.Log("Retrieve All Swap", result);
+    }
+
 
 }
