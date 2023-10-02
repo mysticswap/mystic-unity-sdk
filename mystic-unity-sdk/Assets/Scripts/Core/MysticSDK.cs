@@ -12,8 +12,11 @@ namespace Core
     {
         [SerializeField] private StringVariable walletAddress;
         [SerializeField] private StringVariable authenticationToken;
+        [SerializeField] private StringVariable swapId;
         [SerializeField] private StringVariable chainId;
         private const string BaseUrl = "https://mystic-swap.herokuapp.com/marketplace-api/";
+        private const string OrderNotCancelled = "order not cancelled";
+        private const string OrderNotAccepted = "order not accepted";
 
 
         public void SetAddress(string address)
@@ -88,6 +91,8 @@ namespace Core
             };
             signatureData.types.EIP712Domain = EIP712Domain;
 
+            swapId.SetValue(swapResponse.swapId);
+
             /*
              * Sign Request to Metamask
              */
@@ -138,14 +143,27 @@ namespace Core
         public async Task<string> CancelSwap(SwapData request)
         {
             var requestBody = ConvertToJson(request);
-            var result = await AsyncPostRequest(
-                EndpointRequest(Uri, "cancel-swap"), requestBody, authenticationToken.Value);
-            return result;
+            var cancelSwapData = await AsyncPostRequest(
+                EndpointRequest(BaseUrl, "cancel-swap"), requestBody, authenticationToken.Value);
+
+            /*
+             * SendTransaction with MetaMask
+             */
+            var resultTransaction = await MetaMaskSendTransaction(cancelSwapData);
+            var resultVerifyCancelled = await VerifySwapCancelled(request.swapId);
+
+            return $"{resultTransaction}\n{resultVerifyCancelled}";
         }
 
-        public async Task<string> VerifyCancelled(string swapId)
+        private async Task<string> VerifySwapCancelled(string _swapId)
         {
-            var result = await AsyncGetRequest($"{UriVerifyCanceled}{swapId}", authenticationToken.Value);
+            var result = OrderNotCancelled;
+            var retry = 0;
+            while (result == OrderNotCancelled)
+            {
+                result = await AsyncGetRequest($"{BaseUrl}verify-cancelled/{_swapId}", authenticationToken.Value);
+                Debug.Log($"VerifySwapCancelled retry: {++retry}");
+            }
             return result;
         }
 
@@ -199,7 +217,27 @@ namespace Core
             return searchSignature;
         }
 
-        private string EndpointRequest(string _uri, string endpoint, params string[] parameter)
+        private async Task<string> MetaMaskSendTransaction(string data)
+        {
+            var metaMaskWallet = MetaMaskUnity.Instance.Wallet;
+            var transactionDatas = TransactionData.DeserializedJson(data);
+            var transactionParams = new MetaMaskTransaction()
+            {
+                From = GetAddress(),
+                Data = transactionDatas[0].data,
+                To = transactionDatas[0].to
+            };
+
+            var request = new MetaMaskEthereumRequest
+            {
+                Method = "eth_sendTransaction",
+                Parameters = new MetaMaskTransaction[] { transactionParams }
+            };
+
+            await metaMaskWallet.Request(request);
+            return metaMaskWallet.DecryptedJson;
+        }
+
         private string EndpointRequest(string _baseUrl, string endpoint, params string[] parameter)
         {
             var parameters = string.Join("&", parameter);
