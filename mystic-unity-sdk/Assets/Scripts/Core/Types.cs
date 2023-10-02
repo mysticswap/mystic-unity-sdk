@@ -1,7 +1,6 @@
 ﻿#nullable enable
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Core
 {
@@ -65,7 +64,7 @@ namespace Core
         public string identifier;
         public string amount;
     }
-    
+
     [System.Serializable]
     public struct CreateSwap
     {
@@ -123,18 +122,26 @@ namespace Core
         public string conduitKey;
         public int counter;
     }
-    
+
 
     [System.Serializable]
     public struct TransactionData
     {
         public string data;
         public string to;
+        public TransactionValue value;
 
         public static TransactionData[]? DeserializedJson(string responseJson)
         {
             return JsonConvert.DeserializeObject<TransactionData[]>(responseJson);
         }
+    }
+
+    [System.Serializable]
+    public struct TransactionValue
+    {
+        public string type;
+        public string hex;
     }
 
     [JsonArray]
@@ -185,7 +192,7 @@ namespace Core
         public string primaryType;
         public string swapId;
     }
-    
+
     [System.Serializable]
     public struct MetaMaskData
     {

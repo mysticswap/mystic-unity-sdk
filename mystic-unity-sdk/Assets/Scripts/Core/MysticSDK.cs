@@ -1,8 +1,8 @@
+using MetaMask.Models;
+using MetaMask.Unity;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using MetaMask.Models;
-using MetaMask.Unity;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -129,14 +129,24 @@ namespace Core
         public async Task<string> AcceptSwap(SwapData request)
         {
             var requestBody = ConvertToJson(request);
-            var result = await AsyncPostRequest(
-                EndpointRequest(Uri, "accept-swap"), requestBody, authenticationToken.Value);
-            return result;
+            var acceptSwapData = await AsyncPostRequest(
+                EndpointRequest(BaseUrl, "accept-swap"), requestBody, authenticationToken.Value);
+            Debug.Log($"acceptSwapData: {acceptSwapData}");
+            var resultTransaction = await MetaMaskSendTransaction(acceptSwapData);
+            var resultVerifyAccepted = await VerifySwapAccepted(request.swapId);
+
+            return $"{resultTransaction}\n{resultVerifyAccepted}";
         }
 
-        public async Task<string> VerifySwap(string swapId)
+        public async Task<string> VerifySwapAccepted(string swapId)
         {
-            var result = await AsyncGetRequest($"{UriVerifySwap}{swapId}", authenticationToken.Value);
+            var result = OrderNotAccepted;
+            var retry = 0;
+            while (result == OrderNotAccepted)
+            {
+                result = await AsyncGetRequest($"{BaseUrl}verify-accepted/{swapId}", authenticationToken.Value);
+                Debug.Log($"VerifySwapAccepted retry: {++retry}");
+            }
             return result;
         }
 
@@ -225,8 +235,10 @@ namespace Core
             {
                 From = GetAddress(),
                 Data = transactionDatas[0].data,
-                To = transactionDatas[0].to
+                To = transactionDatas[0].to,
+                Value = transactionDatas[0].value.hex,
             };
+
 
             var request = new MetaMaskEthereumRequest
             {
