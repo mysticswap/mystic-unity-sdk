@@ -12,10 +12,8 @@ namespace Core
     {
         [SerializeField] private StringVariable walletAddress;
         [SerializeField] private StringVariable authenticationToken;
-        [SerializeField] private string chainId = "5";
-        private const string Uri = "https://mystic-swap.herokuapp.com/marketplace-api/";
-        private const string UriVerifySwap = "https://mystic-swap.herokuapp.com/verify-accepted/";
-        private const string UriVerifyCanceled = "https://mystic-swap.herokuapp.com/verify-cancelled/";
+        [SerializeField] private StringVariable chainId;
+        private const string BaseUrl = "https://mystic-swap.herokuapp.com/marketplace-api/";
 
 
         public void SetAddress(string address)
@@ -31,10 +29,10 @@ namespace Core
         public async Task<string> GetBalance()
         {
             var result = await AsyncGetRequest(
-                EndpointRequest(Uri,
+                EndpointRequest(BaseUrl,
                     "get-balance",
                     "address=" + walletAddress.Value,
-                    "chainId=" + chainId),
+                    "chainId=" + chainId.Value),
                 authenticationToken.Value);
             return result;
         }
@@ -42,10 +40,10 @@ namespace Core
         public async Task<string> GetNfts()
         {
             var result = await AsyncGetRequest(
-                EndpointRequest(Uri,
+                EndpointRequest(BaseUrl,
                     "get-nfts",
                     "address=" + walletAddress.Value,
-                    "chainId=" + chainId),
+                    "chainId=" + chainId.Value),
                 authenticationToken.Value);
             return result;
         }
@@ -55,7 +53,7 @@ namespace Core
         {
             var requestBody = ConvertToJson(request);
             var result = await AsyncPostRequest(
-                EndpointRequest(Uri, "get-metadata"), requestBody, authenticationToken.Value);
+                EndpointRequest(BaseUrl, "get-metadata"), requestBody, authenticationToken.Value);
             return result;
         }
 
@@ -66,7 +64,7 @@ namespace Core
              */
             var requestBody = ConvertToJson(request);
             var createSwapResponse = await AsyncPostRequest(
-                EndpointRequest(Uri, "create-swap"), requestBody, authenticationToken.Value);
+                EndpointRequest(BaseUrl, "create-swap"), requestBody, authenticationToken.Value);
             Debug.Log($"createSwapResponse: {createSwapResponse}");
 
             /*
@@ -119,7 +117,7 @@ namespace Core
         {
             var requestBody = ConvertToJson(request);
             var result = await AsyncPostRequest(
-                EndpointRequest(Uri, "validate-swap"), requestBody, authenticationToken.Value);
+                EndpointRequest(BaseUrl, "validate-swap"), requestBody, authenticationToken.Value);
             return result;
         }
 
@@ -155,11 +153,11 @@ namespace Core
         {
             var result = await AsyncGetRequest(
                 EndpointRequest(
-                    Uri,
+                    BaseUrl,
                     "all-swaps",
                     $"page={page}",
                     $"limit={limit}",
-                    $"chainId={chainId}"),
+                    $"chainId={chainId.Value}"),
                 authenticationToken.Value);
             return result;
         }
@@ -168,7 +166,7 @@ namespace Core
         {
             var result = await AsyncGetRequest(
                 EndpointRequest(
-                    Uri,
+                    BaseUrl,
                     "find-swap",
                     $"swapId={swapId}"),
                 authenticationToken.Value);
@@ -202,9 +200,10 @@ namespace Core
         }
 
         private string EndpointRequest(string _uri, string endpoint, params string[] parameter)
+        private string EndpointRequest(string _baseUrl, string endpoint, params string[] parameter)
         {
             var parameters = string.Join("&", parameter);
-            return string.Format($"{_uri}{endpoint}?{parameters}");
+            return string.Format($"{_baseUrl}{endpoint}?{parameters}");
         }
 
         private string ConvertToJson(object obj)
@@ -212,9 +211,9 @@ namespace Core
             return JsonUtility.ToJson(obj);
         }
 
-        private async Task<string> AsyncGetRequest(string uri, string authToken)
+        private async Task<string> AsyncGetRequest(string baseUrl, string authToken)
         {
-            UnityWebRequest webRequest = UnityWebRequest.Get(uri);
+            UnityWebRequest webRequest = UnityWebRequest.Get(baseUrl);
             webRequest.SetRequestHeader("Authorization", authToken);
             webRequest.SendWebRequest();
             while (!webRequest.isDone)
@@ -233,9 +232,9 @@ namespace Core
             }
         }
 
-        private async Task<string> AsyncPostRequest(string uri, string request, string authToken)
+        private async Task<string> AsyncPostRequest(string baseUrl, string request, string authToken)
         {
-            UnityWebRequest webRequest = UnityWebRequest.Post(uri, request, "application/json");
+            UnityWebRequest webRequest = UnityWebRequest.Post(baseUrl, request, "application/json");
             webRequest.SetRequestHeader("Authorization", authToken);
             webRequest.SendWebRequest();
             while (!webRequest.isDone)
