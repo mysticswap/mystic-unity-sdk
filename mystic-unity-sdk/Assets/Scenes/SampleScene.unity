@@ -1980,6 +1980,7 @@ GameObject:
   - component: {fileID: 1699722956}
   - component: {fileID: 1699722957}
   - component: {fileID: 1699722958}
+  - component: {fileID: 1699722959}
   m_Layer: 0
   m_Name: EventManager
   m_TagString: Untagged
@@ -2031,6 +2032,7 @@ MonoBehaviour:
   jsonSwapResponse: {fileID: 11400000, guid: a0dd8ea93f2136f418cc15ab2997d8c0, type: 2}
   signature: {fileID: 11400000, guid: d60317b4f46de3246aa1faa2588e841f, type: 2}
   swapId: {fileID: 11400000, guid: ccddaedef06f06745905d4c782790931, type: 2}
+  takerAddress: {fileID: 11400000, guid: 9ea2617182e74df4a8b5b85395d29825, type: 2}
   cancelSwapData: {fileID: 11400000, guid: 59eef83e92d947a40a10e10b57d30d1c, type: 2}
   Nonce: 0
 --- !u!4 &1699722938
@@ -2571,6 +2573,34 @@ MonoBehaviour:
       - m_Target: {fileID: 1699722937}
         m_TargetAssemblyTypeName: EventManagerSample, Assembly-CSharp
         m_MethodName: TestGetJsonArray
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1699722959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699722935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ff99f879d5f1c47a5a6a51d42a3a0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: cd22f00c628708144943beec9f635280, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1699722937}
+        m_TargetAssemblyTypeName: EventManagerSample, Assembly-CSharp
+        m_MethodName: TestAcceptSwap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

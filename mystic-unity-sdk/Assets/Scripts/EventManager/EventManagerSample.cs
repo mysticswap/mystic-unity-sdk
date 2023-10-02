@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Core;
-using evm.net.Models;
 using MetaMask;
 using MetaMask.Models;
 using MetaMask.Unity;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 
@@ -84,6 +78,12 @@ public class EventManagerSample : MonoBehaviour
         Debugger.Instance.Log("Mystic SDK Wallet", $"Mystic Wallet address has been set to {sdk.GetAddress()}");
     }
 
+    public async void GetNftsCollection()
+    {
+        var result = await sdk.GetNfts();
+        Debugger.Instance.Log("Get NFT", $"{result}");
+    }
+
     public async void FromJsonTest()
     {
         var result = await sdk.GetNfts();
@@ -151,7 +151,7 @@ public class EventManagerSample : MonoBehaviour
         var selectedOffer = new Offer()
         {
             itemtype = "ERC721",
-            token = "0x74cb5611e89078b2e5cb638a873cf7bddc588659",
+            token = "0x74cb5611e89078b2e5cb638a873cf7bddc58659",
             identifier = "633",
             amount = "1",
         };
@@ -271,7 +271,7 @@ public class EventManagerSample : MonoBehaviour
 
     public async void VerifyAcceptedSwapTest()
     {
-        var result = await sdk.VerifySwap(swapId.Value);
+        var result = await sdk.VerifySwapAccepted(swapId.Value);
         Debugger.Instance.Log("VerifyAcceptedSwapTest", result);
     }
 
@@ -317,6 +317,19 @@ public class EventManagerSample : MonoBehaviour
         var result = await sdk.CancelSwap(swapData);
         Debugger.Instance.Log("Cancel Swap", result);
     }
+
+    public async void TestAcceptSwap()
+    {
+        SwapData swapData = new SwapData()
+        {
+            swapId = swapId.Value,
+            takerAddress = takerAddress.Value,
+        };
+
+        var result = await sdk.AcceptSwap(swapData);
+        Debugger.Instance.Log("Accept Swap", result);
+    }
+
     public async void TestSendRawTransaction()
     {
         var transactionParams = new MetaMaskTransaction
@@ -326,7 +339,7 @@ public class EventManagerSample : MonoBehaviour
             To = "0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC",
             Data =
                 "0xfb0f3ee100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000592c5127dcc0000000000000000000000000005ee3813e9a4e9f3f92f93aff8f6c119d4a8a7430000000000000000000000000cbd21691e26da7ffa64cb1a6c47832fdaee0acce000000000000000000000000037aca480459ae361a87b023f189532d80cb6769000000000000000000000000000000000000000000000000000000000000003e0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000651a1f2600000000000000000000000000000000000000000000000000000000654238af000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000125fbd6d4560000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000240000000000000000000000000000000000000000000000000000000000000026000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041b24178724dceb64350d61c98e68f7be3ced656eaeeb759f7c3eb00acf4ebccac656e9e19bc0667876765cec89b1319983cfc4f14ef2e593fbab08a3e3a45eea81b00000000000000000000000000000000000000000000000000000000000000",
-            
+
             // ChainId = "5"
         };
 
