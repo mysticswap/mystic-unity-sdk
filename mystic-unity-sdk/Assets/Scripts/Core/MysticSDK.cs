@@ -1,8 +1,8 @@
+using MetaMask.Models;
+using MetaMask.Unity;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using MetaMask.Models;
-using MetaMask.Unity;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -12,10 +12,11 @@ namespace Core
     {
         [SerializeField] private StringVariable walletAddress;
         [SerializeField] private StringVariable authenticationToken;
-        [SerializeField] private string chainId = "5";
-        private const string Uri = "https://mystic-swap.herokuapp.com/marketplace-api/";
-        private const string UriVerifySwap = "https://mystic-swap.herokuapp.com/verify-accepted/";
-        private const string UriVerifyCanceled = "https://mystic-swap.herokuapp.com/verify-cancelled/";
+        [SerializeField] private StringVariable swapId;
+        [SerializeField] private StringVariable chainId;
+        private const string BaseUrl = "https://mystic-swap.herokuapp.com/marketplace-api/";
+        private const string OrderNotCancelled = "order not cancelled";
+        private const string OrderNotAccepted = "order not accepted";
 
 
         public void SetAddress(string address)
@@ -31,10 +32,10 @@ namespace Core
         public async Task<string> GetBalance()
         {
             var result = await AsyncGetRequest(
-                EndpointRequest(Uri,
+                EndpointRequest(BaseUrl,
                     "get-balance",
                     "address=" + walletAddress.Value,
-                    "chainId=" + chainId),
+                    "chainId=" + chainId.Value),
                 authenticationToken.Value);
             return result;
         }
@@ -42,11 +43,20 @@ namespace Core
         public async Task<string> GetNfts()
         {
             var result = await AsyncGetRequest(
-                EndpointRequest(Uri,
+                EndpointRequest(BaseUrl,
                     "get-nfts",
                     "address=" + walletAddress.Value,
-                    "chainId=" + chainId),
+                    "chainId=" + chainId.Value),
                 authenticationToken.Value);
+            return result;
+        }
+
+
+        public async Task<string> GetMetadata(Metadata request)
+        {
+            var requestBody = ConvertToJson(request);
+            var result = await AsyncPostRequest(
+                EndpointRequest(BaseUrl, "get-metadata"), requestBody, authenticationToken.Value);
             return result;
         }
 
@@ -57,7 +67,7 @@ namespace Core
              */
             var requestBody = ConvertToJson(request);
             var createSwapResponse = await AsyncPostRequest(
-                EndpointRequest(Uri, "create-swap"), requestBody, authenticationToken.Value);
+                EndpointRequest(BaseUrl, "create-swap"), requestBody, authenticationToken.Value);
             Debug.Log($"createSwapResponse: {createSwapResponse}");
 
             /*
@@ -80,6 +90,8 @@ namespace Core
                 new() { name = "verifyingContract", type = "address" },
             };
             signatureData.types.EIP712Domain = EIP712Domain;
+
+            swapId.SetValue(swapResponse.swapId);
 
             /*
              * Sign Request to Metamask
@@ -110,35 +122,58 @@ namespace Core
         {
             var requestBody = ConvertToJson(request);
             var result = await AsyncPostRequest(
-                EndpointRequest(Uri, "validate-swap"), requestBody, authenticationToken.Value);
+                EndpointRequest(BaseUrl, "validate-swap"), requestBody, authenticationToken.Value);
             return result;
         }
 
         public async Task<string> AcceptSwap(SwapData request)
         {
             var requestBody = ConvertToJson(request);
-            var result = await AsyncPostRequest(
-                EndpointRequest(Uri, "accept-swap"), requestBody, authenticationToken.Value);
-            return result;
+            var acceptSwapData = await AsyncPostRequest(
+                EndpointRequest(BaseUrl, "accept-swap"), requestBody, authenticationToken.Value);
+            Debug.Log($"acceptSwapData: {acceptSwapData}");
+            var resultTransaction = await MetaMaskSendTransaction(acceptSwapData);
+            var resultVerifyAccepted = await VerifySwapAccepted(request.swapId);
+
+            return $"{resultTransaction}\n{resultVerifyAccepted}";
         }
 
-        public async Task<string> VerifySwap(string swapId)
+        public async Task<string> VerifySwapAccepted(string swapId)
         {
-            var result = await AsyncGetRequest($"{UriVerifySwap}{swapId}", authenticationToken.Value);
+            var result = OrderNotAccepted;
+            var retry = 0;
+            while (result == OrderNotAccepted)
+            {
+                result = await AsyncGetRequest($"{BaseUrl}verify-accepted/{swapId}", authenticationToken.Value);
+                Debug.Log($"VerifySwapAccepted retry: {++retry}");
+            }
             return result;
         }
 
         public async Task<string> CancelSwap(SwapData request)
         {
             var requestBody = ConvertToJson(request);
-            var result = await AsyncPostRequest(
-                EndpointRequest(Uri, "cancel-swap"), requestBody, authenticationToken.Value);
-            return result;
+            var cancelSwapData = await AsyncPostRequest(
+                EndpointRequest(BaseUrl, "cancel-swap"), requestBody, authenticationToken.Value);
+
+            /*
+             * SendTransaction with MetaMask
+             */
+            var resultTransaction = await MetaMaskSendTransaction(cancelSwapData);
+            var resultVerifyCancelled = await VerifySwapCancelled(request.swapId);
+
+            return $"{resultTransaction}\n{resultVerifyCancelled}";
         }
 
-        public async Task<string> VerifyCancelled(string swapId)
+        private async Task<string> VerifySwapCancelled(string _swapId)
         {
-            var result = await AsyncGetRequest($"{UriVerifyCanceled}{swapId}", authenticationToken.Value);
+            var result = OrderNotCancelled;
+            var retry = 0;
+            while (result == OrderNotCancelled)
+            {
+                result = await AsyncGetRequest($"{BaseUrl}verify-cancelled/{_swapId}", authenticationToken.Value);
+                Debug.Log($"VerifySwapCancelled retry: {++retry}");
+            }
             return result;
         }
 
@@ -146,11 +181,11 @@ namespace Core
         {
             var result = await AsyncGetRequest(
                 EndpointRequest(
-                    Uri,
+                    BaseUrl,
                     "all-swaps",
                     $"page={page}",
                     $"limit={limit}",
-                    $"chainId={chainId}"),
+                    $"chainId={chainId.Value}"),
                 authenticationToken.Value);
             return result;
         }
@@ -159,8 +194,8 @@ namespace Core
         {
             var result = await AsyncGetRequest(
                 EndpointRequest(
-                    Uri,
-                    "findSwap",
+                    BaseUrl,
+                    "find-swap",
                     $"swapId={swapId}"),
                 authenticationToken.Value);
             return result;
@@ -192,10 +227,33 @@ namespace Core
             return searchSignature;
         }
 
-        private string EndpointRequest(string _uri, string endpoint, params string[] parameter)
+        private async Task<string> MetaMaskSendTransaction(string data)
+        {
+            var metaMaskWallet = MetaMaskUnity.Instance.Wallet;
+            var transactionDatas = TransactionData.DeserializedJson(data);
+            var transactionParams = new MetaMaskTransaction()
+            {
+                From = GetAddress(),
+                Data = transactionDatas[0].data,
+                To = transactionDatas[0].to,
+                Value = transactionDatas[0].value.hex,
+            };
+
+
+            var request = new MetaMaskEthereumRequest
+            {
+                Method = "eth_sendTransaction",
+                Parameters = new MetaMaskTransaction[] { transactionParams }
+            };
+
+            await metaMaskWallet.Request(request);
+            return metaMaskWallet.DecryptedJson;
+        }
+
+        private string EndpointRequest(string _baseUrl, string endpoint, params string[] parameter)
         {
             var parameters = string.Join("&", parameter);
-            return string.Format($"{_uri}{endpoint}?{parameters}");
+            return string.Format($"{_baseUrl}{endpoint}?{parameters}");
         }
 
         private string ConvertToJson(object obj)
@@ -203,9 +261,9 @@ namespace Core
             return JsonUtility.ToJson(obj);
         }
 
-        private async Task<string> AsyncGetRequest(string uri, string authToken)
+        private async Task<string> AsyncGetRequest(string baseUrl, string authToken)
         {
-            UnityWebRequest webRequest = UnityWebRequest.Get(uri);
+            UnityWebRequest webRequest = UnityWebRequest.Get(baseUrl);
             webRequest.SetRequestHeader("Authorization", authToken);
             webRequest.SendWebRequest();
             while (!webRequest.isDone)
@@ -224,9 +282,9 @@ namespace Core
             }
         }
 
-        private async Task<string> AsyncPostRequest(string uri, string request, string authToken)
+        private async Task<string> AsyncPostRequest(string baseUrl, string request, string authToken)
         {
-            UnityWebRequest webRequest = UnityWebRequest.Post(uri, request, "application/json");
+            UnityWebRequest webRequest = UnityWebRequest.Post(baseUrl, request, "application/json");
             webRequest.SetRequestHeader("Authorization", authToken);
             webRequest.SendWebRequest();
             while (!webRequest.isDone)

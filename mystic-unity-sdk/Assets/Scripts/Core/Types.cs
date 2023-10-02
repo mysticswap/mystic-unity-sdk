@@ -1,7 +1,6 @@
 ﻿#nullable enable
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Core
 {
@@ -65,7 +64,7 @@ namespace Core
         public string identifier;
         public string amount;
     }
-    
+
     [System.Serializable]
     public struct CreateSwap
     {
@@ -123,15 +122,34 @@ namespace Core
         public string conduitKey;
         public int counter;
     }
-    
+
 
     [System.Serializable]
-    public struct ApprovalIsNeeded
+    public struct TransactionData
     {
         public string data;
         public string to;
+        public TransactionValue value;
+
+        public static TransactionData[]? DeserializedJson(string responseJson)
+        {
+            return JsonConvert.DeserializeObject<TransactionData[]>(responseJson);
+        }
     }
-    
+
+    [System.Serializable]
+    public struct TransactionValue
+    {
+        public string type;
+        public string hex;
+    }
+
+    [JsonArray]
+    public class ListTransactionData
+    {
+        public List<TransactionData> listTransactionData;
+    }
+
     [System.Serializable]
     public struct SignTypedMessage
     {
@@ -144,7 +162,7 @@ namespace Core
     public class SwapResponse
     {
         public SignTypedMessage signTypedMessage;
-        public List<ApprovalIsNeeded> approvalsNeeded;
+        public List<TransactionData> approvalsNeeded;
         public string swapId;
     }
 
@@ -174,7 +192,7 @@ namespace Core
         public string primaryType;
         public string swapId;
     }
-    
+
     [System.Serializable]
     public struct MetaMaskData
     {
@@ -188,6 +206,21 @@ namespace Core
     {
         public string name;
         public MetaMaskData data;
+    }
+
+    [System.Serializable]
+    public struct MetadataArray
+    {
+        public string type;
+        public string contractAddress;
+        public string tokenId;
+    }
+
+    [System.Serializable]
+    public struct Metadata
+    {
+        public int chainId;
+        public List<MetadataArray> metadataArray;
     }
 
 }
