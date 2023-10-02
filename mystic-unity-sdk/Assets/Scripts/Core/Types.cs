@@ -126,12 +126,23 @@ namespace Core
     
 
     [System.Serializable]
-    public struct ApprovalIsNeeded
+    public struct TransactionData
     {
         public string data;
         public string to;
+
+        public static TransactionData[]? DeserializedJson(string responseJson)
+        {
+            return JsonConvert.DeserializeObject<TransactionData[]>(responseJson);
+        }
     }
-    
+
+    [JsonArray]
+    public class ListTransactionData
+    {
+        public List<TransactionData> listTransactionData;
+    }
+
     [System.Serializable]
     public struct SignTypedMessage
     {
@@ -144,7 +155,7 @@ namespace Core
     public class SwapResponse
     {
         public SignTypedMessage signTypedMessage;
-        public List<ApprovalIsNeeded> approvalsNeeded;
+        public List<TransactionData> approvalsNeeded;
         public string swapId;
     }
 
