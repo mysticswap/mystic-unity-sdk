@@ -939,9 +939,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1469168921}
-        m_TargetAssemblyTypeName: Core.MysticSDK, Assembly-CSharp
-        m_MethodName: GetNfts
+      - m_Target: {fileID: 1699722937}
+        m_TargetAssemblyTypeName: EventManagerSample, Assembly-CSharp
+        m_MethodName: GetNftsCollection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1773,7 +1773,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1469168923}
   - component: {fileID: 1469168922}
-  - component: {fileID: 1469168921}
   m_Layer: 0
   m_Name: MysticSDKManager
   m_TagString: Untagged
@@ -1781,22 +1780,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1469168921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1469168920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c248b468ecc3c744db7faec6e975304f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walletAddress: {fileID: 11400000, guid: f0d1080e10f0f854dba4717f992dabb6, type: 2}
-  authenticationToken: {fileID: 11400000, guid: 29145f2d2040a83438398b1bb17b8a6b, type: 2}
-  swapId: {fileID: 11400000, guid: ccddaedef06f06745905d4c782790931, type: 2}
-  chainId: {fileID: 11400000, guid: 6044dcd491c59704e95af02572df06c3, type: 2}
 --- !u!114 &1469168922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1809,7 +1792,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57edb483854849d08a52d6efd1171e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sdk: {fileID: 1469168921}
+  walletAddress: 
+  authenticationToken: 
+  chainId: 
 --- !u!4 &1469168923
 Transform:
   m_ObjectHideFlags: 0
@@ -2066,7 +2051,7 @@ MonoBehaviour:
   Response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1469168921}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Core.MysticSDK, Assembly-CSharp
         m_MethodName: GetBalance
         m_Mode: 1
