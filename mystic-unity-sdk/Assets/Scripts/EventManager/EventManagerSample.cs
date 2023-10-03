@@ -80,8 +80,16 @@ public class EventManagerSample : MonoBehaviour
 
     public async void GetNftsCollection()
     {
-        var result = await sdk.GetNfts();
-        Debugger.Instance.Log("Get NFT", $"{result}");
+        var listNFTs = await sdk.GetOwnedNFTs();
+        foreach (var item in listNFTs)
+        {
+            Debug.Log(
+                $"itemType: {item.tokenType}\n" +
+                $"token: {item.contract.address}\n" +
+                $"identifier: {item.tokenId}\n" +
+                $"imageUrl: {item.rawMetadata.image}"
+                );
+        }
     }
 
     public async void FromJsonTest()
@@ -102,6 +110,8 @@ public class EventManagerSample : MonoBehaviour
 
         Debugger.Instance.Log("test From Json", sb.ToString());
     }
+
+
 
 
     public async void SwapTest()
