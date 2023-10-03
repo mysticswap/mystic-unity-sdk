@@ -51,6 +51,13 @@ namespace Core
             return result;
         }
 
+        public async Task<List<NFT>> GetOwnedNFTs()
+        {
+            var data = await GetNfts();
+            OwnedNFT ownedNft = JsonUtility.FromJson<OwnedNFT>(data);
+            return ownedNft.ownedNfts;
+        }
+
 
         public async Task<string> GetMetadata(Metadata request)
         {

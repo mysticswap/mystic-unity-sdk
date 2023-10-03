@@ -18,9 +18,19 @@ namespace Core
     }
 
     [System.Serializable]
+    public struct NFTContract
+    {
+        public string address;
+        public string name;
+        public string symbol;
+        public string totalSupply;
+        public string tokenType;
+    }
+
+    [System.Serializable]
     public struct NFT
     {
-        public object contract;
+        public NFTContract contract;
         public int tokenId;
         public string tokenType;
         public string title;
