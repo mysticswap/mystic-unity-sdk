@@ -1796,7 +1796,7 @@ MonoBehaviour:
   walletAddress: {fileID: 11400000, guid: f0d1080e10f0f854dba4717f992dabb6, type: 2}
   authenticationToken: {fileID: 11400000, guid: 29145f2d2040a83438398b1bb17b8a6b, type: 2}
   swapId: {fileID: 11400000, guid: ccddaedef06f06745905d4c782790931, type: 2}
-  chainId: {fileID: 0}
+  chainId: {fileID: 11400000, guid: 6044dcd491c59704e95af02572df06c3, type: 2}
 --- !u!114 &1469168922
 MonoBehaviour:
   m_ObjectHideFlags: 0
