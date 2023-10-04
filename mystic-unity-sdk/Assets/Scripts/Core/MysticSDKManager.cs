@@ -32,8 +32,9 @@ namespace Core
 
         private void Initialize()
         {
-            Debug.Log("sdk init");
+            Debug.Log("Mystic SDK initialized");
             sdk = new MysticSDK(walletAddress, authenticationToken, chainId);
+            Debug.Log($"{sdk.session.walletAddress}\n" + $"{sdk.session.authenticationToken}\n" + $"{sdk.session.chainId}" + $"");
         }
     }
 }
