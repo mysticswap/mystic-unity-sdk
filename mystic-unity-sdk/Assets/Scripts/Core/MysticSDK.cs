@@ -24,12 +24,12 @@ namespace Core
 
         public string GetAddress()
         {
-            return session.walletAddress;
+            return session.WalletAddress;
         }
 
         public void SetAddress(string address)
         {
-            session.walletAddress = address;
+            session.WalletAddress = address;
         }
 
         public async Task<string> GetBalance()
@@ -37,9 +37,9 @@ namespace Core
             var result = await AsyncGetRequest(
                 EndpointRequest(BaseUrl,
                     "get-balance",
-                    "address=" + session.walletAddress,
-                    "chainId=" + session.chainId),
-                session.authenticationToken);
+                    "address=" + session.WalletAddress,
+                    "chainId=" + session.ChainId),
+                session.AuthenticationToken);
             return result;
         }
 
@@ -48,9 +48,9 @@ namespace Core
             var result = await AsyncGetRequest(
                 EndpointRequest(BaseUrl,
                     "get-nfts",
-                    "address=" + session.walletAddress,
-                    "chainId=" + session.chainId),
-                session.authenticationToken);
+                    "address=" + session.WalletAddress,
+                    "chainId=" + session.ChainId),
+                session.AuthenticationToken);
             return result;
         }
 
@@ -66,7 +66,7 @@ namespace Core
         {
             var requestBody = ConvertToJson(request);
             var result = await AsyncPostRequest(
-                EndpointRequest(BaseUrl, "get-metadata"), requestBody, session.authenticationToken);
+                EndpointRequest(BaseUrl, "get-metadata"), requestBody, session.AuthenticationToken);
             return result;
         }
 
@@ -77,7 +77,7 @@ namespace Core
              */
             var requestBody = ConvertToJson(request);
             var createSwapResponse = await AsyncPostRequest(
-                EndpointRequest(BaseUrl, "create-swap"), requestBody, session.authenticationToken);
+                EndpointRequest(BaseUrl, "create-swap"), requestBody, session.AuthenticationToken);
             Debug.Log($"createSwapResponse: {createSwapResponse}");
 
             /*
@@ -131,7 +131,7 @@ namespace Core
         {
             var requestBody = ConvertToJson(request);
             var result = await AsyncPostRequest(
-                EndpointRequest(BaseUrl, "validate-swap"), requestBody, session.authenticationToken);
+                EndpointRequest(BaseUrl, "validate-swap"), requestBody, session.AuthenticationToken);
             return result;
         }
 
@@ -139,7 +139,7 @@ namespace Core
         {
             var requestBody = ConvertToJson(request);
             var acceptSwapData = await AsyncPostRequest(
-                EndpointRequest(BaseUrl, "accept-swap"), requestBody, session.authenticationToken);
+                EndpointRequest(BaseUrl, "accept-swap"), requestBody, session.AuthenticationToken);
             Debug.Log($"acceptSwapData: {acceptSwapData}");
             var resultTransaction = await MetaMaskSendTransaction(acceptSwapData);
             var resultVerifyAccepted = await VerifySwapAccepted(request.swapId);
@@ -153,7 +153,7 @@ namespace Core
             var retry = 0;
             while (result == OrderNotAccepted)
             {
-                result = await AsyncGetRequest($"{BaseUrl}verify-accepted/{swapId}", session.authenticationToken);
+                result = await AsyncGetRequest($"{BaseUrl}verify-accepted/{swapId}", session.AuthenticationToken);
                 Debug.Log($"VerifySwapAccepted retry: {++retry}");
             }
             return result;
@@ -163,7 +163,7 @@ namespace Core
         {
             var requestBody = ConvertToJson(request);
             var cancelSwapData = await AsyncPostRequest(
-                EndpointRequest(BaseUrl, "cancel-swap"), requestBody, session.authenticationToken);
+                EndpointRequest(BaseUrl, "cancel-swap"), requestBody, session.AuthenticationToken);
 
             /*
              * SendTransaction with MetaMask
@@ -180,7 +180,7 @@ namespace Core
             var retry = 0;
             while (result == OrderNotCancelled)
             {
-                result = await AsyncGetRequest($"{BaseUrl}verify-cancelled/{_swapId}", session.authenticationToken);
+                result = await AsyncGetRequest($"{BaseUrl}verify-cancelled/{_swapId}", session.AuthenticationToken);
                 Debug.Log($"VerifySwapCancelled retry: {++retry}");
             }
             return result;
@@ -194,8 +194,8 @@ namespace Core
                     "all-swaps",
                     $"page={page}",
                     $"limit={limit}",
-                    $"chainId={session.chainId}"),
-                session.authenticationToken);
+                    $"chainId={session.ChainId}"),
+                session.AuthenticationToken);
             return result;
         }
 
@@ -206,7 +206,7 @@ namespace Core
                     BaseUrl,
                     "find-swap",
                     $"swapId={swapId}"),
-                session.authenticationToken);
+                session.AuthenticationToken);
             return result;
         }
 
@@ -221,7 +221,7 @@ namespace Core
         public async Task<string> MetaMaskSignature(string jsonData)
         {
             var metaMaskWallet = MetaMaskUnity.Instance.Wallet;
-            var from = session.walletAddress;
+            var from = session.WalletAddress;
             var paramsArray = new string[] { from, jsonData };
 
             var request = new MetaMaskEthereumRequest()
@@ -242,7 +242,7 @@ namespace Core
             var transactionDatas = TransactionData.DeserializedJson(data);
             var transactionParams = new MetaMaskTransaction()
             {
-                From = session.walletAddress,
+                From = session.WalletAddress,
                 Data = transactionDatas[0].data,
                 To = transactionDatas[0].to,
                 Value = transactionDatas[0].value.hex,
