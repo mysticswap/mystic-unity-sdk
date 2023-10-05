@@ -64,6 +64,14 @@ namespace Core
         public string token;
         public string identifier;
         public string amount;
+
+        public override string ToString()
+        {
+            return $"itemtype: {itemtype}\n" +
+                $"token: {token}\n" +
+                $"identifier: {identifier}\n" +
+                $"amount: {amount}";
+        }
     }
 
     [System.Serializable]
@@ -73,6 +81,14 @@ namespace Core
         public string token;
         public string identifier;
         public string amount;
+
+        public override string ToString()
+        {
+            return $"itemtype: {itemtype}\n" +
+                $"token: {token}\n" +
+                $"identifier: {identifier}\n" +
+                $"amount: {amount}";
+        }
     }
 
     [System.Serializable]
