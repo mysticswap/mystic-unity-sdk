@@ -34,7 +34,7 @@ public class OwnedNFTButton : MonoBehaviour
             $"Identifier: {Identifier}\n" +
             $"Balance: {Balance}");
 
-        var offer = new Offer()
+        var offer = new SwapItem()
         {
             itemtype = ItemType,
             token = Token,
@@ -47,7 +47,7 @@ public class OwnedNFTButton : MonoBehaviour
 
     }
 
-    private void AddNFT(Offer _offer)
+    private void AddNFT(SwapItem _offer)
     {
         var sdk = MysticSDKManager.Instance.sdk;
         var connectedAddress = sdk.GetAddress();
@@ -63,7 +63,7 @@ public class OwnedNFTButton : MonoBehaviour
             else
             {
                 sdk.session.SelectedConsiderations.Add(
-                    new Consideration()
+                    new SwapItem()
                     {
                         itemtype = ItemType,
                         token = Token,
@@ -74,7 +74,7 @@ public class OwnedNFTButton : MonoBehaviour
         }
     }
 
-    private void RemoveExistingNFT(Offer _offer)
+    private void RemoveExistingNFT(SwapItem _offer)
     {
         var sdk = MysticSDKManager.Instance.sdk;
         var connectedAddress = sdk.GetAddress();

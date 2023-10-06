@@ -8,8 +8,8 @@ namespace Core
         public string AuthenticationToken { get; private set; }
         public string ChainId { get; private set; }
         public List<NFT> SelectedNFTs { get; set; }
-        public List<Offer> SelectedOffers { get; set; } = new List<Offer>();
-        public List<Consideration> SelectedConsiderations { get; set; } = new List<Consideration>();
+        public List<SwapItem> SelectedOffers { get; set; } = new List<SwapItem>();
+        public List<SwapItem> SelectedConsiderations { get; set; } = new List<SwapItem>();
 
         public MysticSDKSession(string _walletAddress, string _authenticationToken, string _chainId)
         {
