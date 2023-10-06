@@ -21,8 +21,11 @@ public class GameManager : MonoBehaviour
 
     public async void GetNFTsCollection()
     {
+        var ownerAddress = sdk.GetAddress();
         // Get NFT data from Mystic SDK and convert it into OwnedNFT List.
         listNFTs = await sdk.GetOwnedNFTs();
+
+        Debug.Log($"list count: {listNFTs.Count}");
 
         // Accessing all the NFTs collections
         foreach (var item in listNFTs)
@@ -35,9 +38,12 @@ public class GameManager : MonoBehaviour
                 );
         }
 
+        LoadNFTsCollection(ownerAddress);
+
+
     }
 
-    public async void LoadNFTsCollection()
+    private async void LoadNFTsCollection(string _ownerAddress)
     {
 
         while (listNFTs == null)
@@ -48,13 +54,23 @@ public class GameManager : MonoBehaviour
         foreach (var item in listNFTs)
         {
             var newOwnedNFTButton = Instantiate(ownedNFTButton, transform.position, transform.rotation);
-            newOwnedNFTButton.Init(item.title, item.tokenType, item.contract.address, item.tokenId, item.balance);
+            newOwnedNFTButton.Init(item.title, item.tokenType, item.contract.address, item.tokenId, item.balance, _ownerAddress);
 
             newOwnedNFTButton.transform.SetParent(NFTCollectionPanel.transform);
 
         }
 
         Debug.Log("LoadNFTsCollection excecuted");
+    }
+
+    public void RetrieveOfffers()
+    {
+        var selectedOffers = sdk.session.SelectedOffers;
+        Debug.Log($"Selected Offers: {selectedOffers.Count}");
+        foreach (var item in selectedOffers)
+        {
+            Debug.Log($"{item}");
+        }
     }
 }
 

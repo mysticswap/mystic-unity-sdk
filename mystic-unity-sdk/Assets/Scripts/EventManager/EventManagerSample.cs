@@ -116,7 +116,7 @@ public class EventManagerSample : MonoBehaviour
 
     public async void SwapTest()
     {
-        var selectedOffer = new Offer()
+        var selectedOffer = new SwapItem()
         {
             itemtype = "ERC721",
             token = "0x037aca480459ae361a87b023f189532d80cb6769",
@@ -124,7 +124,7 @@ public class EventManagerSample : MonoBehaviour
             amount = "1",
         };
 
-        var selectedConsideration = new Consideration()
+        var selectedConsideration = new SwapItem()
         {
             itemtype = "NATIVE",
             token = "0x0000000000000000000000000000000000000000",
@@ -138,8 +138,8 @@ public class EventManagerSample : MonoBehaviour
             offerer = "0xCBD21691e26Da7FFA64cB1a6C47832fDAEE0Acce",
             creatorAddress = "0xCBD21691e26Da7FFA64cB1a6C47832fDAEE0Acce",
             contractAddress = "0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC",
-            offer = new List<Offer>() { selectedOffer },
-            consideration = new List<Consideration>() { selectedConsideration },
+            offer = new List<SwapItem>() { selectedOffer },
+            consideration = new List<SwapItem>() { selectedConsideration },
         };
 
         var result = await sdk.CreateSwap(swap);
@@ -149,8 +149,8 @@ public class EventManagerSample : MonoBehaviour
     public void ToJsonTest()
     {
         var fees = new List<Fees>();
-        var offers = new List<Offer>();
-        var considerations = new List<Consideration>();
+        var offers = new List<SwapItem>();
+        var considerations = new List<SwapItem>();
 
         var selectedFee = new Fees()
         {
@@ -158,7 +158,7 @@ public class EventManagerSample : MonoBehaviour
             basisPoints = 500,
         };
 
-        var selectedOffer = new Offer()
+        var selectedOffer = new SwapItem()
         {
             itemtype = "ERC721",
             token = "0x74cb5611e89078b2e5cb638a873cf7bddc58659",
@@ -166,14 +166,14 @@ public class EventManagerSample : MonoBehaviour
             amount = "1",
         };
 
-        var selectedConsideration1 = new Consideration()
+        var selectedConsideration1 = new SwapItem()
         {
             itemtype = "ERC721",
             token = "0x74cb5611e89078b2e5cb638a873cf7bddc588659",
             identifier = "34",
             amount = "1",
         };
-        var selectedConsideration2 = new Consideration()
+        var selectedConsideration2 = new SwapItem()
         {
             itemtype = "NATIVE",
             token = "0x123456789abcdef123456789abcdef123456789a",
