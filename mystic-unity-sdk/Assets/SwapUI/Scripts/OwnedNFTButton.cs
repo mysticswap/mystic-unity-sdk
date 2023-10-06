@@ -34,7 +34,7 @@ public class OwnedNFTButton : MonoBehaviour
             $"Identifier: {Identifier}\n" +
             $"Balance: {Balance}");
 
-        var offer = new SwapItem()
+        var swapItem = new SwapItem()
         {
             itemtype = ItemType,
             token = Token,
@@ -42,49 +42,56 @@ public class OwnedNFTButton : MonoBehaviour
             amount = Balance.ToString(),
         };
 
-        if (isSelected) AddNFT(offer);
-        else RemoveExistingNFT(offer);
+        if (isSelected) AddSwapItem(swapItem);
+        else RemoveSwapItem(swapItem);
 
     }
 
-    private void AddNFT(SwapItem _offer)
+    private void AddSwapItem(SwapItem _swapItem)
     {
         var sdk = MysticSDKManager.Instance.sdk;
-        var connectedAddress = sdk.GetAddress();
 
-        // Only add item if item didn't exist on the list.
-        var alreadyExist = sdk.session.SelectedOffers.Contains(_offer);
-        if (!alreadyExist)
+        var isOfferItem = IsOfferItem(OwnerAddress);
+        if (isOfferItem)
         {
-            if (OwnerAddress == connectedAddress)
-            {
-                sdk.session.SelectedOffers.Add(_offer);
-            }
-            else
-            {
-                sdk.session.SelectedConsiderations.Add(
-                    new SwapItem()
-                    {
-                        itemtype = ItemType,
-                        token = Token,
-                        identifier = Identifier.ToString(),
-                        amount = Balance.ToString(),
-                    });
-            }
+            var alreadyExist = sdk.session.SelectedOffers.Contains(_swapItem);
+            if (!alreadyExist)
+                sdk.session.SelectedOffers.Add(_swapItem);
+        }
+        else
+        {
+            var alreadyExist = sdk.session.SelectedConsiderations.Contains(_swapItem);
+            if (!alreadyExist)
+                sdk.session.SelectedConsiderations.Add(_swapItem);
         }
     }
 
-    private void RemoveExistingNFT(SwapItem _offer)
+    private void RemoveSwapItem(SwapItem _swapItem)
     {
         var sdk = MysticSDKManager.Instance.sdk;
-        var connectedAddress = sdk.GetAddress();
 
-        // Only add item if item didn't exist on the list.
-        var alreadyExist = sdk.session.SelectedOffers.Contains(_offer);
+        var isOfferItem = IsOfferItem(OwnerAddress);
+        if (isOfferItem)
+        {
+            var alreadyExist = sdk.session.SelectedOffers.Contains(_swapItem);
+            if (alreadyExist)
+                sdk.session.SelectedOffers.Remove(_swapItem);
+        }
+        else
+        {
+            var alreadyExist = sdk.session.SelectedConsiderations.Contains(_swapItem);
+            if (alreadyExist)
+                sdk.session.SelectedConsiderations.Remove(_swapItem);
+        }
+    }
 
-        if (alreadyExist) sdk.session.SelectedOffers.Remove(_offer);
-
+    private bool IsOfferItem(string _ownerAddress)
+    {
+        var connectedAddress = MysticSDKManager.Instance.sdk.GetAddress();
+        return connectedAddress == _ownerAddress;
     }
 
 
 }
+
+
