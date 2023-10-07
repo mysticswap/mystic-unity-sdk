@@ -43,20 +43,22 @@ namespace Core
             return result;
         }
 
-        public async Task<string> GetNfts()
+        public async Task<string> GetNfts(string _address = null)
         {
+            _address = _address ?? session.WalletAddress;
             var result = await AsyncGetRequest(
                 EndpointRequest(BaseUrl,
                     "get-nfts",
-                    "address=" + session.WalletAddress,
+                    "address=" + _address,
                     "chainId=" + session.ChainId),
                 session.AuthenticationToken);
             return result;
         }
 
-        public async Task<List<NFT>> GetOwnedNFTs()
+        public async Task<List<NFT>> GetOwnedNFTs(string _address = null)
         {
-            var data = await GetNfts();
+            _address = _address ?? session.WalletAddress;
+            var data = await GetNfts(_address);
             OwnedNFT ownedNft = JsonUtility.FromJson<OwnedNFT>(data);
             return ownedNft.ownedNfts;
         }
