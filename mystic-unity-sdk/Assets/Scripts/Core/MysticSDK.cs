@@ -13,6 +13,7 @@ namespace Core
         private const string BaseUrl = "https://mystic-swap.herokuapp.com/marketplace-api/";
         private const string OrderNotCancelled = "order not cancelled";
         private const string OrderNotAccepted = "order not accepted";
+        public readonly string ContractAddress = "0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC";
 
 
         public MysticSDKSession session;
