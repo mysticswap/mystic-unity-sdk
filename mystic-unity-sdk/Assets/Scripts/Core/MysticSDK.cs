@@ -17,7 +17,7 @@ namespace Core
 
         public MysticSDKSession session;
 
-        public MysticSDK(string walletAddress, string authenticationToken, string chainId)
+        public MysticSDK(string walletAddress, string authenticationToken, int chainId)
         {
             session = new MysticSDKSession(walletAddress, authenticationToken, chainId);
         }

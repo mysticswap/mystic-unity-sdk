@@ -10,7 +10,7 @@ namespace Core
 
         [SerializeField] private string walletAddress;
         [SerializeField] private string authenticationToken;
-        [SerializeField] private string chainId;
+        [SerializeField] private int chainId;
 
         private void Awake()
         {
