@@ -138,5 +138,25 @@ public class GameManager : MonoBehaviour
         RequestAddress.text = ShortenAddress(RequestAddress.text);
     }
     #endregion
+
+    #region Create Swap
+    public async void CreateSwap()
+    {
+        var swap = new CreateSwap()
+        {
+            chainId = sdk.session.ChainId,
+            offerer = sdk.session.OfferAddress,
+            creatorAddress = sdk.session.OfferAddress,
+            contractAddress = sdk.ContractAddress,
+            offer = sdk.session.SelectedOffers,
+            consideration = sdk.session.SelectedConsiderations,
+            takerAddress = sdk.session.RequestAddress,
+        };
+
+        var result = await sdk.CreateSwap(swap);
+        Debug.Log($"Created Swap: {result}");
+
+    }
+    #endregion
 }
 
