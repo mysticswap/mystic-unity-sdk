@@ -38,25 +38,8 @@ public class GameManager : MonoBehaviour
         GetNFTsRequestButton.onClick.AddListener(delegate { GetLoadNFTsCollection(sdk.session.RequestAddress, RequestCollectionsPanel); });
     }
 
-    public void SetRequestAddress()
-    {
-        sdk.session.RequestAddress = RequesterAddress.text;
-    }
 
-    public async void GetLoadNFTsCollection(string _ownerAddress, GameObject _parentPanel)
-    {
-        Debug.Log("GetLoadNFTsCollection");
-        Debug.Log($"address: {_ownerAddress}");
-        List<NFT> list = new List<NFT>();
-
-        list = await sdk.GetOwnedNFTs(_ownerAddress);
-        Debug.Log($"list count: {list.Count}");
-
-        LoadNFTsCollection(_ownerAddress, list, _parentPanel);
-
-    }
-
-
+    #region Test GetNFTsCollection
     public async void GetNFTsCollection()
     {
         var ownerAddress = sdk.GetAddress();
@@ -78,6 +61,21 @@ public class GameManager : MonoBehaviour
 
         LoadNFTsCollection(ownerAddress, listNFTs, OfferCollectionsPanel);
     }
+    #endregion
+
+    #region Get and Load NFTsCollection
+    public async void GetLoadNFTsCollection(string _ownerAddress, GameObject _parentPanel)
+    {
+        Debug.Log("GetLoadNFTsCollection");
+        Debug.Log($"address: {_ownerAddress}");
+        List<NFT> list = new List<NFT>();
+
+        list = await sdk.GetOwnedNFTs(_ownerAddress);
+        Debug.Log($"list count: {list.Count}");
+
+        LoadNFTsCollection(_ownerAddress, list, _parentPanel);
+
+    }
 
     private async void LoadNFTsCollection(string _ownerAddress, List<NFT> _list, GameObject parentPanel)
     {
@@ -98,7 +96,9 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("LoadNFTsCollection excecuted");
     }
+    #endregion
 
+    #region Retrieve Offer and Request Test
     public void RetrieveOfffers()
     {
         var selectedOffers = sdk.session.SelectedOffers;
@@ -109,6 +109,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void RetrieveRequest()
+    {
+        var selectedConsiderations = sdk.session.SelectedConsiderations;
+        Debug.Log($"Selected Offers: {selectedConsiderations.Count}");
+        foreach (var item in selectedConsiderations)
+        {
+            Debug.Log($"{item}");
+        }
+    }
+    #endregion
+
+    #region Address Handling
+    public void SetRequestAddress()
+    {
+        sdk.session.RequestAddress = RequesterAddress.text;
+    }
 
     private string ShortenAddress(string address)
     {
@@ -121,5 +137,26 @@ public class GameManager : MonoBehaviour
     {
         RequestAddress.text = ShortenAddress(RequestAddress.text);
     }
+    #endregion
+
+    #region Create Swap
+    public async void CreateSwap()
+    {
+        var swap = new CreateSwap()
+        {
+            chainId = sdk.session.ChainId,
+            offerer = sdk.session.OfferAddress,
+            creatorAddress = sdk.session.OfferAddress,
+            contractAddress = sdk.ContractAddress,
+            offer = sdk.session.SelectedOffers,
+            consideration = sdk.session.SelectedConsiderations,
+            takerAddress = sdk.session.RequestAddress,
+        };
+
+        var result = await sdk.CreateSwap(swap);
+        Debug.Log($"Created Swap: {result}");
+
+    }
+    #endregion
 }
 
