@@ -189,7 +189,7 @@ namespace Core
             return result;
         }
 
-        public async Task<string> RetrieveAllSwaps(int page, int limit)
+        public async Task<string> RetrieveAllSwaps(int page = 1, int limit = 20)
         {
             var result = await AsyncGetRequest(
                 EndpointRequest(
@@ -197,6 +197,23 @@ namespace Core
                     "all-swaps",
                     $"page={page}",
                     $"limit={limit}",
+                    $"chainId={session.ChainId}"),
+                session.AuthenticationToken);
+            return result;
+        }
+
+        public async Task<string> RetrieveMySwaps(int page = 1, int limit = 20, string creatorAddress = null, string takerAddress = null)
+        {
+            creatorAddress = creatorAddress ?? session.WalletAddress;
+            takerAddress = takerAddress ?? session.WalletAddress;
+            var result = await AsyncGetRequest(
+                EndpointRequest(
+                    BaseUrl,
+                    "all-swaps",
+                    $"page={page}",
+                    $"limit={limit}",
+                    $"creatorAddress={creatorAddress}",
+                    $"takerAddress={takerAddress}",
                     $"chainId={session.ChainId}"),
                 session.AuthenticationToken);
             return result;
