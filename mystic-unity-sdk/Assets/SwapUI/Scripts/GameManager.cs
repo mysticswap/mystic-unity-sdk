@@ -158,5 +158,20 @@ public class GameManager : MonoBehaviour
 
     }
     #endregion
+
+    #region My Swaps
+    public async void MySwaps()
+    {
+        var result = await sdk.RetrieveMySwaps();
+        Debug.Log($"My Swaps: {result}");
+        AllSwapsData allSwapsData = JsonUtility.FromJson<AllSwapsData>(result);
+        foreach (var swap in allSwapsData.data)
+        {
+            Debug.Log($"_id: {swap._id}");
+        }
+        Debug.Log($"Total: {allSwapsData.data.Count}");
+        Debug.Log($"Total Items: {allSwapsData.metadata.totalItems}");
+    }
+    #endregion
 }
 
