@@ -232,4 +232,43 @@ namespace Core
         public List<MetadataArray> metadataArray;
     }
 
+    [System.Serializable]
+    public struct SwapMetadata
+    {
+        public List<NFT> tokensMetadata;
+        public List<NFT> nftsMetadata;
+    }
+
+    [System.Serializable]
+    public struct SwapPageMetadata
+    {
+        public int page;
+        public int limit;
+        public int totalItems;
+        public int totalPages;
+    }
+
+    [System.Serializable]
+    public struct SwapPageData
+    {
+        public string _id;
+        public Value orderComponents;
+        public int chainId;
+        public string signature;
+        public string clientId;
+        public string status;
+        public string creatorAddress;
+        public string takerAddress;
+        public SwapMetadata metadata;
+    }
+
+    [System.Serializable]
+    public class AllSwapsData
+    {
+        public List<SwapPageData> data;
+        public SwapPageMetadata metadata;
+    }
+
+
+
 }

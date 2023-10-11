@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     private List<NFT> listNFTs;
 
+    [SerializeField] private SwapsPanel swapsPanel;
+
     private void Awake()
     {
         sdk = MysticSDKManager.Instance.sdk;
@@ -155,6 +157,33 @@ public class GameManager : MonoBehaviour
 
         var result = await sdk.CreateSwap(swap);
         Debug.Log($"Created Swap: {result}");
+
+    }
+    #endregion
+
+    #region My Swaps
+    public async void MySwaps()
+    {
+        var result = await sdk.RetrieveMySwaps();
+        Debug.Log($"My Swaps: {result}");
+        AllSwapsData allSwapsData = JsonUtility.FromJson<AllSwapsData>(result);
+        foreach (var swap in allSwapsData.data)
+        {
+            Debug.Log($"_id: {swap._id}");
+        }
+        Debug.Log($"Total: {allSwapsData.data.Count}");
+        Debug.Log($"Total Items: {allSwapsData.metadata.totalItems}");
+
+        var creatorAddress = allSwapsData.data[0].creatorAddress;
+        var takerAddress = allSwapsData.data[0].takerAddress;
+        var swapId = allSwapsData.data[0]._id;
+        var countOffer = allSwapsData.data[0].orderComponents.offer.Count;
+        var countConsideration = allSwapsData.data[0].orderComponents.consideration.Count;
+        var nftsOffer = allSwapsData.data[0].metadata.nftsMetadata.GetRange(0, countOffer);
+        var nftsConsideration = allSwapsData.data[0].metadata.nftsMetadata.GetRange(countOffer, countConsideration);
+        var swapStatus = allSwapsData.data[0].status;
+
+        swapsPanel.Init(creatorAddress, takerAddress, swapId, nftsOffer, nftsConsideration, swapStatus);
 
     }
     #endregion
