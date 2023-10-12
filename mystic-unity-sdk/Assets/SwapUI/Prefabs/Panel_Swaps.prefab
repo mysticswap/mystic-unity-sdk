@@ -120,8 +120,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2899263761890997521}
   m_HandleRect: {fileID: 1202203878642646085}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.622591
+  m_Value: 0.9999996
+  m_Size: 0.7407333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -460,6 +460,7 @@ MonoBehaviour:
   nFTsItem: {fileID: 4607889149193858232, guid: f3b202294b202064b828ceef8eba82dc, type: 3}
   offerPanel: {fileID: 1592444356330204926}
   considerationPanel: {fileID: 7532430021438277403}
+  swapInteractionButton: {fileID: 7945815516982827964}
 --- !u!1 &4197082756670638788
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,8 +573,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 315.5, y: 35.61133}
-  m_SizeDelta: {x: 631, y: 186.7773}
+  m_AnchoredPosition: {x: 314.5, y: 30.806}
+  m_SizeDelta: {x: 631, y: 222.39}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5048086673570189441
 GameObject:
@@ -721,10 +722,10 @@ RectTransform:
   - {fileID: 79738224168130348}
   m_Father: {fileID: 1344805788040289924}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 632, y: 186}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8270321731135883815
 CanvasRenderer:
@@ -914,7 +915,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8034205514868529589}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8162690920006035421}
+        m_TargetAssemblyTypeName: SwapsPanel, Assembly-CSharp
+        m_MethodName: OnClickSwapInteraction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6723426773987971670
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,7 +1364,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 6477162171176012572}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.62
+  m_Size: 0.7413
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1390,8 +1403,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -316, y: 35.639}
-  m_SizeDelta: {x: 631, y: 186.7773}
+  m_AnchoredPosition: {x: -316, y: 30.723}
+  m_SizeDelta: {x: 631, y: 222.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8975083366154725724
 CanvasRenderer:

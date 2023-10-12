@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     private List<NFT> listNFTs;
 
     [SerializeField] private SwapsPanel swapsPanel;
+    [SerializeField] private GameObject swapsPanelParent;
 
     private void Awake()
     {
@@ -174,16 +175,33 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Total: {allSwapsData.data.Count}");
         Debug.Log($"Total Items: {allSwapsData.metadata.totalItems}");
 
-        var creatorAddress = allSwapsData.data[0].creatorAddress;
-        var takerAddress = allSwapsData.data[0].takerAddress;
-        var swapId = allSwapsData.data[0]._id;
-        var countOffer = allSwapsData.data[0].orderComponents.offer.Count;
-        var countConsideration = allSwapsData.data[0].orderComponents.consideration.Count;
-        var nftsOffer = allSwapsData.data[0].metadata.nftsMetadata.GetRange(0, countOffer);
-        var nftsConsideration = allSwapsData.data[0].metadata.nftsMetadata.GetRange(countOffer, countConsideration);
-        var swapStatus = allSwapsData.data[0].status;
+        //var creatorAddress = allSwapsData.data[0].creatorAddress;
+        //var takerAddress = allSwapsData.data[0].takerAddress;
+        //var swapId = allSwapsData.data[0]._id;
+        //var countOffer = allSwapsData.data[0].orderComponents.offer.Count;
+        //var countConsideration = allSwapsData.data[0].orderComponents.consideration.Count;
+        //var nftsOffer = allSwapsData.data[0].metadata.nftsMetadata.GetRange(0, countOffer);
+        //var nftsConsideration = allSwapsData.data[0].metadata.nftsMetadata.GetRange(countOffer, countConsideration);
+        //var swapStatus = allSwapsData.data[0].status;
 
-        swapsPanel.Init(creatorAddress, takerAddress, swapId, nftsOffer, nftsConsideration, swapStatus);
+        //swapsPanel.Init(creatorAddress, takerAddress, swapId, nftsOffer, nftsConsideration, swapStatus);
+
+        foreach (var swap in allSwapsData.data)
+        {
+            var creatorAddress = swap.creatorAddress;
+            var takerAddress = swap.takerAddress;
+            var swapId = swap._id;
+            var countOffer = swap.orderComponents.offer.Count;
+            var countConsideration = swap.orderComponents.consideration.Count;
+            var nftsOffer = swap.metadata.nftsMetadata.GetRange(0, countOffer);
+            var nftsConsideration = swap.metadata.nftsMetadata.GetRange(countOffer, countConsideration);
+            var swapStatus = swap.status;
+
+            var newSwapPanel = Instantiate(swapsPanel, transform.position, transform.rotation);
+            newSwapPanel.Init(creatorAddress, takerAddress, swapId, nftsOffer, nftsConsideration, swapStatus);
+            newSwapPanel.transform.SetParent(swapsPanelParent.transform);
+        }
+
 
     }
     #endregion
