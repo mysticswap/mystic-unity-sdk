@@ -1,6 +1,7 @@
 using Core;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -191,10 +192,12 @@ public class GameManager : MonoBehaviour
             var creatorAddress = swap.creatorAddress;
             var takerAddress = swap.takerAddress;
             var swapId = swap._id;
-            var countOffer = swap.orderComponents.offer.Count;
-            var countConsideration = swap.orderComponents.consideration.Count;
-            var nftsOffer = swap.metadata.nftsMetadata.GetRange(0, countOffer);
-            var nftsConsideration = swap.metadata.nftsMetadata.GetRange(countOffer, countConsideration);
+            //var countOffer = swap.orderComponents.offer.Count;
+            //var countConsideration = swap.orderComponents.consideration.Count;
+            //var nftsOffer = swap.metadata.nftsMetadata.GetRange(0, countOffer);
+            //var nftsConsideration = swap.metadata.nftsMetadata.GetRange(countOffer, countConsideration);
+            var nftsOffer = GetNFTsMetadata(swap.orderComponents.offer, swap.metadata.nftsMetadata);
+            var nftsConsideration = GetNFTsMetadata(swap.orderComponents.consideration, swap.metadata.nftsMetadata);
             var swapStatus = swap.status;
 
             var newSwapPanel = Instantiate(swapsPanel, transform.position, transform.rotation);
@@ -203,6 +206,58 @@ public class GameManager : MonoBehaviour
         }
 
 
+    }
+
+    private List<NFT> GetNFTsMetadata(List<ValueComponents> listItem, List<NFT> listMetadata)
+    {
+        List<NFT> listNFT = new List<NFT>();
+
+        //List<NFT> listMetadataTemp = listMetadata;
+        foreach (var item in listItem)
+        {
+            if (item.token == "0x0000000000000000000000000000000000000000")
+            {
+                var tokenNFT = GenerateTokenNFT(item.startAmount);
+                listNFT.Add(tokenNFT);
+                Debug.Log("token detected, skip to the next one");
+                continue;
+            }
+            foreach (var metadata in listMetadata)
+            {
+                if (item.token == metadata.contract.address && item.identifierOrCriteria == metadata.tokenId.ToString())
+                {
+                    listNFT.Add(metadata);
+                    //listMetadataTemp.Remove(metadata);
+                }
+            }
+        }
+        return listNFT;
+    }
+
+    private NFT GenerateTokenNFT(string amount)
+    {
+        var amountEth = WeiToEth(amount);
+        var titleNFT = $"{amountEth} ETH";
+
+        NFTMetadata nftMetadata = new NFTMetadata()
+        {
+            image = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/768px-Ethereum-icon-purple.svg.png",
+        };
+        NFT tokenNFT = new NFT()
+        {
+            title = titleNFT,
+            rawMetadata = nftMetadata,
+        };
+
+        return tokenNFT;
+    }
+
+    private double WeiToEth(string wei, int decimals = 18)
+    {
+        if (!BigInteger.TryParse(wei, out BigInteger weiBigInt))
+            throw new ArgumentException("Invalid wei value.");
+        double eth = (double)weiBigInt / Math.Pow(10.0, decimals);
+        return eth;
     }
     #endregion
 }
