@@ -1,5 +1,6 @@
 ﻿using Core;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,12 +13,17 @@ public class SwapsPanel : MonoBehaviour
     public List<NFT> NFTsConsideration { get; private set; }
     public string SwapStatus { get; private set; }
     private const string statusValidated = "validated";
+    private const string statusCancelled = "cancelled";
+    private const string statusAccepted = "accepted";
     private const string textButtonAccept = "Accept";
     private const string textButtonCancel = "Cancel";
+    private const string textButtonAccepted = "Accepted";
+    private const string textButtonCancelled = "Cancelled";
     [SerializeField] private NFTsItem nFTsItem;
     [SerializeField] private GameObject offerPanel;
     [SerializeField] private GameObject considerationPanel;
     [SerializeField] private Button swapInteractionButton;
+    [SerializeField] private TMP_Text swapInteractionText;
     private bool isSwapAcceptable;
     private SwapData swapData;
 
@@ -33,8 +39,8 @@ public class SwapsPanel : MonoBehaviour
         GenerateNFTsItem(NFTsOffer, nFTsItem, offerPanel);
         GenerateNFTsItem(NFTsConsideration, nFTsItem, considerationPanel);
 
-        isSwapAcceptable = IsSwapAcceptable(SwapStatus, CreatorAddress);
-        settingUpButton(isSwapAcceptable);
+        SettingUpButton(SwapStatus, CreatorAddress);
+
         swapData = new SwapData()
         {
             swapId = SwapId,
@@ -53,26 +59,25 @@ public class SwapsPanel : MonoBehaviour
         }
     }
 
-    private bool IsSwapAcceptable(string status, string address)
+    private void SettingUpButton(string status, string address)
     {
         var connectedAddress = MysticSDKManager.Instance.sdk.GetAddress();
-
-        bool _isSwapAcceptable = (status == statusValidated && address != connectedAddress) ? true : false;
-        return _isSwapAcceptable;
-    }
-
-    private void settingUpButton(bool isAcceptButton)
-    {
-        string textButton;
-        if (isAcceptButton)
+        bool isButton = (status == statusValidated);
+        if (isButton)
         {
-            textButton = textButtonAccept;
+            var textButton = (address == connectedAddress) ? textButtonCancel : textButtonAccept;
+            swapInteractionButton.gameObject.SetActive(true);
+            swapInteractionText.gameObject.SetActive(false);
+            swapInteractionButton.GetComponentInChildren<Text>().text = textButton;
         }
         else
         {
-            textButton = textButtonCancel;
+            var textButton = (status == statusCancelled) ? textButtonCancelled : textButtonAccepted;
+            swapInteractionButton.gameObject.SetActive(false);
+            swapInteractionText.gameObject.SetActive(true);
+            swapInteractionText.text = textButton;
         }
-        swapInteractionButton.GetComponentInChildren<Text>().text = textButton;
+
     }
 
     public async void OnClickSwapInteraction()
@@ -88,12 +93,4 @@ public class SwapsPanel : MonoBehaviour
         }
     }
 
-
-
-    //public void OnClickAcceptOrCancel()
-    //{
-
-
-
-    //}
 }
