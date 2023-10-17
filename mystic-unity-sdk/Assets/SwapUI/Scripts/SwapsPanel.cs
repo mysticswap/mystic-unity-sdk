@@ -19,6 +19,8 @@ public class SwapsPanel : MonoBehaviour
     private const string textButtonCancel = "Cancel";
     private const string textButtonAccepted = "Accepted";
     private const string textButtonCancelled = "Cancelled";
+    [SerializeField] private TMP_Text addressOfferingText;
+    [SerializeField] private TMP_Text addressForText;
     [SerializeField] private NFTsItem nFTsItem;
     [SerializeField] private GameObject offerPanel;
     [SerializeField] private GameObject considerationPanel;
@@ -40,6 +42,7 @@ public class SwapsPanel : MonoBehaviour
         GenerateNFTsItem(NFTsConsideration, nFTsItem, considerationPanel);
 
         SettingUpButton(SwapStatus, CreatorAddress);
+        SettingUpTexts();
 
         swapData = new SwapData()
         {
@@ -78,6 +81,12 @@ public class SwapsPanel : MonoBehaviour
             swapInteractionText.text = textButton;
         }
 
+    }
+
+    private void SettingUpTexts()
+    {
+        addressOfferingText.text = $"{CreatorAddress[..6]}...{CreatorAddress[38..]}";
+        addressForText.text = (TakerAddress != string.Empty) ? $"{TakerAddress[..6]}...{TakerAddress[38..]}" : string.Empty;
     }
 
     public async void OnClickSwapInteraction()
