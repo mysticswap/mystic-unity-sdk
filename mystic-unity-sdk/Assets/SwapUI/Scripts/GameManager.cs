@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
         foreach (var item in _list)
         {
             var newOwnedNFTButton = Instantiate(ownedNFTButton, transform.position, transform.rotation);
-            newOwnedNFTButton.Init(item.title, item.tokenType, item.contract.address, item.tokenId, item.balance, _ownerAddress);
+            newOwnedNFTButton.Init(item.title, item.tokenType, item.contract.address, item.tokenId, item.balance, item.rawMetadata.image, _ownerAddress);
 
             newOwnedNFTButton.transform.SetParent(parentPanel.transform);
 
