@@ -132,6 +132,12 @@ namespace Core
         public int counter;
     }
 
+    [System.Serializable]
+    public struct BalanceData
+    {
+        public string ETH;
+        public string WETH;
+    }
 
     [System.Serializable]
     public struct TransactionData
