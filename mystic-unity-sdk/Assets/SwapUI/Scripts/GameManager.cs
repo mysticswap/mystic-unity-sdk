@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI OfferAddress;
     [SerializeField] private TextMeshProUGUI RequestAddress;
     [SerializeField] private TMP_InputField RequesterAddress;
+    [SerializeField] private TMP_InputField RequesterTokenInput;
+    [SerializeField] private TMP_InputField OfferTokenInput;
 
     [SerializeField] private Button GetNFTsOfferButton;
     [SerializeField] private Button GetNFTsRequestButton;
@@ -259,6 +261,60 @@ public class GameManager : MonoBehaviour
         double eth = (double)weiBigInt / Math.Pow(10.0, decimals);
         return eth;
     }
+
+    private string EthToWei(string eth, int decimals = 18)
+    {
+        if (!Double.TryParse(eth, out Double ethDouble))
+            throw new ArgumentException("Invalid eth value.");
+        BigInteger wei = (BigInteger)(ethDouble * Math.Pow(10.0, decimals));
+        return wei.ToString();
+    }
     #endregion
+
+    public void AddTokenConsiderations()
+    {
+        var inputWei = RequesterTokenInput.text;
+        var wei = EthToWei(inputWei);
+        AddTokenToList(wei, sdk.session.SelectedConsiderations);
+        Debug.Log("===========Consideration Items===========");
+        ShowSwapItems(sdk.session.SelectedConsiderations);
+
+    }
+
+    public void AddTokenOffer()
+    {
+        var inputWei = OfferTokenInput.text;
+        var wei = EthToWei(inputWei);
+        AddTokenToList(wei, sdk.session.SelectedOffers);
+        Debug.Log("===========Offer Items===========");
+        ShowSwapItems(sdk.session.SelectedOffers);
+    }
+
+    private void AddTokenToList(string amount, List<SwapItem> swapItems)
+    {
+        // create token type
+        var tokenItem = new SwapItem()
+        {
+            itemtype = "NATIVE",
+            token = "0x0000000000000000000000000000000000000000",
+            identifier = "0",
+            amount = amount,
+        };
+
+        // checking for existing token, if so overwrite.
+        int index = swapItems.FindIndex(s => s.itemtype == "NATIVE");
+        if (index != -1)
+            swapItems[index] = tokenItem;
+        else
+            swapItems.Add(tokenItem);
+    }
+
+    private void ShowSwapItems(List<SwapItem> swapItems)
+    {
+        foreach (var item in swapItems)
+        {
+            Debug.Log(item.ToString());
+        }
+    }
 }
 
