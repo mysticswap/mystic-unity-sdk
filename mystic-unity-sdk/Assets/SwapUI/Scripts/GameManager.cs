@@ -316,5 +316,14 @@ public class GameManager : MonoBehaviour
             Debug.Log(item.ToString());
         }
     }
+
+    public async void ShowBalance()
+    {
+        var balance = await sdk.GetBalance();
+        Debug.Log($"{balance}");
+        BalanceData _balanceData = JsonUtility.FromJson<BalanceData>(balance);
+        Debug.Log($"ETH:{_balanceData.ETH}");
+        Debug.Log($"WETH:{_balanceData.WETH}");
+    }
 }
 
