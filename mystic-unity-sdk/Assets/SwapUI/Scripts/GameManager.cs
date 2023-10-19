@@ -281,13 +281,36 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void AddTokenOffer()
+    public async void AddTokenOffer()
     {
         var inputWei = OfferTokenInput.text;
         var wei = EthToWei(inputWei);
-        AddTokenToList(wei, sdk.session.SelectedOffers);
-        Debug.Log("===========Offer Items===========");
-        ShowSwapItems(sdk.session.SelectedOffers);
+        if (await IsBalanceSufficient(wei))
+        {
+            AddTokenToList(wei, sdk.session.SelectedOffers);
+            Debug.Log("===========Offer Items===========");
+            ShowSwapItems(sdk.session.SelectedOffers);
+        }
+        else
+        {
+            Debug.Log("Offer error: Insufficient Weth balance");
+        }
+    }
+
+    private async Task<bool> IsBalanceSufficient(string inputBalance)
+    {
+
+        var balance = await sdk.GetBalance();
+        var _inputBalance = WeiToEth(inputBalance);
+        BalanceData _balanceData = JsonUtility.FromJson<BalanceData>(balance);
+        if (!Double.TryParse(_balanceData.WETH, out Double _wethBalance))
+            throw new ArgumentException("Invalid Weth balance value.");
+
+        Debug.Log($"wethBalance: {_wethBalance}\ninputBalance: {_inputBalance}");
+
+        bool output = (_wethBalance >= _inputBalance);
+        return output;
+
     }
 
     private void AddTokenToList(string amount, List<SwapItem> swapItems)
