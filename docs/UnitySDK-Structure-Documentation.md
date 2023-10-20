@@ -23,7 +23,7 @@
 ### Overview
 Here is what you need to prepare:
 1. Unity (any version should works)
-2. Mystic Unity SDK package (_link coming soon_)
+2. Mystic Unity SDK package (_link coming soon_) `[TODO: make package's downloadable link]`
 3. MetaMask Wallet Address
 
 ### Installation
