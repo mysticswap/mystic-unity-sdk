@@ -28,9 +28,12 @@ Here is what you need to prepare:
 
 ### Installation
 1. Create new Unity Project (Any template) or open your existing project.
-2. Once project is opened, export the downloaded Mystic Unity package by selecting the menu **Assets -> Import Package -> Custom Package...**
+2. Once project is opened, export the downloaded Mystic Unity package by selecting the menu **Assets -> Import Package -> Custom Package...**<br>
+![Select Custom Package](assets/images/Tutorial_Installation_1.png "Select Custom Package")
 3. New window will pop-up, locate the **MysticUnitySDK.unitypackage** file.
+![Select MysticUnitySD.unitypackage](assets/images/Tutorial_Installation_2.png "Select MysticUnitySD.unitypackage")
 4. Import **All** items
+![Import All Items](assets/images/Tutorial_Installation_3.png "Import All Items")
 5. Click **Import**
 > At this point, Unity compiler will show the error, an external package need to be installed. 
 
@@ -38,10 +41,13 @@ Here is what you need to prepare:
 
 To install the external package (newtonsoft.json), follow this step:
 
-1. Select the menu **Window -> Package Manager**
+1. Select the menu **Window -> Package Manager**<br>
+![Select Package Manager](assets/images/Tutorial_Installation_4.png "Select Package Manager")
 2. At the *Package Manager* window, click the **+** icon at the top-left corner
+![Add package from git URL...](assets/images/Tutorial_Installation_5.png "Add package from git URL...")
 3. Choose **Add package from git URL...**
 4. Add this inside the URL text box: `com.unity.nuget.newtonsoft-json`
+![Add com.unity.nuget.newtonsoft-json as URL](assets/images/Tutorial_Installation_6.png "Add com.unity.nuget.newtonsoft-json as URL")
 5. Click **Add**
 6. Please wait until the installation finished
 7. Check the Console window inside the Unity Editor, make sure there is no error occurred.
@@ -49,7 +55,9 @@ To install the external package (newtonsoft.json), follow this step:
 ### Setting up
 
 #### Setting up the Scene
-To get started, inside the scene add (drag and drop) prefabs named *MysticSDKManager* and *MetaMaskUnity* into the Hierarchy.
+To get started, inside the scene add (drag and drop) prefabs named *MysticSDKManager* and *MetaMaskUnity* into the **Hierarchy**.
+![Locate the prefabs](assets/images/Tutorial_SettingUp_1.png "Locate the prefabs")
+![Add to Hierarchy](assets/images/Tutorial_SettingUp_2.png "Add to Hierarchy")
 > These prefabs are located inside *Project folders* in **Assets -> Prefabs**
 
 These prefabs work as a Singleton that can be called anywhere inside your game.
@@ -57,8 +65,8 @@ These prefabs work as a Singleton that can be called anywhere inside your game.
 #### Setting up your Wallet's configuration
 * You could add your address inside the MysticSDKManager or you can connect it with Connect Wallet button with MetaMask Wallet Provider available on the package [here is the link to getting started]
 
-To setting up the configuration, go to Hierarchy, click **MysticSDKManager** prefab, Script box will found:
-
+    To setting up the configuration, go to Hierarchy, click **MysticSDKManager** prefab, in the Script box you will find:<br>
+![Setting up MysticSDKManager](assets/images/Tutorial_SettingUp_3.png "Setting up MysticSDKManager")
 * Wallet Address: fill your Wallet Address that will be use in-game as the main address (MetaMask)
 * Authentication Token: Add Bearer Authentication token (can be found in here) `[TODO: add link]`
 * Chain Id: Add available Chain Id `[TODO: add list of Chain Id along with its Contract Address]`
