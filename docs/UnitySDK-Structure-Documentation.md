@@ -32,7 +32,7 @@ Here is what you need to prepare:
 ![Select Custom Package](assets/images/Tutorial_Installation_1.png "Select Custom Package")
 3. New window will pop-up, locate the **MysticUnitySDK.unitypackage** file.
 ![Select MysticUnitySD.unitypackage](assets/images/Tutorial_Installation_2.png "Select MysticUnitySD.unitypackage")
-4. Import **All** items
+4. Import **All** items<br>
 ![Import All Items](assets/images/Tutorial_Installation_3.png "Import All Items")
 5. Click **Import**
 > At this point, Unity compiler will show the error, an external package need to be installed. 
@@ -56,7 +56,7 @@ To install the external package (newtonsoft.json), follow this step:
 
 #### Setting up the Scene
 To get started, inside the scene add (drag and drop) prefabs named *MysticSDKManager* and *MetaMaskUnity* into the **Hierarchy**.
-![Locate the prefabs](assets/images/Tutorial_SettingUp_1.png "Locate the prefabs")
+![Locate the prefabs](assets/images/Tutorial_SettingUp_1.png "Locate the prefabs")<br>
 ![Add to Hierarchy](assets/images/Tutorial_SettingUp_2.png "Add to Hierarchy")
 > These prefabs are located inside *Project folders* in **Assets -> Prefabs**
 
