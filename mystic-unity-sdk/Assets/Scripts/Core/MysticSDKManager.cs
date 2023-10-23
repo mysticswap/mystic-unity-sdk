@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Core
 {
@@ -11,6 +12,7 @@ namespace Core
         [SerializeField] private string walletAddress;
         [SerializeField] private string authenticationToken;
         [SerializeField] private int chainId;
+        public string ConnectedAddress { set { walletAddress = value; sdk.session.WalletAddress = value; } }
 
         private void Awake()
         {
@@ -35,6 +37,12 @@ namespace Core
             Debug.Log("Mystic SDK initialized");
             sdk = new MysticSDK(walletAddress, authenticationToken, chainId);
             Debug.Log($"{sdk.session.WalletAddress}\n" + $"{sdk.session.AuthenticationToken}\n" + $"{sdk.session.ChainId}" + $"");
+
+            if (walletAddress == string.Empty)
+            {
+                throw new ArgumentException("wallet address is empty, please connect the Wallet");
+            }
         }
+
     }
 }
