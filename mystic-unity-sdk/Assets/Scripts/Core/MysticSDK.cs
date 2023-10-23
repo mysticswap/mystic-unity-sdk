@@ -44,6 +44,29 @@ namespace Core
             return result;
         }
 
+        public async Task<string> GetBalanceEth()
+        {
+            var result = await AsyncGetRequest(
+                EndpointRequest(BaseUrl,
+                    "get-balance",
+                    "address=" + session.WalletAddress,
+                    "chainId=" + session.ChainId),
+                session.AuthenticationToken);
+            BalanceData balanceData = JsonUtility.FromJson<BalanceData>(result);
+            return balanceData.ETH;
+        }
+
+        public async Task<string> GetBalanceWeth()
+        {
+            var result = await AsyncGetRequest(
+                EndpointRequest(BaseUrl,
+                    "get-balance",
+                    "address=" + session.WalletAddress,
+                    "chainId=" + session.ChainId),
+                session.AuthenticationToken);
+            BalanceData balanceData = JsonUtility.FromJson<BalanceData>(result);
+            return balanceData.WETH;
+        }
         public async Task<string> GetNfts(string _address = null)
         {
             _address = _address ?? session.WalletAddress;
