@@ -35,7 +35,8 @@ Here is what you need to prepare:
 4. Import **All** items<br>
 ![Import All Items](assets/images/Tutorial_Installation_3.png "Import All Items")
 5. Click **Import**
-> At this point, Unity compiler will show the error, an external package need to be installed. 
+> At this point, Unity compiler will show the error, an external package named *newtonsoft.json* need to be installed. <br>
+> ***newtonsoft.json*** is an utility package for processing json text into another data type and vice versa.
 
 > *coming soon to install this external package on MysticSDK Manager Tools*
 
@@ -55,23 +56,30 @@ To install the external package (newtonsoft.json), follow this step:
 ### Setting up
 
 #### Setting up the Scene
-To get started, inside the scene add (drag and drop) prefabs named *MysticSDKManager* and *MetaMaskUnity* into the **Hierarchy**.
-![Locate the prefabs](assets/images/Tutorial_SettingUp_1.png "Locate the prefabs")<br>
-![Add to Hierarchy](assets/images/Tutorial_SettingUp_2.png "Add to Hierarchy")
+To get started, **MysticSDKManager** and **MetaMaskUnity** prefabs are needed to put inside the Hierarchy.<br>
+* **MysticSDKManager** prefabs will grant access of the SDK functionality in your code like API call from [Mystic](https://docs.withmystic.xyz/swaps-and-marketplace-api) and it contains the wallet configuration data like Wallet Address, Authentication Token and ChainId.
+* **MetaMaskUnity** prefabs is for wallet related functionality like sending transaction request to your MetaMask Mobile Apps from Unity.
+* These prefabs are work as a Singleton that can be called anywhere inside your game.
+
+To insert these prefabs, inside the scene add (drag and drop) prefabs named *MysticSDKManager* and *MetaMaskUnity* into the **Hierarchy**.
+
 > These prefabs are located inside *Project folders* in **Assets -> Prefabs**
 
-These prefabs work as a Singleton that can be called anywhere inside your game.
+![Locate the prefabs](assets/images/Tutorial_SettingUp_1.png "Locate the prefabs")<br>
+![Add to Hierarchy](assets/images/Tutorial_SettingUp_2.png "Add to Hierarchy")
+
 
 #### Setting up your Wallet's configuration
+In order of the Player to access the wallet in-game, Wallet's detail need to be adjusted. Here is how to setting up the Player's Wallet Address, and chainId. Including the AuthenticationToken for the API Call requirement.
 * You could add your address inside the MysticSDKManager or you can connect it with Connect Wallet button with MetaMask Wallet Provider available on the package [here is the link to getting started]
 
-    To setting up the configuration, go to Hierarchy, click **MysticSDKManager** prefab, in the Script box you will find:<br>
+To setting up the configuration, go to Hierarchy, click **MysticSDKManager** prefab, in the Script box you will find:<br>
 ![Setting up MysticSDKManager](assets/images/Tutorial_SettingUp_3.png "Setting up MysticSDKManager")
 * Wallet Address: fill your Wallet Address that will be use in-game as the main address (MetaMask)
 * Authentication Token: Add Bearer Authentication token (can be found in here) `[TODO: add link]`
 * Chain Id: Add available Chain Id `[TODO: add list of Chain Id along with its Contract Address]`
 
-### Hello World
+### Get Your Balance
 Let's do the first call to get the balance from your address. (sdk.getBalance), here you will get ETH and WETH in json format, or sdk.GetBalanceETH to get the ETH balance and sdk.GetBalanceWETH to get the WETH balance and display it to your game [here is the sample]
 
 To demonstrate this, let's make a scene with button interaction to do the API call.
