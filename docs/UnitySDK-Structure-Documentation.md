@@ -72,7 +72,61 @@ These prefabs work as a Singleton that can be called anywhere inside your game.
 * Chain Id: Add available Chain Id `[TODO: add list of Chain Id along with its Contract Address]`
 
 ### Hello World
-* Let's do the first call to get the balance from your address. (sdk.getBalance), here you will get ETH and WETH in json format, or sdk.GetBalanceETH to get the ETH balance and sdk.GetBalanceWETH to get the WETH balance and display it to your game [here is the sample]
+Let's do the first call to get the balance from your address. (sdk.getBalance), here you will get ETH and WETH in json format, or sdk.GetBalanceETH to get the ETH balance and sdk.GetBalanceWETH to get the WETH balance and display it to your game [here is the sample]
+
+To demonstrate this, let's make a scene with button interaction to do the API call.
+1. Make sure to setting up the SDK, for both Scene and MysticSDKManager. [*Setting up the Mystic SDK*](https://github.com/mysticswap/mystic-unity-sdk/blob/temp/docs/docs/UnitySDK-Structure-Documentation.md#setting-up).
+2. Create an **Empty Game Object**, let's name it as **ScriptManager**. 
+3. Put **ScriptManager.cs** script inside the GameManager.
+4. Create a Canvas with 3 buttons and 1 Text Mesh Pro:<br>
+    a. Button_ShowBalance: json string of balance (both ETH and WETH).<br>
+    b. Button_ShowBalanceEth: balance of ETH.<br>
+    c. Button_ShowBalanceWeth: balance of WETH.<br>
+    d. Text_DisplayBalance: to display the output of each buttons.
+5. Go to the **ScriptManager.cs** and let's do some codes:<br>
+    a. Define the SDK Variable
+    ```cs
+    private MysticSDK sdk;
+    ```
+
+    b. Define the GameObject Variable
+    ```cs
+    [SerializeField] private TextMeshProUGUI Text_DisplayBalance;
+    ```
+
+    c. Instantiate the SDK on `Awake()`
+    ```cs
+    private void Awake()
+    {
+        sdk = MysticSDKManager.Instance.sdk;
+    }
+    ```
+
+    d. Create buttons' method to show the balance
+    ```cs
+    public async void ShowBalance()
+    {
+        var result = await sdk.GetBalance();
+        Text_DisplayBalance.text = result;
+    }
+
+    public async void ShowBalanceEth()
+    {
+        var result = await sdk.GetBalanceEth();
+        Text_DisplayBalance.text = result;
+    }
+
+    public async void ShowBalanceWeth()
+    {
+        var result = await sdk.GetBalanceWeth();
+        Text_DisplayBalance.text = result;
+    }
+    ```
+6. Apply GameObject into the **ScriptManager**.
+7. Apply the `ShowBalance()`, `ShowBalanceEth()` and `ShowBalanceWeth()` methods into each of the buttons.
+7. Play the game.
+8. Click the button, then you will see your balance on Text display.
+> CONGRATULATIONS!!! You just interacted with Web3 In-game!
 
 ### Build your first NFT swapping experience
 * In this tutorial you will able to:
