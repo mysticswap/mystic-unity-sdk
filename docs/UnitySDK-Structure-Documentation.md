@@ -76,9 +76,15 @@ Let's do the first call to get the balance from your address. (sdk.getBalance), 
 
 To demonstrate this, let's make a scene with button interaction to do the API call.
 1. Make sure to setting up the SDK, for both Scene and MysticSDKManager. [*Setting up the Mystic SDK*](https://github.com/mysticswap/mystic-unity-sdk/blob/temp/docs/docs/UnitySDK-Structure-Documentation.md#setting-up).
-2. Create an **Empty Game Object**, let's name it as **ScriptManager**. 
-3. Put **ScriptManager.cs** script inside the GameManager.
+2. Create an **Empty GameObject**, let's name it as **ScriptManager**.<br>
+![Create Empty GameObject](assets/images/Tutorial_HelloWorld_1.png "Create Empty GameObject")<br>
+![Name it as ScriptManager](assets/images/Tutorial_HelloWorld_2.png "Name it as ScriptManager")
+3. Put **ScriptManager.cs** script inside the GameManager.<br>
+![Create a new script](assets/images/Tutorial_HelloWorld_3.png "Create a new script")
+![Click Create and Add](assets/images/Tutorial_HelloWorld_4.png "Click Create and Add")
 4. Create a Canvas with 3 buttons and 1 Text Mesh Pro:<br>
+![Create Canvas](assets/images/Tutorial_HelloWorld_5.png "Create Canvas")<br>
+![Add Buttons and Text inside Canvas](assets/images/Tutorial_HelloWorld_6.png "Add Buttons and Text inside Canvas")
     a. Button_ShowBalance: json string of balance (both ETH and WETH).<br>
     b. Button_ShowBalanceEth: balance of ETH.<br>
     c. Button_ShowBalanceWeth: balance of WETH.<br>
@@ -122,10 +128,21 @@ To demonstrate this, let's make a scene with button interaction to do the API ca
         Text_DisplayBalance.text = result;
     }
     ```
-6. Apply GameObject into the **ScriptManager**.
-7. Apply the `ShowBalance()`, `ShowBalanceEth()` and `ShowBalanceWeth()` methods into each of the buttons.
-7. Play the game.
-8. Click the button, then you will see your balance on Text display.
+6. Apply GameObject into the **ScriptManager**.<br>
+![Add Text_DisplayBalance into ScriptManager](assets/images/Tutorial_HelloWorld_7.png "Add Text_DisplayBalance into ScriptManager")
+7. Apply the `ShowBalance()`, `ShowBalanceEth()` and `ShowBalanceWeth()` methods into each of the buttons.<br>
+![Add OnClick() Interaction](assets/images/Tutorial_HelloWorld_8.png "Add OnClick() Interaction")<br>
+![Insert ScriptManager inside OnClick()](assets/images/Tutorial_HelloWorld_9.png "Insert ScriptManager inside OnClick()")<br>
+![Add Function of ShowBalance()](assets/images/Tutorial_HelloWorld_10.png "Add Function -> ScriptManager -> ShowBalance()")<br>
+![Function ShowBalance added](assets/images/Tutorial_HelloWorld_11.png "ShowBalance() function will be shown")<br>
+![Add ShowBalanceEth()](assets/images/Tutorial_HelloWorld_12.png "Add ShowBalanceEth() on Button_ShowBalanceEth")<br>
+![Add ShowBalanceWeth()](assets/images/Tutorial_HelloWorld_13.png "Add ShowBalanceWeth() on Button_ShowBalanceWeth")<br>
+8. Play the game.
+9. Click the button, then you will see your balance on Text display.<br>
+
+![Show Balance Button](assets/images/Tutorial_HelloWorld_14.png "Show All Balance")<br>
+![Show Balance ETH Button](assets/images/Tutorial_HelloWorld_15.png "Show ETH Balance")<br>
+![Show Balance WETH Button](assets/images/Tutorial_HelloWorld_16.png "Show WETH Balance")<br>
 > CONGRATULATIONS!!! You just interacted with Web3 In-game!
 
 ### Build your first NFT swapping experience
