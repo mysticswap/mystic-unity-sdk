@@ -5,14 +5,16 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class GameManager : MonoBehaviour
 {
-
     private MysticSDK sdk;
 
     public GameObject OfferCollectionsPanel;
     public GameObject RequestCollectionsPanel;
+    public GameObject SwapInfoPanel;
+    public GameObject player1Panel;
     [SerializeField] private TextMeshProUGUI OfferAddress;
     [SerializeField] private TextMeshProUGUI RequestAddress;
     [SerializeField] private TMP_InputField RequesterAddress;
@@ -39,7 +41,6 @@ public class GameManager : MonoBehaviour
         GetNFTsOfferButton.onClick.AddListener(delegate { GetLoadNFTsCollection(sdk.session.OfferAddress, OfferCollectionsPanel); });
         GetNFTsRequestButton.onClick.AddListener(delegate { GetLoadNFTsCollection(sdk.session.RequestAddress, RequestCollectionsPanel); });
     }
-
 
     #region Test GetNFTsCollection
     public async void GetNFTsCollection()
@@ -76,12 +77,10 @@ public class GameManager : MonoBehaviour
         Debug.Log($"list count: {list.Count}");
 
         LoadNFTsCollection(_ownerAddress, list, _parentPanel);
-
     }
 
     private async void LoadNFTsCollection(string _ownerAddress, List<NFT> _list, GameObject parentPanel)
     {
-
         while (_list == null)
         {
             await Task.Yield();
@@ -93,10 +92,20 @@ public class GameManager : MonoBehaviour
             newOwnedNFTButton.Init(item.title, item.tokenType, item.contract.address, item.tokenId, item.balance, _ownerAddress);
 
             newOwnedNFTButton.transform.SetParent(parentPanel.transform);
-
         }
 
         Debug.Log("LoadNFTsCollection excecuted");
+    }
+
+    public void LoadSelectedNFTs(string _ownerAddress, OwnedNFTButton _ownedNFTButton)
+    {
+        SwapInfoPanel.SetActive(true);
+
+        var newOwnedButton = Instantiate(_ownedNFTButton, transform.position, transform.rotation);
+        newOwnedButton.transform.localScale = _ownedNFTButton.transform.localScale / 5;
+        newOwnedButton.transform.SetParent(player1Panel.transform);
+
+        Debug.Log("LoadSelectedNFTs excecuted");
     }
     #endregion
 
