@@ -163,6 +163,31 @@ To demonstrate this, let's make a scene with button interaction to do the API ca
     * Make swaps work on different chains
     * Live Swaps (coming soon)
 
+#### Using Mystic SDK Swap Experience Sample
+You can find a scene sample for experiencing NFT swapping.
+* Go to the Project window, **Assets → Scenes → SwapInGameSample**
+* On this scene there are some panels to interact with the ***items (NFTs collection or Token)***:
+  1. SDKPanel_Tabs: contains buttons to switch between the panels
+     * CreateSwap Button: to activate the SDKPanel_CreateSwap
+     * MySwap Button: to activate the SDKPanel_MySwaps
+  2. SDKPanel_CreateSwap: contains offer and request panel to create swap between items.
+     * Offer Panel: main player side to select their items to be trade.
+     * Request Panel: other player side inventory (swap target) which main player select the items to request them.<br>
+     *Notes*: there two kind of swaps which are public and private, as mentioned [here](https://docs.withmystic.xyz/swaps-and-marketplace-api/create-swap-offer),
+     you can make a *private* swap by adding the address on Request side,
+     otherwise leave the Request's address blank to make it *public*.
+  3. SDKPanel_BalanceAndConnect: basic Wallet interactions to show balance in a Console window (`Debug.Log`) and connect your Wallet with MetaMask.
+     * Show Balance Button: show your ETH and WETH balance in the Console window.
+     * Connect Wallet Button: connect Wallet with MetaMask provider.
+  4. SDKPanel_MySwaps: retrieve swaps owned by connected address.<br>
+        On This panel, created swaps panel will be shown just like in https://mysticswap.io/sdk (in *My Swaps* section) to get the experience of 
+        accept or cancel swaps in-game, you can also see Accepted or Cancelled swaps.
+     * On Every single swaps contains Creator side and Taker side with button Accept/Cancel or status Accepted/Cancelled:
+       * Creator Address (left side)
+       * Creator Items (*NFTs collections or Token*)
+       * Taker Address (right side)
+       * Taker Items 
+
 ***
 
 ## Examples
