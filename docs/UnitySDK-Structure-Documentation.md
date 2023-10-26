@@ -165,8 +165,11 @@ To demonstrate this, let's make a scene with button interaction to do the API ca
 
 #### Using Mystic SDK Swap Experience Sample
 You can find a scene sample for experiencing NFT swapping.
-* Go to the Project window, **Assets → Scenes → SwapInGameSample**
-* On this scene there are some panels to interact with the ***items (NFTs collection or Token)***:
+* Go to the Project window, **Assets → Scenes → SwapInGameSample**<br>
+  ![Locate SwapInGameSample scene](assets/images/Tutorial_SwapInGameSample_1.png "Open the SwapInGameSample scene")
+* On this scene there are some panels to interact with the ***items (NFTs collection or Token)***:<br>
+  ![Swap Panels](assets/images/Tutorial_SwapInGameSample_2.png "Panels for swap interaction")<br>
+  ![Swap Panels in-game](assets/images/Tutorial_SwapInGameSample_3.png "Swap Panel In-game looks")
   1. SDKPanel_Tabs: contains buttons to switch between the panels
      * CreateSwap Button: to activate the SDKPanel_CreateSwap
      * MySwap Button: to activate the SDKPanel_MySwaps
@@ -181,7 +184,8 @@ You can find a scene sample for experiencing NFT swapping.
      * Connect Wallet Button: connect Wallet with MetaMask provider.
   4. SDKPanel_MySwaps: retrieve swaps owned by connected address.<br>
         On This panel, created swaps panel will be shown just like in https://mysticswap.io/sdk (in *My Swaps* section) to get the experience of 
-        accept or cancel swaps in-game, you can also see Accepted or Cancelled swaps.
+        accept or cancel swaps in-game, you can also see Accepted or Cancelled swaps.<br>
+     ![My Swap Example](assets/images/Tutorial_SwapInGameSample_4.png "Example of My Swaps looks")<br>
      * On Every single swaps contains Creator side and Taker side with button Accept/Cancel or status Accepted/Cancelled:
        * Creator Address (left side)
        * Creator Items (*NFTs collections or Token*)
