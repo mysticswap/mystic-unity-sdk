@@ -191,6 +191,16 @@ You can find a scene sample for experiencing NFT swapping.
        * Creator Items (*NFTs collections or Token*)
        * Taker Address (right side)
        * Taker Items 
+##### Let's experience create swap in-game!
+`[TODO: Add transaction panel ~trade box]`
+1. First, setup your wallet configuration inside the MysticSDKManager on Hierarchy. For Wallet Address you can also connect it via the Connect Wallet button `[TODO: sync Offer panel with Connect Wallet Button]`
+Once the wallet is connected, NFTs collection will be shown up on Offer side. **PLAY** the game.
+2. To do a private swap, add target wallet Address inside the Request's input field, press enter and NFTs collection in the Request side will be shown. Meanwhile, to do a public swap, just leave the Wallet Address blank.
+3. You could add Token by pressing the *Add Token* button, enter the amount and click confirm. `[TODO: show added token on transaction panel]`
+4. Once you are done with adding items on both side, click *Create Swap* button, and QR Code will be shown to connect to the MetaMask Wallet (if you didn't Connect Wallet at the beginning).
+5. Wait until a message created swap appears. `[TODO: create pop-up message swap created]`
+6. Click the *My Swap* button, and you will see the swaps you just created.
+> CONGRATULATIONS!! You have just created NFTs swap in-game!
 
 ***
 
