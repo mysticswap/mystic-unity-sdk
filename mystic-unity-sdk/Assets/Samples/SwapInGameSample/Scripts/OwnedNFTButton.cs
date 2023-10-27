@@ -1,7 +1,9 @@
 ﻿using Core;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OwnedNFTButton : MonoBehaviour
 {
@@ -11,19 +13,40 @@ public class OwnedNFTButton : MonoBehaviour
     public int Identifier { get; private set; }
     public int Balance { get; private set; }
     public string OwnerAddress { get; private set; }
+    public string ImageUrl { get; private set; }
     private bool isSelected;
     [SerializeField] private GameObject selectedBackground;
-    public void Init(string title, string itemType, string token, int identifier, int balance, string ownerAddress)
+    [SerializeField] private Image image;
+    [SerializeField] private TMP_Text textTitle;
+
+    public void Init(string title, string itemType, string token, int identifier, int balance, string imageUrl, string ownerAddress)
     {
         Title = title;
         ItemType = itemType;
         Token = token;
         Identifier = identifier;
         Balance = balance;
+        ImageUrl = imageUrl;
         OwnerAddress = ownerAddress;
         isSelected = false;
+
+        LoadImage();
+        LoadText();
     }
 
+    private async void LoadImage()
+    {
+        var _texture = await GetRemoteTexture.GetTextures(ImageUrl);
+
+        Sprite newSprite = Sprite.Create(_texture, new Rect(0, 0, _texture.width, _texture.height), new Vector2(0.5f, 0.5f));
+        image.sprite = newSprite;
+
+    }
+
+    private void LoadText()
+    {
+        textTitle.text = Title;
+    }
     public void DebugOnClick()
     {
         isSelected = !isSelected;
