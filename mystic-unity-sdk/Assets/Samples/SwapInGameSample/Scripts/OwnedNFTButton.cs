@@ -66,7 +66,6 @@ public class OwnedNFTButton : MonoBehaviour
 
         if (isSelected) AddSwapItem(swapItem);
         else RemoveSwapItem(swapItem);
-
     }
 
     private void AddSwapItem(SwapItem _swapItem)
@@ -79,6 +78,8 @@ public class OwnedNFTButton : MonoBehaviour
             var alreadyExist = sdk.session.SelectedOffers.Contains(_swapItem);
             if (!alreadyExist)
                 sdk.session.SelectedOffers.Add(_swapItem);
+            //LoadSelectedNFTIntoSwapPanel();
+
         }
         else
         {
@@ -113,7 +114,12 @@ public class OwnedNFTButton : MonoBehaviour
         return connectedAddress == _ownerAddress;
     }
 
+    //private void LoadSelectedNFTIntoSwapPanel()
+    //{
+    //    GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+    //    gm.LoadSelectedNFTs(OwnerAddress, this);
+    //}
 }
 
 

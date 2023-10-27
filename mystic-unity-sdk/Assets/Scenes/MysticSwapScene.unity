@@ -4219,10 +4219,13 @@ MonoBehaviour:
   OfferAddress: {fileID: 2008006406}
   RequestAddress: {fileID: 229322131}
   RequesterAddress: {fileID: 1507871039}
+  RequesterTokenInput: {fileID: 0}
+  OfferTokenInput: {fileID: 0}
   GetNFTsOfferButton: {fileID: 991323271}
   GetNFTsRequestButton: {fileID: 505076764}
-  ownedNFTButton: {fileID: 4009522681632962715, guid: be179571d91637447b1947edc21fcf25, type: 3}
+  ownedNFTButton: {fileID: 1206789618092057322, guid: be179571d91637447b1947edc21fcf25, type: 3}
   swapsPanel: {fileID: 1783749191}
+  swapsPanelParent: {fileID: 0}
 --- !u!1 &647896073
 GameObject:
   m_ObjectHideFlags: 0
@@ -4426,7 +4429,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 131360338}
   m_HandleRect: {fileID: 131360337}
   m_Direction: 2
-  m_Value: 0
+  m_Value: -0.0000019587821
   m_Size: 0.40828496
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4820,7 +4823,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 946331131}
   m_HandleRect: {fileID: 946331130}
   m_Direction: 2
-  m_Value: 0
+  m_Value: -0.000001891238
   m_Size: 0.40828496
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -9817,7 +9820,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00011416774, y: 451.8163}
+  m_AnchoredPosition: {x: 0.00011416774, y: 451.81723}
   m_SizeDelta: {x: -0.000091553, y: 763.5708}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1639680925
@@ -10180,7 +10183,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00011416774, y: 451.8163}
+  m_AnchoredPosition: {x: 0.00011416774, y: 451.8172}
   m_SizeDelta: {x: -0.000091553, y: 763.5708}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &1732553872

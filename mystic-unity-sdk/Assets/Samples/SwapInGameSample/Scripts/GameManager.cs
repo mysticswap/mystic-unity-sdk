@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject OfferCollectionsPanel;
     public GameObject RequestCollectionsPanel;
+    public GameObject SwapInfoPanel;
+    public GameObject player1Panel;
     [SerializeField] private TextMeshProUGUI OfferAddress;
     [SerializeField] private TextMeshProUGUI RequestAddress;
     [SerializeField] private TMP_InputField RequesterAddress;
@@ -101,6 +103,17 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("LoadNFTsCollection excecuted");
+    }
+
+    public void LoadSelectedNFTs(string _ownerAddress, OwnedNFTButton _ownedNFTButton)
+    {
+        SwapInfoPanel.SetActive(true);
+
+        var newOwnedButton = Instantiate(_ownedNFTButton, transform.position, transform.rotation);
+        newOwnedButton.transform.localScale = _ownedNFTButton.transform.localScale / 5;
+        newOwnedButton.transform.SetParent(player1Panel.transform);
+
+        Debug.Log("LoadSelectedNFTs excecuted");
     }
     #endregion
 

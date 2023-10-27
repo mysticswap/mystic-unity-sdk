@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 5227824991479754038}
   - component: {fileID: 2908771320561977520}
   - component: {fileID: 7055482209886190694}
-  - component: {fileID: 4009522681632962715}
+  - component: {fileID: 1206789618092057322}
   m_Layer: 5
   m_Name: OwnedNFTButton
   m_TagString: Untagged
@@ -198,7 +198,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4009522681632962715}
+      - m_Target: {fileID: 1206789618092057322}
         m_TargetAssemblyTypeName: OwnedNFTButton, Assembly-CSharp
         m_MethodName: DebugOnClick
         m_Mode: 1
@@ -210,7 +210,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4009522681632962715
+--- !u!114 &1206789618092057322
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
