@@ -8,6 +8,8 @@ public class ConnectWalletButton : MonoBehaviour
 {
     private MysticSDK sdk;
     private MetaMaskWallet wallet;
+    [SerializeField] private GameEvent OnWalletOfferConnected;
+    
 
     public async void ConnectWallet()
     {
@@ -21,6 +23,7 @@ public class ConnectWalletButton : MonoBehaviour
         }
 
         MysticSDKManager.Instance.ConnectedAddress = wallet.ConnectedAddress;
+        OnWalletOfferConnected.Raise();
     }
 
 }

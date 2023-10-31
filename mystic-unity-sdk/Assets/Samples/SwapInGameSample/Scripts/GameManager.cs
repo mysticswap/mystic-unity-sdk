@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -32,6 +33,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject mySwapsPanelParent;
     [SerializeField] private GameObject allSwapsPanelParent;
 
+    [SerializeField] private GameEvent OnWalletOfferConnected;
+    [SerializeField] private GameEvent OnWalletRequestConnected;
+
     private void Awake()
     {
         sdk = MysticSDKManager.Instance.sdk;
@@ -50,10 +54,31 @@ public class GameManager : MonoBehaviour
         {
             GetLoadNFTsCollection(sdk.session.RequestAddress, RequestCollectionsPanel);
         });
+
+        if (sdk.session.IsWalletConnected)
+        {
+            OnWalletOfferConnected.Raise();
+        }
     }
 
 
     #region Test GetNFTsCollection
+
+    public void LoadNFTscollectionOffer()
+    {
+        GetLoadNFTsCollection(sdk.session.OfferAddress, OfferCollectionsPanel);
+    }
+
+    public void LoadNFTscollectionRequest()
+    {
+        GetLoadNFTsCollection(sdk.session.RequestAddress, RequestCollectionsPanel);
+    }
+
+    public void SetOfferAddressText()
+    {
+        OfferAddress.text = ShortenAddress(sdk.GetAddress());
+        sdk.session.OfferAddress = sdk.GetAddress();
+    }
 
     public async void GetNFTsCollection()
     {
@@ -190,6 +215,7 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
     public async void AllSwaps()
     {
         var result = await sdk.RetrieveAllSwaps();

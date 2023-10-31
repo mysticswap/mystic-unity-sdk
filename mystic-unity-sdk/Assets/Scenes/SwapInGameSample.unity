@@ -2384,6 +2384,107 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -49.579346}
   m_SizeDelta: {x: 0, y: -99.1587}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &295962821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 295962823}
+  - component: {fileID: 295962822}
+  - component: {fileID: 295962824}
+  m_Layer: 0
+  m_Name: EventListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &295962822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295962821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ff99f879d5f1c47a5a6a51d42a3a0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: fc2e550f88a48164688df0a1e5d0ed2e, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 640394299}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: LoadNFTscollectionOffer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 640394299}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: SetOfferAddressText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!4 &295962823
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295962821}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 940.25824, y: 522.25903, z: 2.3810666}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &295962824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295962821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ff99f879d5f1c47a5a6a51d42a3a0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 5a8ad80dd179b3e488298e2cc543ea5a, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 640394299}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: LoadNFTscollectionRequest
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &298343819
 GameObject:
   m_ObjectHideFlags: 0
@@ -3741,7 +3842,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &505076763
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4947,6 +5048,8 @@ MonoBehaviour:
   swapsPanel: {fileID: 8162690920006035421, guid: 5c61a06289b4dc54dabf14462ebca981, type: 3}
   mySwapsPanelParent: {fileID: 246912914}
   allSwapsPanelParent: {fileID: 359061715}
+  OnWalletOfferConnected: {fileID: 11400000, guid: fc2e550f88a48164688df0a1e5d0ed2e, type: 2}
+  OnWalletRequestConnected: {fileID: 11400000, guid: 5a8ad80dd179b3e488298e2cc543ea5a, type: 2}
 --- !u!1 &655473851
 GameObject:
   m_ObjectHideFlags: 0
@@ -5029,7 +5132,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 131360338}
   m_HandleRect: {fileID: 131360337}
   m_Direction: 2
-  m_Value: -0.00000060789796
+  m_Value: 1.0000001
   m_Size: 0.40828496
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -5363,7 +5466,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 946331131}
   m_HandleRect: {fileID: 946331130}
   m_Direction: 2
-  m_Value: -0.00000060789796
+  m_Value: 1.0000001
   m_Size: 0.40828496
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7595,7 +7698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &991323270
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10864,6 +10967,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 5a8ad80dd179b3e488298e2cc543ea5a, type: 2}
+        m_TargetAssemblyTypeName: GameEvent, Assembly-CSharp
+        m_MethodName: Raise
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -11307,7 +11422,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00011416774, y: 451.81653}
+  m_AnchoredPosition: {x: 0.00011416774, y: -0.000030517578}
   m_SizeDelta: {x: -0.000091553, y: 763.5708}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1637266131
@@ -11895,7 +12010,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00011416774, y: 451.81653}
+  m_AnchoredPosition: {x: 0.00011416774, y: -0.000030517578}
   m_SizeDelta: {x: -0.000091553, y: 763.5708}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &1732553872
@@ -11912,7 +12027,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 82151792386858285, guid: 6055ce56fe01b8c4a8ce99a0238920e5, type: 3}
       propertyPath: walletAddress
-      value: 0xCBD21691e26Da7FFA64cB1a6C47832fDAEE0Acce
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 82151792386858285, guid: 6055ce56fe01b8c4a8ce99a0238920e5, type: 3}
       propertyPath: authenticationToken
@@ -13140,7 +13255,7 @@ GameObject:
   - component: {fileID: 2008006407}
   - component: {fileID: 2008006406}
   m_Layer: 5
-  m_Name: Text_Address
+  m_Name: Text_OfferAddress
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14314,6 +14429,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button_ConnectWallet
       objectReference: {fileID: 0}
+    - target: {fileID: 8230271900419147288, guid: 3e80c20be93076541b43a0bf5b2db784, type: 3}
+      propertyPath: OnWalletOfferConnected
+      value: 
+      objectReference: {fileID: 11400000, guid: fc2e550f88a48164688df0a1e5d0ed2e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14331,3 +14450,4 @@ SceneRoots:
   - {fileID: 640394298}
   - {fileID: 333246893}
   - {fileID: 93605093}
+  - {fileID: 295962823}
