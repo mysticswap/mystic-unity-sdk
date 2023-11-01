@@ -354,7 +354,7 @@ public class GameManager : MonoBehaviour
         var wei = EthToWei(inputWei);
         if (await IsBalanceSufficient(wei))
         {
-            AddTokenToList(wei, sdk.session.SelectedOffers);
+            AddWethToList(wei, sdk.session.SelectedOffers);
             Debug.Log("===========Offer Items===========");
             ShowSwapItems(sdk.session.SelectedOffers);
         }
@@ -391,6 +391,25 @@ public class GameManager : MonoBehaviour
 
         // checking for existing token, if so overwrite.
         int index = swapItems.FindIndex(s => s.itemtype == "NATIVE");
+        if (index != -1)
+            swapItems[index] = tokenItem;
+        else
+            swapItems.Add(tokenItem);
+    }
+    
+    private void AddWethToList(string amount, List<SwapItem> swapItems)
+    {
+        // create token type
+        var tokenItem = new SwapItem()
+        {
+            itemtype = "ERC20",
+            token = "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6",
+            identifier = "0",
+            amount = amount,
+        };
+
+        // checking for existing token, if so overwrite.
+        int index = swapItems.FindIndex(s => s.itemtype == "ERC20");
         if (index != -1)
             swapItems[index] = tokenItem;
         else
