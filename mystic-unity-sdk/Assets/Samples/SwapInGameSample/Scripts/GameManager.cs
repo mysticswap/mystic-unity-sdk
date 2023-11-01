@@ -283,9 +283,17 @@ public class GameManager : MonoBehaviour
         {
             if (item.token == "0x0000000000000000000000000000000000000000")
             {
-                var tokenNFT = GenerateTokenNFT(item.startAmount);
+                var tokenNFT = GenerateTokenETH(item.startAmount);
                 listNFT.Add(tokenNFT);
-                Debug.Log("token detected, skip to the next one");
+                Debug.Log("token detected, generate it");
+                continue;
+            }
+            
+            if (item.token == "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6")
+            {
+                var tokenNFT = GenerateTokenWeth(item.startAmount);
+                listNFT.Add(tokenNFT);
+                Debug.Log("Weth detected, generate it");
                 continue;
             }
 
@@ -302,7 +310,7 @@ public class GameManager : MonoBehaviour
         return listNFT;
     }
 
-    private NFT GenerateTokenNFT(string amount)
+    private NFT GenerateTokenETH(string amount)
     {
         var amountEth = WeiToEth(amount);
         var titleNFT = $"{amountEth} ETH";
@@ -311,6 +319,25 @@ public class GameManager : MonoBehaviour
         {
             image =
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/768px-Ethereum-icon-purple.svg.png",
+        };
+        NFT tokenNFT = new NFT()
+        {
+            title = titleNFT,
+            rawMetadata = nftMetadata,
+        };
+
+        return tokenNFT;
+    }
+    
+    private NFT GenerateTokenWeth(string amount)
+    {
+        var amountEth = WeiToEth(amount);
+        var titleNFT = $"{amountEth} WETH";
+
+        NFTMetadata nftMetadata = new NFTMetadata()
+        {
+            image =
+                "https://assets.coingecko.com/coins/images/17238/standard/aWETH_2x.png",
         };
         NFT tokenNFT = new NFT()
         {
