@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameEvent OnWalletOfferConnected;
     [SerializeField] private GameEvent OnWalletRequestConnected;
 
+    [SerializeField] private TextMeshProUGUI textWethAmount;
+    [SerializeField] private TextMeshProUGUI textEthAmount;
+
     private void Awake()
     {
         sdk = MysticSDKManager.Instance.sdk;
@@ -212,6 +215,8 @@ public class GameManager : MonoBehaviour
 
         var result = await sdk.CreateSwap(swap);
         Debug.Log($"Created Swap: {result}");
+        Debugger.Instance.Log("MysticSDK Information",
+            "Swap is Created, you can check it by clicking on the 'All Swaps' or 'My Swaps' Tabs button.");
     }
 
     #endregion
@@ -288,7 +293,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("token detected, generate it");
                 continue;
             }
-            
+
             if (item.token == "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6")
             {
                 var tokenNFT = GenerateTokenWeth(item.startAmount);
@@ -328,7 +333,7 @@ public class GameManager : MonoBehaviour
 
         return tokenNFT;
     }
-    
+
     private NFT GenerateTokenWeth(string amount)
     {
         var amountEth = WeiToEth(amount);
@@ -371,6 +376,7 @@ public class GameManager : MonoBehaviour
         var inputWei = RequesterTokenInput.text;
         var wei = EthToWei(inputWei);
         AddTokenToList(wei, sdk.session.SelectedConsiderations);
+        textEthAmount.SetText($"{inputWei} ETH");
         Debug.Log("===========Consideration Items===========");
         ShowSwapItems(sdk.session.SelectedConsiderations);
     }
@@ -384,6 +390,7 @@ public class GameManager : MonoBehaviour
             AddWethToList(wei, sdk.session.SelectedOffers);
             Debug.Log("===========Offer Items===========");
             ShowSwapItems(sdk.session.SelectedOffers);
+            textWethAmount.SetText($"{inputWei} WETH");
         }
         else
         {
@@ -423,7 +430,7 @@ public class GameManager : MonoBehaviour
         else
             swapItems.Add(tokenItem);
     }
-    
+
     private void AddWethToList(string amount, List<SwapItem> swapItems)
     {
         // create token type
