@@ -3957,7 +3957,7 @@ GameObject:
   - component: {fileID: 506306027}
   - component: {fileID: 506306026}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Text_Offer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6878,7 +6878,7 @@ GameObject:
   - component: {fileID: 874729493}
   - component: {fileID: 874729492}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_Token
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6923,7 +6923,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ETH
+  m_text: Weth
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -12027,7 +12027,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 82151792386858285, guid: 6055ce56fe01b8c4a8ce99a0238920e5, type: 3}
       propertyPath: walletAddress
-      value: 
+      value: 0xCBD21691e26Da7FFA64cB1a6C47832fDAEE0Acce
       objectReference: {fileID: 0}
     - target: {fileID: 82151792386858285, guid: 6055ce56fe01b8c4a8ce99a0238920e5, type: 3}
       propertyPath: authenticationToken
