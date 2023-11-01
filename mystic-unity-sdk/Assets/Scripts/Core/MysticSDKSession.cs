@@ -12,6 +12,7 @@ namespace Core
         public List<SwapItem> SelectedConsiderations { get; set; } = new List<SwapItem>();
         public string OfferAddress { get; set; }
         public string RequestAddress { get; set; }
+        public bool IsWalletConnected { get; set; }
 
         public MysticSDKSession(string _walletAddress, string _authenticationToken, int _chainId)
         {

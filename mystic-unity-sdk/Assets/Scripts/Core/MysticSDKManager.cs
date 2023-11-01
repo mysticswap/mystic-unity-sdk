@@ -42,6 +42,8 @@ namespace Core
             {
                 throw new ArgumentException("wallet address is empty, please connect the Wallet");
             }
+
+            sdk.session.IsWalletConnected = true;
         }
 
     }

@@ -5,11 +5,11 @@ using System.Numerics;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-
     private MysticSDK sdk;
 
     public GameObject OfferCollectionsPanel;
@@ -30,7 +30,11 @@ public class GameManager : MonoBehaviour
     private List<NFT> listNFTs;
 
     [SerializeField] private SwapsPanel swapsPanel;
-    [SerializeField] private GameObject swapsPanelParent;
+    [SerializeField] private GameObject mySwapsPanelParent;
+    [SerializeField] private GameObject allSwapsPanelParent;
+
+    [SerializeField] private GameEvent OnWalletOfferConnected;
+    [SerializeField] private GameEvent OnWalletRequestConnected;
 
     private void Awake()
     {
@@ -42,12 +46,40 @@ public class GameManager : MonoBehaviour
         OfferAddress.text = ShortenAddress(sdk.GetAddress());
         sdk.session.OfferAddress = sdk.GetAddress();
 
-        GetNFTsOfferButton.onClick.AddListener(delegate { GetLoadNFTsCollection(sdk.session.OfferAddress, OfferCollectionsPanel); });
-        GetNFTsRequestButton.onClick.AddListener(delegate { GetLoadNFTsCollection(sdk.session.RequestAddress, RequestCollectionsPanel); });
+        GetNFTsOfferButton.onClick.AddListener(delegate
+        {
+            GetLoadNFTsCollection(sdk.session.OfferAddress, OfferCollectionsPanel);
+        });
+        GetNFTsRequestButton.onClick.AddListener(delegate
+        {
+            GetLoadNFTsCollection(sdk.session.RequestAddress, RequestCollectionsPanel);
+        });
+
+        if (sdk.session.IsWalletConnected)
+        {
+            OnWalletOfferConnected.Raise();
+        }
     }
 
 
     #region Test GetNFTsCollection
+
+    public void LoadNFTscollectionOffer()
+    {
+        GetLoadNFTsCollection(sdk.session.OfferAddress, OfferCollectionsPanel);
+    }
+
+    public void LoadNFTscollectionRequest()
+    {
+        GetLoadNFTsCollection(sdk.session.RequestAddress, RequestCollectionsPanel);
+    }
+
+    public void SetOfferAddressText()
+    {
+        OfferAddress.text = ShortenAddress(sdk.GetAddress());
+        sdk.session.OfferAddress = sdk.GetAddress();
+    }
+
     public async void GetNFTsCollection()
     {
         var ownerAddress = sdk.GetAddress();
@@ -64,14 +96,16 @@ public class GameManager : MonoBehaviour
                 $"token: {item.contract.address}\n" +
                 $"identifier: {item.tokenId}\n" +
                 $"imageUrl: {item.rawMetadata.image}"
-                );
+            );
         }
 
         LoadNFTsCollection(ownerAddress, listNFTs, OfferCollectionsPanel);
     }
+
     #endregion
 
     #region Get and Load NFTsCollection
+
     public async void GetLoadNFTsCollection(string _ownerAddress, GameObject _parentPanel)
     {
         Debug.Log("GetLoadNFTsCollection");
@@ -82,12 +116,10 @@ public class GameManager : MonoBehaviour
         Debug.Log($"list count: {list.Count}");
 
         LoadNFTsCollection(_ownerAddress, list, _parentPanel);
-
     }
 
     private async void LoadNFTsCollection(string _ownerAddress, List<NFT> _list, GameObject parentPanel)
     {
-
         while (_list == null)
         {
             await Task.Yield();
@@ -96,10 +128,10 @@ public class GameManager : MonoBehaviour
         foreach (var item in _list)
         {
             var newOwnedNFTButton = Instantiate(ownedNFTButton, transform.position, transform.rotation);
-            newOwnedNFTButton.Init(item.title, item.tokenType, item.contract.address, item.tokenId, item.balance, item.rawMetadata.image, _ownerAddress);
+            newOwnedNFTButton.Init(item.title, item.tokenType, item.contract.address, item.tokenId, item.balance,
+                item.rawMetadata.image, _ownerAddress);
 
             newOwnedNFTButton.transform.SetParent(parentPanel.transform);
-
         }
 
         Debug.Log("LoadNFTsCollection excecuted");
@@ -115,9 +147,11 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("LoadSelectedNFTs excecuted");
     }
+
     #endregion
 
     #region Retrieve Offer and Request Test
+
     public void RetrieveOfffers()
     {
         var selectedOffers = sdk.session.SelectedOffers;
@@ -137,9 +171,11 @@ public class GameManager : MonoBehaviour
             Debug.Log($"{item}");
         }
     }
+
     #endregion
 
     #region Address Handling
+
     public void SetRequestAddress()
     {
         sdk.session.RequestAddress = RequesterAddress.text;
@@ -156,9 +192,11 @@ public class GameManager : MonoBehaviour
     {
         RequestAddress.text = ShortenAddress(RequestAddress.text);
     }
+
     #endregion
 
     #region Create Swap
+
     public async void CreateSwap()
     {
         var swap = new CreateSwap()
@@ -174,11 +212,40 @@ public class GameManager : MonoBehaviour
 
         var result = await sdk.CreateSwap(swap);
         Debug.Log($"Created Swap: {result}");
-
     }
+
     #endregion
 
+    public async void AllSwaps()
+    {
+        var result = await sdk.RetrieveAllSwaps();
+        Debug.Log($"My Swaps: {result}");
+        AllSwapsData allSwapsData = JsonUtility.FromJson<AllSwapsData>(result);
+        foreach (var swap in allSwapsData.data)
+        {
+            Debug.Log($"_id: {swap._id}");
+        }
+
+        Debug.Log($"Total: {allSwapsData.data.Count}");
+        Debug.Log($"Total Items: {allSwapsData.metadata.totalItems}");
+
+        foreach (var swap in allSwapsData.data)
+        {
+            var creatorAddress = swap.creatorAddress;
+            var takerAddress = swap.takerAddress;
+            var swapId = swap._id;
+            var nftsOffer = GetNFTsMetadata(swap.orderComponents.offer, swap.metadata.nftsMetadata);
+            var nftsConsideration = GetNFTsMetadata(swap.orderComponents.consideration, swap.metadata.nftsMetadata);
+            var swapStatus = swap.status;
+
+            var newSwapPanel = Instantiate(swapsPanel, transform.position, transform.rotation);
+            newSwapPanel.Init(creatorAddress, takerAddress, swapId, nftsOffer, nftsConsideration, swapStatus);
+            newSwapPanel.transform.SetParent(allSwapsPanelParent.transform);
+        }
+    }
+
     #region My Swaps
+
     public async void MySwaps()
     {
         var result = await sdk.RetrieveMySwaps();
@@ -188,39 +255,23 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"_id: {swap._id}");
         }
+
         Debug.Log($"Total: {allSwapsData.data.Count}");
         Debug.Log($"Total Items: {allSwapsData.metadata.totalItems}");
-
-        //var creatorAddress = allSwapsData.data[0].creatorAddress;
-        //var takerAddress = allSwapsData.data[0].takerAddress;
-        //var swapId = allSwapsData.data[0]._id;
-        //var countOffer = allSwapsData.data[0].orderComponents.offer.Count;
-        //var countConsideration = allSwapsData.data[0].orderComponents.consideration.Count;
-        //var nftsOffer = allSwapsData.data[0].metadata.nftsMetadata.GetRange(0, countOffer);
-        //var nftsConsideration = allSwapsData.data[0].metadata.nftsMetadata.GetRange(countOffer, countConsideration);
-        //var swapStatus = allSwapsData.data[0].status;
-
-        //swapsPanel.Init(creatorAddress, takerAddress, swapId, nftsOffer, nftsConsideration, swapStatus);
 
         foreach (var swap in allSwapsData.data)
         {
             var creatorAddress = swap.creatorAddress;
             var takerAddress = swap.takerAddress;
             var swapId = swap._id;
-            //var countOffer = swap.orderComponents.offer.Count;
-            //var countConsideration = swap.orderComponents.consideration.Count;
-            //var nftsOffer = swap.metadata.nftsMetadata.GetRange(0, countOffer);
-            //var nftsConsideration = swap.metadata.nftsMetadata.GetRange(countOffer, countConsideration);
             var nftsOffer = GetNFTsMetadata(swap.orderComponents.offer, swap.metadata.nftsMetadata);
             var nftsConsideration = GetNFTsMetadata(swap.orderComponents.consideration, swap.metadata.nftsMetadata);
             var swapStatus = swap.status;
 
             var newSwapPanel = Instantiate(swapsPanel, transform.position, transform.rotation);
             newSwapPanel.Init(creatorAddress, takerAddress, swapId, nftsOffer, nftsConsideration, swapStatus);
-            newSwapPanel.transform.SetParent(swapsPanelParent.transform);
+            newSwapPanel.transform.SetParent(mySwapsPanelParent.transform);
         }
-
-
     }
 
     private List<NFT> GetNFTsMetadata(List<ValueComponents> listItem, List<NFT> listMetadata)
@@ -232,11 +283,20 @@ public class GameManager : MonoBehaviour
         {
             if (item.token == "0x0000000000000000000000000000000000000000")
             {
-                var tokenNFT = GenerateTokenNFT(item.startAmount);
+                var tokenNFT = GenerateTokenETH(item.startAmount);
                 listNFT.Add(tokenNFT);
-                Debug.Log("token detected, skip to the next one");
+                Debug.Log("token detected, generate it");
                 continue;
             }
+            
+            if (item.token == "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6")
+            {
+                var tokenNFT = GenerateTokenWeth(item.startAmount);
+                listNFT.Add(tokenNFT);
+                Debug.Log("Weth detected, generate it");
+                continue;
+            }
+
             foreach (var metadata in listMetadata)
             {
                 if (item.token == metadata.contract.address && item.identifierOrCriteria == metadata.tokenId.ToString())
@@ -246,17 +306,38 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+
         return listNFT;
     }
 
-    private NFT GenerateTokenNFT(string amount)
+    private NFT GenerateTokenETH(string amount)
     {
         var amountEth = WeiToEth(amount);
         var titleNFT = $"{amountEth} ETH";
 
         NFTMetadata nftMetadata = new NFTMetadata()
         {
-            image = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/768px-Ethereum-icon-purple.svg.png",
+            image =
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/768px-Ethereum-icon-purple.svg.png",
+        };
+        NFT tokenNFT = new NFT()
+        {
+            title = titleNFT,
+            rawMetadata = nftMetadata,
+        };
+
+        return tokenNFT;
+    }
+    
+    private NFT GenerateTokenWeth(string amount)
+    {
+        var amountEth = WeiToEth(amount);
+        var titleNFT = $"{amountEth} WETH";
+
+        NFTMetadata nftMetadata = new NFTMetadata()
+        {
+            image =
+                "https://assets.coingecko.com/coins/images/17238/standard/aWETH_2x.png",
         };
         NFT tokenNFT = new NFT()
         {
@@ -282,6 +363,7 @@ public class GameManager : MonoBehaviour
         BigInteger wei = (BigInteger)(ethDouble * Math.Pow(10.0, decimals));
         return wei.ToString();
     }
+
     #endregion
 
     public void AddTokenConsiderations()
@@ -291,7 +373,6 @@ public class GameManager : MonoBehaviour
         AddTokenToList(wei, sdk.session.SelectedConsiderations);
         Debug.Log("===========Consideration Items===========");
         ShowSwapItems(sdk.session.SelectedConsiderations);
-
     }
 
     public async void AddTokenOffer()
@@ -300,7 +381,7 @@ public class GameManager : MonoBehaviour
         var wei = EthToWei(inputWei);
         if (await IsBalanceSufficient(wei))
         {
-            AddTokenToList(wei, sdk.session.SelectedOffers);
+            AddWethToList(wei, sdk.session.SelectedOffers);
             Debug.Log("===========Offer Items===========");
             ShowSwapItems(sdk.session.SelectedOffers);
         }
@@ -312,7 +393,6 @@ public class GameManager : MonoBehaviour
 
     private async Task<bool> IsBalanceSufficient(string inputBalance)
     {
-
         var balance = await sdk.GetBalance();
         var _inputBalance = WeiToEth(inputBalance);
         BalanceData _balanceData = JsonUtility.FromJson<BalanceData>(balance);
@@ -323,7 +403,6 @@ public class GameManager : MonoBehaviour
 
         bool output = (_wethBalance >= _inputBalance);
         return output;
-
     }
 
     private void AddTokenToList(string amount, List<SwapItem> swapItems)
@@ -339,6 +418,25 @@ public class GameManager : MonoBehaviour
 
         // checking for existing token, if so overwrite.
         int index = swapItems.FindIndex(s => s.itemtype == "NATIVE");
+        if (index != -1)
+            swapItems[index] = tokenItem;
+        else
+            swapItems.Add(tokenItem);
+    }
+    
+    private void AddWethToList(string amount, List<SwapItem> swapItems)
+    {
+        // create token type
+        var tokenItem = new SwapItem()
+        {
+            itemtype = "ERC20",
+            token = "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6",
+            identifier = "0",
+            amount = amount,
+        };
+
+        // checking for existing token, if so overwrite.
+        int index = swapItems.FindIndex(s => s.itemtype == "ERC20");
         if (index != -1)
             swapItems[index] = tokenItem;
         else
@@ -362,4 +460,3 @@ public class GameManager : MonoBehaviour
         Debug.Log($"WETH:{_balanceData.WETH}");
     }
 }
-
