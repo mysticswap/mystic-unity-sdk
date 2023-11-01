@@ -1,6 +1,7 @@
 using MetaMask.Models;
 using MetaMask.Unity;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -67,6 +68,7 @@ namespace Core
             BalanceData balanceData = JsonUtility.FromJson<BalanceData>(result);
             return balanceData.WETH;
         }
+
         public async Task<string> GetNfts(string _address = null)
         {
             _address = _address ?? session.WalletAddress;
@@ -102,6 +104,7 @@ namespace Core
              * create-swap request
              */
             var requestBody = ConvertToJson(request);
+            Debug.Log($"requestSwap: {requestBody}");
             var createSwapResponse = await AsyncPostRequest(
                 EndpointRequest(BaseUrl, "create-swap"), requestBody, session.AuthenticationToken);
             Debug.Log($"createSwapResponse: {createSwapResponse}");
@@ -118,6 +121,7 @@ namespace Core
                 primaryType = "OrderComponents",
                 swapId = swapResponse.swapId,
             };
+            // swapResponse.approvalsNeeded
             var EIP712Domain = new List<TypesComponents>()
             {
                 new() { name = "name", type = "string" },
@@ -126,6 +130,21 @@ namespace Core
                 new() { name = "verifyingContract", type = "address" },
             };
             signatureData.types.EIP712Domain = EIP712Domain;
+
+            /*
+             * Approvals
+             */
+            bool isApprovalNeeded = IsApprovalsNeeded(swapResponse);
+            if (isApprovalNeeded)
+            {
+                var listApprovals = swapResponse.approvalsNeeded;
+                foreach (var approval in listApprovals)
+                {
+                    var approvalResult = await MetaMaskSendTransactionApprovals(approval.data, approval.to);
+
+                    Debug.Log($"Approvals done: {approvalResult}");
+                }
+            }
 
 
             /*
@@ -151,6 +170,34 @@ namespace Core
              */
             var result = await ValidateSwap(swapData);
             return result;
+        }
+
+        private bool IsApprovalsNeeded(SwapResponse swapResponse)
+        {
+            var listApprovals = swapResponse.approvalsNeeded;
+            bool isApprovalsNeeded = listApprovals.Any();
+
+            return isApprovalsNeeded;
+        }
+
+        private async Task<string> MetaMaskSendTransactionApprovals(string data, string to)
+        {
+            var metaMaskWallet = MetaMaskUnity.Instance.Wallet;
+            var transactionParams = new MetaMaskTransaction()
+            {
+                From = MysticSDKManager.Instance.sdk.session.WalletAddress,
+                Data = data,
+                To = to,
+            };
+
+            var request = new MetaMaskEthereumRequest
+            {
+                Method = "eth_sendTransaction",
+                Parameters = new MetaMaskTransaction[] { transactionParams }
+            };
+
+            await metaMaskWallet.Request(request);
+            return metaMaskWallet.DecryptedJson;
         }
 
         public async Task<string> ValidateSwap(SwapData request)
@@ -182,6 +229,7 @@ namespace Core
                 result = await AsyncGetRequest($"{BaseUrl}verify-accepted/{swapId}", session.AuthenticationToken);
                 Debug.Log($"VerifySwapAccepted retry: {++retry}");
             }
+
             return result;
         }
 
@@ -209,6 +257,7 @@ namespace Core
                 result = await AsyncGetRequest($"{BaseUrl}verify-cancelled/{_swapId}", session.AuthenticationToken);
                 Debug.Log($"VerifySwapCancelled retry: {++retry}");
             }
+
             return result;
         }
 
@@ -225,7 +274,8 @@ namespace Core
             return result;
         }
 
-        public async Task<string> RetrieveMySwaps(int page = 1, int limit = 20, string creatorAddress = null, string takerAddress = null)
+        public async Task<string> RetrieveMySwaps(int page = 1, int limit = 20, string creatorAddress = null,
+            string takerAddress = null)
         {
             creatorAddress = creatorAddress ?? session.WalletAddress;
             takerAddress = takerAddress ?? session.WalletAddress;
