@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
+using Samples.SwapInGameSample.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -38,6 +39,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI textWethAmount;
     [SerializeField] private TextMeshProUGUI textEthAmount;
+
+    [SerializeField] private NftItem _nftItem;
+    [SerializeField] private TradeItem _tradeItem;
+    
+    
 
     private void Awake()
     {
@@ -465,5 +471,14 @@ public class GameManager : MonoBehaviour
         BalanceData _balanceData = JsonUtility.FromJson<BalanceData>(balance);
         Debug.Log($"ETH:{_balanceData.ETH}");
         Debug.Log($"WETH:{_balanceData.WETH}");
+    }
+
+    public void PrintNftItem()
+    {
+        
+        // var nft = _tradeItem.GetComponent<NftItem>();
+        // var nft = _tradeItem.NftItem.Guid;
+        var nft = _tradeItem.Guid.ToString();
+        Debug.Log($"print NftItem: {nft}");
     }
 }

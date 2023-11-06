@@ -1,6 +1,10 @@
-﻿using Core;
+﻿using System;
+using System.Collections.Generic;
+using Core;
+using Samples.SwapInGameSample.Scripts;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class OwnedNFTButton : MonoBehaviour
@@ -17,7 +21,12 @@ public class OwnedNFTButton : MonoBehaviour
     [SerializeField] private Image image;
     [SerializeField] private TMP_Text textTitle;
 
-    public void Init(string title, string itemType, string token, int identifier, int balance, string imageUrl, string ownerAddress)
+    private NftItem _nftItem;
+    [SerializeField] private GameEvent tradeBoxRefreshItems;
+
+
+    public void Init(string title, string itemType, string token, int identifier, int balance, string imageUrl,
+        string ownerAddress)
     {
         Title = title;
         ItemType = itemType;
@@ -28,33 +37,45 @@ public class OwnedNFTButton : MonoBehaviour
         OwnerAddress = ownerAddress;
         isSelected = false;
 
+        InitNftItem(title, imageUrl);
         LoadImage();
         LoadText();
+    }
+
+    private void InitNftItem(string title, string imageUrl)
+    {
+        _nftItem = new NftItem()
+        {
+            Guid = Guid.NewGuid(),
+            Title = title,
+            ImageUrl = imageUrl,
+        };
     }
 
     private async void LoadImage()
     {
         var _texture = await GetRemoteTexture.GetTextures(ImageUrl);
 
-        Sprite newSprite = Sprite.Create(_texture, new Rect(0, 0, _texture.width, _texture.height), new Vector2(0.5f, 0.5f));
+        Sprite newSprite = Sprite.Create(_texture, new Rect(0, 0, _texture.width, _texture.height),
+            new Vector2(0.5f, 0.5f));
         image.sprite = newSprite;
-
     }
 
     private void LoadText()
     {
         textTitle.text = Title;
     }
+
     public void DebugOnClick()
     {
         isSelected = !isSelected;
         selectedBackground.SetActive(isSelected);
 
         Debug.Log($"Title: {Title}\n" +
-            $"ItemType: {ItemType}\n" +
-            $"Token: {Token}\n" +
-            $"Identifier: {Identifier}\n" +
-            $"Balance: {Balance}");
+                  $"ItemType: {ItemType}\n" +
+                  $"Token: {Token}\n" +
+                  $"Identifier: {Identifier}\n" +
+                  $"Balance: {Balance}");
 
         var swapItem = new SwapItem()
         {
@@ -63,9 +84,26 @@ public class OwnedNFTButton : MonoBehaviour
             identifier = Identifier.ToString(),
             amount = Balance.ToString(),
         };
+        
+        if (isSelected)
+        {
+            AddSwapItem(swapItem);
+            // AddNftItem();
+        }
+        else
+        {
+            RemoveSwapItem(swapItem);
+            // RemoveNftItem();
+        }
 
-        if (isSelected) AddSwapItem(swapItem);
-        else RemoveSwapItem(swapItem);
+        AddNftItem(_nftItem);
+        tradeBoxRefreshItems.Raise();
+    }
+
+    private void AddNftItem(NftItem nftItem)
+    {
+        var sdk = MysticSDKManager.Instance.sdk;
+        sdk.session.NftItem = nftItem;
     }
 
     private void AddSwapItem(SwapItem _swapItem)
@@ -79,7 +117,6 @@ public class OwnedNFTButton : MonoBehaviour
             if (!alreadyExist)
                 sdk.session.SelectedOffers.Add(_swapItem);
             //LoadSelectedNFTIntoSwapPanel();
-
         }
         else
         {
@@ -108,6 +145,48 @@ public class OwnedNFTButton : MonoBehaviour
         }
     }
 
+    // private void AddNftItem()
+    // {
+    //     var sdk = MysticSDKManager.Instance.sdk;
+    //     var itemOffer = sdk.session.NftItemOffer;
+    //     var itemRequest = sdk.session.NftItemRequest;
+    //     
+    //     var isOfferItem = IsOfferItem(OwnerAddress);
+    //     if (isOfferItem)
+    //     {
+    //         var isAlreadyExist = itemOffer.Contains(_nftItem);
+    //         if (!isAlreadyExist)
+    //             itemOffer.Add(_nftItem);
+    //     }
+    //     else
+    //     {
+    //         var isAlreadyExist = itemRequest.Contains(_nftItem);
+    //         if (!isAlreadyExist)
+    //             itemRequest.Add(_nftItem);
+    //     }
+    // }
+    //
+    // private void RemoveNftItem()
+    // {
+    //     var sdk = MysticSDKManager.Instance.sdk;
+    //     var itemOffer = sdk.session.NftItemOffer;
+    //     var itemRequest = sdk.session.NftItemRequest;
+    //     
+    //     var isOfferItem = IsOfferItem(OwnerAddress);
+    //     if (isOfferItem)
+    //     {
+    //         var isAlreadyExist = itemOffer.Contains(_nftItem);
+    //         if (!isAlreadyExist)
+    //             itemOffer.Remove(_nftItem);
+    //     }
+    //     else
+    //     {
+    //         var isAlreadyExist = itemRequest.Contains(_nftItem);
+    //         if (!isAlreadyExist)
+    //             itemRequest.Remove(_nftItem);
+    //     }
+    // }
+
     private bool IsOfferItem(string _ownerAddress)
     {
         var connectedAddress = MysticSDKManager.Instance.sdk.GetAddress();
@@ -121,5 +200,3 @@ public class OwnedNFTButton : MonoBehaviour
     //    gm.LoadSelectedNFTs(OwnerAddress, this);
     //}
 }
-
-
