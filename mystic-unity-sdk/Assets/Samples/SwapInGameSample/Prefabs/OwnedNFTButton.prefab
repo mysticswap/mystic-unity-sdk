@@ -225,7 +225,8 @@ MonoBehaviour:
   selectedBackground: {fileID: 4904470613150749442}
   image: {fileID: 2649009662314776486}
   textTitle: {fileID: 6931628069024771462}
-  tradeBoxRefreshItems: {fileID: 11400000, guid: dee456fe4cdfef04595a54595f9f0ffe, type: 2}
+  tradeBoxRefreshItemsOffer: {fileID: 11400000, guid: dee456fe4cdfef04595a54595f9f0ffe, type: 2}
+  tradeBoxRefreshItemsRequest: {fileID: 11400000, guid: e485974aa6ab8dd4f88c783d1a1eb977, type: 2}
 --- !u!1 &3263464014140238054
 GameObject:
   m_ObjectHideFlags: 0

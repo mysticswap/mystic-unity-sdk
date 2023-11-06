@@ -22,7 +22,8 @@ public class OwnedNFTButton : MonoBehaviour
     [SerializeField] private TMP_Text textTitle;
 
     private NftItem _nftItem;
-    [SerializeField] private GameEvent tradeBoxRefreshItems;
+    [SerializeField] private GameEvent tradeBoxRefreshItemsOffer;
+    [SerializeField] private GameEvent tradeBoxRefreshItemsRequest;
 
 
     public void Init(string title, string itemType, string token, int identifier, int balance, string imageUrl,
@@ -84,7 +85,9 @@ public class OwnedNFTButton : MonoBehaviour
             identifier = Identifier.ToString(),
             amount = Balance.ToString(),
         };
-        
+
+        AddNftItem(_nftItem);
+
         if (isSelected)
         {
             AddSwapItem(swapItem);
@@ -95,9 +98,6 @@ public class OwnedNFTButton : MonoBehaviour
             RemoveSwapItem(swapItem);
             // RemoveNftItem();
         }
-
-        AddNftItem(_nftItem);
-        tradeBoxRefreshItems.Raise();
     }
 
     private void AddNftItem(NftItem nftItem)
@@ -116,13 +116,14 @@ public class OwnedNFTButton : MonoBehaviour
             var alreadyExist = sdk.session.SelectedOffers.Contains(_swapItem);
             if (!alreadyExist)
                 sdk.session.SelectedOffers.Add(_swapItem);
-            //LoadSelectedNFTIntoSwapPanel();
+            tradeBoxRefreshItemsOffer.Raise();
         }
         else
         {
             var alreadyExist = sdk.session.SelectedConsiderations.Contains(_swapItem);
             if (!alreadyExist)
                 sdk.session.SelectedConsiderations.Add(_swapItem);
+            tradeBoxRefreshItemsRequest.Raise();
         }
     }
 
@@ -136,12 +137,14 @@ public class OwnedNFTButton : MonoBehaviour
             var alreadyExist = sdk.session.SelectedOffers.Contains(_swapItem);
             if (alreadyExist)
                 sdk.session.SelectedOffers.Remove(_swapItem);
+            tradeBoxRefreshItemsOffer.Raise();
         }
         else
         {
             var alreadyExist = sdk.session.SelectedConsiderations.Contains(_swapItem);
             if (alreadyExist)
                 sdk.session.SelectedConsiderations.Remove(_swapItem);
+            tradeBoxRefreshItemsRequest.Raise();
         }
     }
 

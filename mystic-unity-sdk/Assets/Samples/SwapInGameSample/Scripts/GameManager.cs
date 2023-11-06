@@ -1,6 +1,7 @@
 using Core;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Numerics;
 using System.Threading.Tasks;
 using Samples.SwapInGameSample.Scripts;
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI textWethAmount;
     [SerializeField] private TextMeshProUGUI textEthAmount;
+    [SerializeField] private TextMeshProUGUI textWethBalance;
 
     [SerializeField] private NftItem _nftItem;
     [SerializeField] private TradeItem _tradeItem;
@@ -414,6 +416,7 @@ public class GameManager : MonoBehaviour
 
         sdk.session.WethBalance = wethBalance;
         sdk.session.EthBalance = ethBalance;
+        textWethBalance.text = wethBalance.ToString(CultureInfo.InvariantCulture) + " WETH";
     }
 
     private bool IsBalanceSufficient(string inputBalance)

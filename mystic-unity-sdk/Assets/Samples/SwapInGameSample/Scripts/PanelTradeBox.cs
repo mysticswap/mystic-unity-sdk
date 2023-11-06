@@ -44,6 +44,20 @@ namespace Samples.SwapInGameSample.Scripts
                     GenerateTradeItem(nftItem, tradeItem, parentPanel);
                 }
             }
+            else
+            {
+                bool b = _nftItemsRequest.Contains(nftItem);
+                if (b)
+                {
+                    _nftItemsRequest.Remove(nftItem);
+                    RemoveTradeItem(nftItem, parentPanel);
+                }
+                else
+                {
+                    _nftItemsRequest.Add(nftItem);
+                    GenerateTradeItem(nftItem, tradeItem, parentPanel);
+                }
+            }
         }
 
         public void RefreshToken()
@@ -57,7 +71,15 @@ namespace Samples.SwapInGameSample.Scripts
                 var tokenAmount = WeiToEth(amountWeth.amount);
 
                 textToken.text = tokenAmount.ToString(CultureInfo.InvariantCulture) + " WETH";
-                // double eth = (double)weiBigInt / Math.Pow(10.0, decimals); 
+            }
+            else
+            {
+                var amountEth = sdk.session.SelectedConsiderations
+                    .FirstOrDefault(e => e.token == "0x0000000000000000000000000000000000000000");
+
+                var tokenAmount = WeiToEth(amountEth.amount);
+
+                textToken.text = tokenAmount.ToString(CultureInfo.InvariantCulture) + " ETH";
             }
              
         }
