@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Samples.SwapInGameSample.Scripts;
 
 namespace Core
 {
@@ -8,6 +9,9 @@ namespace Core
         public string AuthenticationToken { get; private set; }
         public int ChainId { get; private set; }
         public List<NFT> SelectedNFTs { get; set; }
+        public NftItem NftItem { get; set; }
+        public List<NftItem> NftItemOffer { get; } = new List<NftItem>();
+        public List<NftItem> NftItemRequest { get; } = new List<NftItem>();
         public List<SwapItem> SelectedOffers { get; set; } = new List<SwapItem>();
         public List<SwapItem> SelectedConsiderations { get; set; } = new List<SwapItem>();
         public string OfferAddress { get; set; }
