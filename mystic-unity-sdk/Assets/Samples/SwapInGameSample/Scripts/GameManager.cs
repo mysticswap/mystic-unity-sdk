@@ -42,8 +42,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private NftItem _nftItem;
     [SerializeField] private TradeItem _tradeItem;
-    
-    
+
 
     private void Awake()
     {
@@ -391,7 +390,7 @@ public class GameManager : MonoBehaviour
     {
         var inputWei = OfferTokenInput.text;
         var wei = EthToWei(inputWei);
-        if (await IsBalanceSufficient(wei))
+        if (IsBalanceSufficient(wei))
         {
             AddWethToList(wei, sdk.session.SelectedOffers);
             Debug.Log("===========Offer Items===========");
@@ -404,17 +403,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private async Task<bool> IsBalanceSufficient(string inputBalance)
+    public async void SetBalanceToSession()
     {
         var balance = await sdk.GetBalance();
-        var _inputBalance = WeiToEth(inputBalance);
-        BalanceData _balanceData = JsonUtility.FromJson<BalanceData>(balance);
-        if (!Double.TryParse(_balanceData.WETH, out Double _wethBalance))
+        BalanceData balanceData = JsonUtility.FromJson<BalanceData>(balance);
+        if (!Double.TryParse(balanceData.WETH, out Double wethBalance))
             throw new ArgumentException("Invalid Weth balance value.");
+        if (!Double.TryParse(balanceData.WETH, out Double ethBalance))
+            throw new ArgumentException("Invalid Eth balance value.");
 
-        Debug.Log($"wethBalance: {_wethBalance}\ninputBalance: {_inputBalance}");
+        sdk.session.WethBalance = wethBalance;
+        sdk.session.EthBalance = ethBalance;
+    }
 
-        bool output = (_wethBalance >= _inputBalance);
+    private bool IsBalanceSufficient(string inputBalance)
+    {
+        var wethInputBalance = WeiToEth(inputBalance);
+
+        var wethBalance = sdk.session.WethBalance;
+
+        Debug.Log($"wethBalance: {wethBalance}\ninputBalance: {wethInputBalance}");
+
+        bool output = (wethBalance >= wethInputBalance);
         return output;
     }
 
@@ -475,7 +485,6 @@ public class GameManager : MonoBehaviour
 
     public void PrintNftItem()
     {
-        
         // var nft = _tradeItem.GetComponent<NftItem>();
         // var nft = _tradeItem.NftItem.Guid;
         var nft = _tradeItem.Guid.ToString();

@@ -2522,7 +2522,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 10
   m_Viewport: {fileID: 1958469030}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 638090085}
@@ -2622,6 +2622,18 @@ MonoBehaviour:
       - m_Target: {fileID: 640394299}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: LoadNFTscollectionOffer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 640394299}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: SetBalanceToSession
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6377,12 +6389,12 @@ MonoBehaviour:
   m_Padding:
     m_Left: 5
     m_Right: 0
-    m_Top: -50
+    m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 140, y: 80}
+  m_CellSize: {x: 120, y: 120}
   m_Spacing: {x: 25, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 3
@@ -9485,6 +9497,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1141226187}
+        m_TargetAssemblyTypeName: Samples.SwapInGameSample.Scripts.PanelTradeBox,
+          Assembly-CSharp
+        m_MethodName: RefreshToken
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1106918395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9786,7 +9811,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -523, y: -43}
+  m_AnchoredPosition: {x: -467, y: -43}
   m_SizeDelta: {x: 322.59998, y: 363.03003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1141226187
@@ -9804,6 +9829,7 @@ MonoBehaviour:
   isOffer: 1
   parentPanel: {fileID: 700745279}
   tradeItem: {fileID: 1312173282614044998, guid: 6c17493a85d1d4c4f87ac8eecb9f0fdd, type: 3}
+  textToken: {fileID: 477489748}
 --- !u!1001 &1148322375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11309,7 +11335,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -49.579346}
+  m_AnchoredPosition: {x: 56, y: -49.579346}
   m_SizeDelta: {x: 0, y: -99.1587}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1349594860

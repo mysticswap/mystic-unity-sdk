@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using Core;
 using Samples.SwapInGameSample.Scripts.Interfaces;
+using TMPro;
 using UnityEngine;
 
 namespace Samples.SwapInGameSample.Scripts
@@ -13,6 +16,7 @@ namespace Samples.SwapInGameSample.Scripts
         [SerializeField] private bool isOffer;
         [SerializeField] private GameObject parentPanel;
         [SerializeField] private TradeItem tradeItem;
+        [SerializeField] private TMP_Text textToken;
         private List<NftItem> _nftItemsOffer = new List<NftItem>();
         private List<NftItem> _nftItemsRequest = new List<NftItem>();
 
@@ -44,7 +48,18 @@ namespace Samples.SwapInGameSample.Scripts
 
         public void RefreshToken()
         {
-            throw new System.NotImplementedException();
+            var sdk = MysticSDKManager.Instance.sdk;
+            if (isOffer)
+            {
+                var amountWeth = sdk.session.SelectedOffers
+                    .FirstOrDefault(w => w.token == "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6");
+
+                var tokenAmount = WeiToEth(amountWeth.amount);
+
+                textToken.text = tokenAmount.ToString(CultureInfo.InvariantCulture) + " WETH";
+                // double eth = (double)weiBigInt / Math.Pow(10.0, decimals); 
+            }
+             
         }
 
         public void LockTrade()
@@ -95,6 +110,22 @@ namespace Samples.SwapInGameSample.Scripts
             }
 
             return -1;
+        }
+        
+        private double WeiToEth(string wei, int decimals = 18)
+        {
+            if (!BigInteger.TryParse(wei, out BigInteger weiBigInt))
+                throw new ArgumentException("Invalid wei value.");
+            double eth = (double)weiBigInt / Math.Pow(10.0, decimals);
+            return eth;
+        }
+
+        private string EthToWei(string eth, int decimals = 18)
+        {
+            if (!Double.TryParse(eth, out Double ethDouble))
+                throw new ArgumentException("Invalid eth value.");
+            BigInteger wei = (BigInteger)(ethDouble * Math.Pow(10.0, decimals));
+            return wei.ToString();
         }
 
     }
