@@ -10191,15 +10191,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 82151792386858285, guid: 6055ce56fe01b8c4a8ce99a0238920e5, type: 3}
       propertyPath: chainId
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 82151792386858285, guid: 6055ce56fe01b8c4a8ce99a0238920e5, type: 3}
       propertyPath: walletAddress
-      value: 0xCBD21691e26Da7FFA64cB1a6C47832fDAEE0Acce
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 82151792386858285, guid: 6055ce56fe01b8c4a8ce99a0238920e5, type: 3}
       propertyPath: authenticationToken
-      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZGQyMWQzMGUyMjkxNDdiNjY1ZGM3YSIsImlhdCI6MTY5MjIxMzcxNX0.2RZ8He93TUUMeW0t3aqpt5KxNlo1r1fjMNtaBYyP9rI
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 239485145276930295, guid: 6055ce56fe01b8c4a8ce99a0238920e5, type: 3}
       propertyPath: m_Name
