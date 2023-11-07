@@ -1,8 +1,10 @@
 using Core;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Numerics;
 using System.Threading.Tasks;
+using Samples.SwapInGameSample.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -35,6 +37,14 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameEvent OnWalletOfferConnected;
     [SerializeField] private GameEvent OnWalletRequestConnected;
+
+    [SerializeField] private TextMeshProUGUI textWethAmount;
+    [SerializeField] private TextMeshProUGUI textEthAmount;
+    [SerializeField] private TextMeshProUGUI textWethBalance;
+
+    [SerializeField] private NftItem _nftItem;
+    [SerializeField] private TradeItem _tradeItem;
+
 
     private void Awake()
     {
@@ -212,6 +222,8 @@ public class GameManager : MonoBehaviour
 
         var result = await sdk.CreateSwap(swap);
         Debug.Log($"Created Swap: {result}");
+        Debugger.Instance.Log("MysticSDK Information",
+            "Swap is Created, you can check it by clicking on the 'All Swaps' or 'My Swaps' Tabs button.");
     }
 
     #endregion
@@ -288,7 +300,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("token detected, generate it");
                 continue;
             }
-            
+
             if (item.token == "0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6")
             {
                 var tokenNFT = GenerateTokenWeth(item.startAmount);
@@ -328,7 +340,7 @@ public class GameManager : MonoBehaviour
 
         return tokenNFT;
     }
-    
+
     private NFT GenerateTokenWeth(string amount)
     {
         var amountEth = WeiToEth(amount);
@@ -371,6 +383,7 @@ public class GameManager : MonoBehaviour
         var inputWei = RequesterTokenInput.text;
         var wei = EthToWei(inputWei);
         AddTokenToList(wei, sdk.session.SelectedConsiderations);
+        textEthAmount.SetText($"{inputWei} ETH");
         Debug.Log("===========Consideration Items===========");
         ShowSwapItems(sdk.session.SelectedConsiderations);
     }
@@ -379,11 +392,12 @@ public class GameManager : MonoBehaviour
     {
         var inputWei = OfferTokenInput.text;
         var wei = EthToWei(inputWei);
-        if (await IsBalanceSufficient(wei))
+        if (IsBalanceSufficient(wei))
         {
             AddWethToList(wei, sdk.session.SelectedOffers);
             Debug.Log("===========Offer Items===========");
             ShowSwapItems(sdk.session.SelectedOffers);
+            textWethAmount.SetText($"{inputWei} WETH");
         }
         else
         {
@@ -391,17 +405,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private async Task<bool> IsBalanceSufficient(string inputBalance)
+    public async void SetBalanceToSession()
     {
         var balance = await sdk.GetBalance();
-        var _inputBalance = WeiToEth(inputBalance);
-        BalanceData _balanceData = JsonUtility.FromJson<BalanceData>(balance);
-        if (!Double.TryParse(_balanceData.WETH, out Double _wethBalance))
+        BalanceData balanceData = JsonUtility.FromJson<BalanceData>(balance);
+        if (!Double.TryParse(balanceData.WETH, out Double wethBalance))
             throw new ArgumentException("Invalid Weth balance value.");
+        if (!Double.TryParse(balanceData.WETH, out Double ethBalance))
+            throw new ArgumentException("Invalid Eth balance value.");
 
-        Debug.Log($"wethBalance: {_wethBalance}\ninputBalance: {_inputBalance}");
+        sdk.session.WethBalance = wethBalance;
+        sdk.session.EthBalance = ethBalance;
+        textWethBalance.text = wethBalance.ToString(CultureInfo.InvariantCulture) + " WETH";
+    }
 
-        bool output = (_wethBalance >= _inputBalance);
+    private bool IsBalanceSufficient(string inputBalance)
+    {
+        var wethInputBalance = WeiToEth(inputBalance);
+
+        var wethBalance = sdk.session.WethBalance;
+
+        Debug.Log($"wethBalance: {wethBalance}\ninputBalance: {wethInputBalance}");
+
+        bool output = (wethBalance >= wethInputBalance);
         return output;
     }
 
@@ -423,7 +449,7 @@ public class GameManager : MonoBehaviour
         else
             swapItems.Add(tokenItem);
     }
-    
+
     private void AddWethToList(string amount, List<SwapItem> swapItems)
     {
         // create token type
@@ -458,5 +484,13 @@ public class GameManager : MonoBehaviour
         BalanceData _balanceData = JsonUtility.FromJson<BalanceData>(balance);
         Debug.Log($"ETH:{_balanceData.ETH}");
         Debug.Log($"WETH:{_balanceData.WETH}");
+    }
+
+    public void PrintNftItem()
+    {
+        // var nft = _tradeItem.GetComponent<NftItem>();
+        // var nft = _tradeItem.NftItem.Guid;
+        var nft = _tradeItem.Guid.ToString();
+        Debug.Log($"print NftItem: {nft}");
     }
 }
