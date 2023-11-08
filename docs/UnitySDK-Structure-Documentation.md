@@ -23,7 +23,7 @@
 ### Overview
 Here is what you need to prepare:
 1. Unity (any version should works)
-2. Mystic Unity SDK package (_link coming soon_) `[TODO: make package's downloadable link]`
+2. Mystic Unity SDK package. Click [here](https://github.com/mysticswap/mystic-unity-sdk/releases) to download.
 3. MetaMask Wallet Address
 
 ### Installation
@@ -76,8 +76,8 @@ In order of the Player to access the wallet in-game, Wallet's detail need to be 
 To setting up the configuration, go to Hierarchy, click **MysticSDKManager** prefab, in the Script box you will find:<br>
 ![Setting up MysticSDKManager](assets/images/Tutorial_SettingUp_3.png "Setting up MysticSDKManager")
 * Wallet Address: fill your Wallet Address that will be use in-game as the main address (MetaMask)
-* Authentication Token: Add Bearer Authentication token (can be found in here) `[TODO: add link]`
-* Chain Id: Add available Chain Id `[TODO: add list of Chain Id along with its Contract Address]`
+* Authentication Token: Add Bearer Authentication token (to get the token, follow the instruction [here](https://docs.withmystic.xyz/swaps-and-marketplace-api/authentication))
+* Chain Id: Add available Chain Id. Supported Chain Id can be seen [here](https://docs.withmystic.xyz/supported-blockchains).
 
 ### Get Your Balance
 Let's do the first call to get the balance from your address. (sdk.getBalance), here you will get ETH and WETH in json format, or sdk.GetBalanceETH to get the ETH balance and sdk.GetBalanceWETH to get the WETH balance and display it to your game [here is the sample]
@@ -192,20 +192,19 @@ You can find a scene sample for experiencing NFT swapping.
        * Taker Address (right side)
        * Taker Items 
 ##### Let's experience create swap in-game!
-`[TODO: Add transaction panel ~trade box]`
-1. First, setup your [wallet configuration](https://github.com/mysticswap/mystic-unity-sdk/blob/temp/docs/docs/UnitySDK-Structure-Documentation.md#setting-up-your-wallets-configuration) inside the MysticSDKManager on Hierarchy, then **PLAY** the game. Fill the Authentication Token and Chain Id is mandatory, but for Wallet Address you can also add it by connecting to MetaMask via the ***Connect Wallet*** button `[TODO: sync Offer panel with Connect Wallet Button]`
+1. First, setup your [wallet configuration](https://github.com/mysticswap/mystic-unity-sdk/blob/temp/docs/docs/UnitySDK-Structure-Documentation.md#setting-up-your-wallets-configuration) inside the MysticSDKManager on Hierarchy, then **PLAY** the game. Fill the Authentication Token and Chain Id is mandatory, but for Wallet Address you can also add it by connecting to MetaMask via the ***Connect Wallet*** button 
 Once the wallet is connected, NFTs collection will be shown up on Offer side.<br>
    ![NFTs collection shown](assets/images/Tutorial_ExperienceSwap_1.png "Retrieving NFTs inventory")
-2. To do a private swap, add target wallet Address inside the ***Request's input field***, press enter and NFTs collection in the Request side will be shown. Meanwhile, to do a public swap, just leave the Wallet Address blank. `[TODO: test public swap functionality]`<br>
+2. To do a private swap, add target wallet Address inside the ***Request's input field***, press enter and NFTs collection in the Request side will be shown. Meanwhile, to do a public swap, just leave the Wallet Address blank. <br>
    ![Requester NFTs inventory](assets/images/Tutorial_ExperienceSwap_2.png "Add Requester address")
-3. Add items you want to swap by clicking on it, and you could add Token by pressing the ***Add Token*** button, enter the amount and click ***Confirm*** button. `[TODO: show added token on transaction panel]`<br>
+3. Add items you want to swap by clicking on it, and you could add Token by pressing the ***Add Token*** button, enter the amount and click ***Confirm*** button. <br>
    ![Add items to swap](assets/images/Tutorial_ExperienceSwap_3.png "Adding items to swap")<br>
    ![Add Token to swap](assets/images/Tutorial_ExperienceSwap_4.png "Adding Token to swap")
 4. Once you are done with adding items on both side, click ***Create Swap*** button, and QR Code will be shown to connect to the MetaMask Wallet (if you didn't Connect Wallet at the beginning). Scan the QR code with your MetaMask Mobile App.<br>
    ![Create Swap Button](assets/images/Tutorial_ExperienceSwap_5.png "Click Create Swap button")<br>
    ![Connect Wallet QR scan](assets/images/Tutorial_ExperienceSwap_6.png "Scan QR Code with MetaMask App")
 5. Sign the request on your MetaMask mobile apps.
-6. Inside the game wait until a message created swap appears. `[TODO: create pop-up message swap created]`
+6. Inside the game wait until a message created swap appears.
 7. Click the ***My Swap*** button, and you will see the swaps you just created.<br>
    ![My Swap button](assets/images/Tutorial_ExperienceSwap_7.png "Click My Swap button")<br>
    ![Swap Created](assets/images/Tutorial_ExperienceSwap_8.png "Swap has been created")<br>
