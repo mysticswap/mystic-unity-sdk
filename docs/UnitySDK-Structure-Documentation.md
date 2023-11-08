@@ -174,16 +174,16 @@ You can find a scene sample for experiencing NFT swapping.
      * *Create Swap* Button: to activate the SDKPanel_CreateSwap
      * *My Swap* Button: to activate the SDKPanel_MySwaps
      * *All Swap* Button: to activate the SDKPanel_AllSwaps
+     * Panel_ConnectAndShowBalance: basic Wallet interactions to show balance in a Console window (`Debug.Log`) and connect your Wallet with MetaMask.
+       * *Show Balance* Button: show your ETH and WETH balance in the Console window.
+       * *Connect Wallet* Button: connect Wallet with MetaMask provider.
   2. SDKPanel_CreateSwap: contains offer and request panel to create swap between items.
      * Offer Panel: main player side to select their items to be trade.
      * Request Panel: other player side inventory (swap target) which main player select the items to request them.<br>
      *Notes*: there two kind of swaps which are public and private, as mentioned [here](https://docs.withmystic.xyz/swaps-and-marketplace-api/create-swap-offer),
      you can make a *private* swap by adding the address on Request side,
      otherwise leave the Request's address blank to make it *public*.
-  3. SDKPanel_BalanceAndConnect: basic Wallet interactions to show balance in a Console window (`Debug.Log`) and connect your Wallet with MetaMask.
-     * Show Balance Button: show your ETH and WETH balance in the Console window.
-     * Connect Wallet Button: connect Wallet with MetaMask provider.
-  4. SDKPanel_MySwaps: retrieve swaps owned by connected address.<br>
+  3. SDKPanel_MySwaps: retrieve swaps owned by connected address.<br>
         On This panel, created swaps panel will be shown just like in https://mysticswap.io/sdk (in *My Swaps* section) to get the experience of 
         accept or cancel swaps in-game, you can also see Accepted or Cancelled swaps.<br>
      ![My Swap Example](assets/images/Tutorial_SwapInGameSample_4.png "Example of My Swaps looks")<br>
@@ -192,7 +192,7 @@ You can find a scene sample for experiencing NFT swapping.
        * Creator Items (*NFTs collections or Token*)
        * Taker Address (right side)
        * Taker Items 
-  5. SDKPanel_AllSwaps: similar as SDKPanel_MySwaps but it also display all swaps created in Mystic SDK.
+  4. SDKPanel_AllSwaps: similar as SDKPanel_MySwaps but it also display all swaps created in Mystic SDK.
      ![My Swap Example](assets/images/Tutorial_SwapInGameSample_5.png "Example of All Swaps looks")
 ##### Let's experience create swap in-game!
 1. First, setup your [wallet configuration](https://github.com/mysticswap/mystic-unity-sdk/blob/temp/docs/docs/UnitySDK-Structure-Documentation.md#setting-up-your-wallets-configuration) inside the MysticSDKManager on Hierarchy, then **PLAY** the game. Fill the Authentication Token and Chain Id is mandatory, but for Wallet Address you can also add it by connecting to MetaMask via the ***Connect Wallet*** button 
@@ -200,7 +200,8 @@ Once the wallet is connected, NFTs collection will be shown up on Offer side.<br
    ![NFTs collection shown](assets/images/Tutorial_ExperienceSwap_1.png "Retrieving NFTs inventory")
 2. To do a private swap, add target wallet Address inside the ***Request's input field***, press enter and NFTs collection in the Request side will be shown. Meanwhile, to do a public swap, just leave the Wallet Address blank. <br>
    ![Requester NFTs inventory](assets/images/Tutorial_ExperienceSwap_2.png "Add Requester address")
-3. Add items you want to swap by clicking on it, and you could add Token by pressing the ***Add Token*** button, enter the amount and click ***Confirm*** button. <br>
+3. Add items you want to swap by clicking on it, and you could add Token by pressing the ***Add Token*** button, enter the amount and click ***Confirm*** button.
+    Items and Token will be added on trade box automatically to simulate in-game transaction between players.
    ![Add items to swap](assets/images/Tutorial_ExperienceSwap_3.png "Adding items to swap")<br>
    ![Add Token to swap](assets/images/Tutorial_ExperienceSwap_3a.png "Adding Token to swap")<br>
    ![Input Token to swap](assets/images/Tutorial_ExperienceSwap_4.png "Input Token to swap")<br>
