@@ -100,19 +100,19 @@ To demonstrate this, let's make a scene with button interaction to do the API ca
 5. Go to the **ScriptManager.cs** and let's do some codes:<br>
     a. Define the SDK Variable
     ```cs
-    private MysticSDK sdk;
+    private MysticSDK _sdk;
     ```
 
     b. Define the GameObject Variable
     ```cs
-    [SerializeField] private TextMeshProUGUI Text_DisplayBalance;
+    [SerializeField] private TextMeshProUGUI textDisplayBalance;
     ```
 
     c. Instantiate the SDK on `Awake()`
     ```cs
     private void Awake()
     {
-        sdk = MysticSDKManager.Instance.sdk;
+        _sdk = MysticSDKManager.Instance.sdk;
     }
     ```
 
@@ -120,20 +120,56 @@ To demonstrate this, let's make a scene with button interaction to do the API ca
     ```cs
     public async void ShowBalance()
     {
-        var result = await sdk.GetBalance();
-        Text_DisplayBalance.text = result;
+        var result = await _sdk.GetBalance();
+        textDisplayBalance.text = result;
     }
 
     public async void ShowBalanceEth()
     {
-        var result = await sdk.GetBalanceEth();
-        Text_DisplayBalance.text = result;
+        var result = await _sdk.GetBalanceEth();
+        textDisplayBalance.text = result;
     }
 
     public async void ShowBalanceWeth()
     {
-        var result = await sdk.GetBalanceWeth();
-        Text_DisplayBalance.text = result;
+        var result = await _sdk.GetBalanceWeth();
+        textDisplayBalance.text = result;
+    }
+    ```
+   
+    e. This is the full code looks like.
+    ```cs
+   using Core;
+   using TMPro;
+   using UnityEngine;
+
+   public class ScriptManager : MonoBehaviour
+   {
+        private MysticSDK _sdk;
+        [SerializeField] private TextMeshProUGUI textDisplayBalance;
+
+        private void Awake()
+        {
+            _sdk = MysticSDKManager.Instance.sdk;
+        }
+
+        public async void ShowBalance()
+        {
+            var result = await _sdk.GetBalance();
+            textDisplayBalance.text = result;
+        }
+
+        public async void ShowBalanceEth()
+        {
+            var result = await _sdk.GetBalanceEth();
+            textDisplayBalance.text = result;
+        }
+
+        public async void ShowBalanceWeth()
+        {
+            var result = await _sdk.GetBalanceWeth();
+            textDisplayBalance.text = result;
+        }
     }
     ```
 6. Apply GameObject into the **ScriptManager**.<br>
