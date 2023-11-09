@@ -137,7 +137,7 @@ To demonstrate this, let's make a scene with button interaction to do the API ca
     }
     ```
    
-    e. This is the full code looks like.
+    e. This is the full code looks like. This code is located in `Assets/Samples/GetYourBalanceSample/Scripts/ScriptManager.cs`.
     ```cs
    using Core;
    using TMPro;
@@ -260,6 +260,38 @@ Once the wallet is connected, NFTs collection will be shown up on Offer side.<br
     - Example Prefabs
     - Example Scripts
     - Samples
+
+## Samples
+We provide working samples for implementing features on Mystic Unity SDK.
+### 1. *Get Your Balance* Sample
+* Scripts: `ScriptManager.cs` contains script to do basic implementation such as calling the Mystic Unity SDK, get balance both ETH and Weth from your wallet.
+* Scenes: `GetYourBalanceSample.unity` is a scene that demonstrate how to Get Balance from Mystic API with buttons to interact and display it to a Text Display.
+
+### 2. *Swap In Game* Sample
+* Game Events
+  * `OnWalletOfferConnected.asset` triggered once the main player's wallet is connected to the game, and immediately show inventory of NFTs collection and token balance.
+  * `OnWalletRequestConnected.asset` same as the `OnWalletOfferConnected.asset` but for the other player's side.
+  * `TradeBoxRefreshItems_Offer.asset` triggered every time main player clicks the NFTs item or add Token to display the selected items or Token to the Trade Box.
+  * `TradeBoxRefreshItems_Request.asset` same as the `TradeBoxRefreshItems_Offer.asset` but for other player's side.
+* Prefabs
+  * `Button_ConnectWallet.prefab` is a button to connect to Wallet via MetaMask provider.
+  * `NFTsItem.prefab` used in Panel_Swaps as a single NFT or Token as a display on Swap Transaction.
+  * `OwnedNFTButton.prefab` is a clickable NFTs item inside the player's inventory.
+  * `Panel_Swaps.prefab` is a Panel to display swaps created, containing NFTsItem, swap button (Accept/Cancel) or swap status (Accepted/Cancelled) and the address.
+  * `Panel_TradeBox.prefab` is a trade box to display selected NFTs item and or Token to trade (swap).
+  * `TradeItem.prefab` is a single NFT item inside of Panel_TradeBox. 
+* Scenes: `SwapInGameSample.unity` is a scene to demonstrate create swap between player and display created swaps.
+* Scripts
+  * `ConnectedWalletButton.cs`
+  * `GameManager.cs`
+  * `GetRemoteTexture.cs`
+  * `NFTsItem.cs`
+  * `NftItem.cs`
+  * `NftItems.cs`
+  * `OwnedNFTButton.cs`
+  * `PanelTradeBox.cs`
+  * `SwapsPanel.cs`
+  * `TradeItem.cs`
 
 ***
 
