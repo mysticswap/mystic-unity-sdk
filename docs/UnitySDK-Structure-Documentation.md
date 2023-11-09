@@ -282,16 +282,17 @@ We provide working samples for implementing features on Mystic Unity SDK.
   * `TradeItem.prefab` is a single NFT item inside of Panel_TradeBox. 
 * Scenes: `SwapInGameSample.unity` is a scene to demonstrate create swap between player and display created swaps.
 * Scripts
-  * `ConnectedWalletButton.cs`
-  * `GameManager.cs`
-  * `GetRemoteTexture.cs`
-  * `NFTsItem.cs`
-  * `NftItem.cs`
-  * `NftItems.cs`
-  * `OwnedNFTButton.cs`
-  * `PanelTradeBox.cs`
-  * `SwapsPanel.cs`
-  * `TradeItem.cs`
+  * `ConnectedWalletButton.cs`: connect to wallet via MetaMask provider, will trigger GameEvent `OnWalletOfferConnected` once connected.
+  * `GameManager.cs`: main script of this scene goes here like auto connect wallet if MysticSDKManager already configured, load NFTs items, create swap, retrieve swap and more.
+  * `GetRemoteTexture.cs`: class to load images of NFTs items from its ImageUrl.
+  * `NFTsItem.cs`: single item inside the displayed NFT item on Trade Box.
+  * `NftItem.cs`: class to load and store the data of the item.
+  * `NftItems.cs`: list data of NFTs item on Offer and Request side.
+  * `OwnedNFTButton.cs`: button script for the clickable NFTs item inside the player's inventory.
+  * `PanelTradeBox.cs`: functionality of Trade Box (add, remove, display NFTs and token).
+  * `SwapsPanel.cs`: panel script to load created swap from Mystic API.
+  * `TradeItem.cs`: a single item on Trade Box (load text title and imageUrl).
+  * `ITradeBox.cs`: interface for Trade Box.
 
 ***
 
