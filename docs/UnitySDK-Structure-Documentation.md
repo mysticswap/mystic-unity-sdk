@@ -296,19 +296,272 @@ We provide working samples for implementing features on Mystic Unity SDK.
 
 ***
 
-## Scripts: to include Mysticswap lists of API Calls and how to use it on Unity
-    - For each scripts will contains:
-        - Short Description
-        - Example usage
-        - Parameters description
-        - Return Value description
+<a name='assembly'></a>
+## Scripts
+
+## Contents
+
+- [MysticSDK](#T-Core-MysticSDK 'Core.MysticSDK')
+    - [AcceptSwap(request)](#M-Core-MysticSDK-AcceptSwap 'Core.MysticSDK.AcceptSwap')
+    - [CancelSwap(request)](#M-Core-MysticSDK-CancelSwap 'Core.MysticSDK.CancelSwap')
+    - [CreateSwap(request)](#M-Core-MysticSDK-CreateSwap 'Core.MysticSDK.CreateSwap')
+    - [GetAddress()](#M-Core-MysticSDK-GetAddress 'Core.MysticSDK.GetAddress')
+    - [GetBalance()](#M-Core-MysticSDK-GetBalance 'Core.MysticSDK.GetBalance')
+    - [GetBalanceEth()](#M-Core-MysticSDK-GetBalanceEth 'Core.MysticSDK.GetBalanceEth')
+    - [GetBalanceWeth()](#M-Core-MysticSDK-GetBalanceWeth 'Core.MysticSDK.GetBalanceWeth')
+    - [GetMetadata(request)](#M-Core-MysticSDK-GetMetadata 'Core.MysticSDK.GetMetadata')
+    - [GetNfts(_address)](#M-Core-MysticSDK-GetNfts-System-String- 'Core.MysticSDK.GetNfts(System.String)')
+    - [GetOwnedNFTs(_address)](#M-Core-MysticSDK-GetOwnedNFTs-System-String- 'Core.MysticSDK.GetOwnedNFTs(System.String)')
+    - [RetrieveAllSwaps(page,limit)](#M-Core-MysticSDK-RetrieveAllSwaps-System-Int32,System-Int32- 'Core.MysticSDK.RetrieveAllSwaps(System.Int32,System.Int32)')
+    - [RetrieveMySwaps(page,limit,creatorAddress,takerAddress)](#M-Core-MysticSDK-RetrieveMySwaps-System-Int32,System-Int32,System-String,System-String- 'Core.MysticSDK.RetrieveMySwaps(System.Int32,System.Int32,System.String,System.String)')
+    - [RetrieveSwap(swapId)](#M-Core-MysticSDK-RetrieveSwap-System-String- 'Core.MysticSDK.RetrieveSwap(System.String)')
+    - [SetAddress(address)](#M-Core-MysticSDK-SetAddress-System-String- 'Core.MysticSDK.SetAddress(System.String)')
+
+<a name='T-Core-MysticSDK'></a>
+## MysticSDK `type`
+
+##### Namespace
+
+Core
+
+<a name='M-Core-MysticSDK-AcceptSwap'></a>
+### AcceptSwap(request) `method`
+
+##### Summary
+
+Accept a listed swap / offer.
+
+##### Returns
+
+A result of request.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| request | [M:Core.MysticSDK.AcceptSwap](#T-M-Core-MysticSDK-AcceptSwap 'M:Core.MysticSDK.AcceptSwap') | SwapData type that contains swapId and takerAddress. |
+
+<a name='M-Core-MysticSDK-CancelSwap'></a>
+### CancelSwap(request) `method`
+
+##### Summary
+
+Cancel a listed swap / offer.
+
+##### Returns
+
+A result of request.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| request | [M:Core.MysticSDK.CancelSwap](#T-M-Core-MysticSDK-CancelSwap 'M:Core.MysticSDK.CancelSwap') | SwapData type that contains swapId and takerAddress. |
+
+<a name='M-Core-MysticSDK-CreateSwap'></a>
+### CreateSwap(request) `method`
+
+##### Summary
+
+To create a new swap or offer on a listed NFT.
+
+##### Returns
+
+A result report of request.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| request | [M:Core.MysticSDK.CreateSwap](#T-M-Core-MysticSDK-CreateSwap 'M:Core.MysticSDK.CreateSwap') | CreateSwap type to be requested (please see GameManager.cs CreateSwap() to see the implementation. |
+
+<a name='M-Core-MysticSDK-GetAddress'></a>
+### GetAddress() `method`
+
+##### Summary
+
+Get the wallet address from the SDK session.
+
+##### Returns
+
+The string of address.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Core-MysticSDK-GetBalance'></a>
+### GetBalance() `method`
+
+##### Summary
+
+Get the Eth and Weth Balance from the SDK session address.
+
+##### Returns
+
+Return a string json contains Eth and Weth in String.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Core-MysticSDK-GetBalanceEth'></a>
+### GetBalanceEth() `method`
+
+##### Summary
+
+Get Eth balance from the SDK session address.
+
+##### Returns
+
+Eth number in string.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Core-MysticSDK-GetBalanceWeth'></a>
+### GetBalanceWeth() `method`
+
+##### Summary
+
+Get Weth balance from the SDK session address.
+
+##### Returns
+
+Weth number in string.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Core-MysticSDK-GetMetadata'></a>
+### GetMetadata(request) `method`
+
+##### Summary
+
+Retrieve detailed Metadata on a single NFTItem.
+
+##### Returns
+
+Detailed Metadata in json string.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| request | [M:Core.MysticSDK.GetMetadata](#T-M-Core-MysticSDK-GetMetadata 'M:Core.MysticSDK.GetMetadata') | Metadata type of the NFTItem. |
+
+<a name='M-Core-MysticSDK-GetNfts-System-String-'></a>
+### GetNfts(_address) `method`
+
+##### Summary
+
+Get NFTs collection from particular address.
+
+##### Returns
+
+String of json contains NFTs collection.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _address | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | By default it will be the address on SDK session. |
+
+<a name='M-Core-MysticSDK-GetOwnedNFTs-System-String-'></a>
+### GetOwnedNFTs(_address) `method`
+
+##### Summary
+
+Get NFTs in form of OwnedNFT types (see Types.cs).
+
+##### Returns
+
+List of NFTs items.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _address | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | By default it will be the address on SDK session. |
+
+<a name='M-Core-MysticSDK-RetrieveAllSwaps-System-Int32,System-Int32-'></a>
+### RetrieveAllSwaps(page,limit) `method`
+
+##### Summary
+
+Retrieve all existing swaps.
+
+##### Returns
+
+A list of swaps according to the made request.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| page | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Number of pages we want to retrieve. Default is 1. |
+| limit | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Number of swaps we want to retrieve. Default is 20, limit is 100 |
+
+<a name='M-Core-MysticSDK-RetrieveMySwaps-System-Int32,System-Int32,System-String,System-String-'></a>
+### RetrieveMySwaps(page,limit,creatorAddress,takerAddress) `method`
+
+##### Summary
+
+Retrieve all existing swaps but only for the particular address.
+
+##### Returns
+
+A list of swaps according to the made request.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| page | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Number of pages we want to retrieve. Default is 1. |
+| limit | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | Number of swaps we want to retrieve. Default is 20, limit is 100 |
+| creatorAddress | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | By default the address from SDK session. |
+| takerAddress | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | By default the address from SDK session. |
+
+<a name='M-Core-MysticSDK-RetrieveSwap-System-String-'></a>
+### RetrieveSwap(swapId) `method`
+
+##### Summary
+
+Retrieve a single swap object.
+
+##### Returns
+
+The respective swap object.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| swapId | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | String of swapID. |
+
+<a name='M-Core-MysticSDK-SetAddress-System-String-'></a>
+### SetAddress(address) `method`
+
+##### Summary
+
+Set the address of the SDK session.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| address | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | String of address that will replace to. |
+
+
 
 ***
 
 ## Editor Tools
-    - MysticSwap SDK Manager
-    - ...
+*Coming Soon*
 
 ***
 
 ## Glossary
+*Coming Soon*
