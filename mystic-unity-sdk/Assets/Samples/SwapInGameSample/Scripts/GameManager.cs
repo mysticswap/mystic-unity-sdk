@@ -440,7 +440,7 @@ public class GameManager : MonoBehaviour
 
         sdk.session.WethBalance = wethBalance;
         sdk.session.EthBalance = ethBalance;
-        textWethBalance.text = wethBalance.ToString(CultureInfo.InvariantCulture) + " WETH";
+        textWethBalance.text = wethBalance.ToString(CultureInfo.InvariantCulture) + " available";
     }
 
     private bool IsBalanceSufficient(string inputBalance)
