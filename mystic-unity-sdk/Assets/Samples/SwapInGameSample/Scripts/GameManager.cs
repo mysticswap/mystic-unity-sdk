@@ -28,6 +28,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button GetNFTsRequestButton;
 
     public OwnedNFTButton ownedNFTButton;
+    
+    [SerializeField] private GameObject tickBox;
+    [SerializeField] private GameObject tickBoxOfferParent;
+    [SerializeField] private GameObject tickBoxRequestParent;
+    
+    
 
     private List<NFT> listNFTs;
 
@@ -53,6 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        LoadTickBoxInventory();
         OfferAddress.text = ShortenAddress(sdk.GetAddress());
         sdk.session.OfferAddress = sdk.GetAddress();
 
@@ -147,6 +154,23 @@ public class GameManager : MonoBehaviour
         Debug.Log("LoadNFTsCollection excecuted");
     }
 
+    private void LoadTickBoxInventory()
+    {
+        var boxAmount = 50;
+        var sizeMultiplier = 1.75f;
+        for (int i = 0; i < boxAmount; i++)
+        {
+            var newTickBoxOffer = Instantiate(tickBox, transform.position, transform.rotation);
+            newTickBoxOffer.transform.localScale = tickBox.transform.localScale * sizeMultiplier;
+            newTickBoxOffer.transform.SetParent(tickBoxOfferParent.transform);
+            
+            var newTickBoxRequest = Instantiate(tickBox, transform.position, transform.rotation);
+            newTickBoxRequest.transform.localScale = tickBox.transform.localScale * sizeMultiplier;
+            newTickBoxRequest.transform.SetParent(tickBoxRequestParent.transform);
+
+        }
+    }
+
     public void LoadSelectedNFTs(string _ownerAddress, OwnedNFTButton _ownedNFTButton)
     {
         SwapInfoPanel.SetActive(true);
@@ -223,7 +247,7 @@ public class GameManager : MonoBehaviour
         var result = await sdk.CreateSwap(swap);
         Debug.Log($"Created Swap: {result}");
         Debugger.Instance.Log("MysticSDK Information",
-            "Swap is Created, you can check it by clicking on the 'All Swaps' or 'My Swaps' Tabs button.");
+            "Swap has been created. You can check it by clicking on 'All Swaps' or 'My Swaps'.");
     }
 
     #endregion
@@ -416,7 +440,7 @@ public class GameManager : MonoBehaviour
 
         sdk.session.WethBalance = wethBalance;
         sdk.session.EthBalance = ethBalance;
-        textWethBalance.text = wethBalance.ToString(CultureInfo.InvariantCulture) + " WETH";
+        textWethBalance.text = wethBalance.ToString(CultureInfo.InvariantCulture) + " available";
     }
 
     private bool IsBalanceSufficient(string inputBalance)

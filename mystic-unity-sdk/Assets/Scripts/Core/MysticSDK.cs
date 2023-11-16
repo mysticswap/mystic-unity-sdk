@@ -9,6 +9,9 @@ using UnityEngine.Networking;
 
 namespace Core
 {
+    /// <summary>
+    /// Mystic Unity SDK to integrate Swaps & Marketplace API from https://docs.withmystic.xyz/swaps-and-marketplace-api
+    /// </summary>
     public class MysticSDK
     {
         private const string BaseUrl = "https://mystic-swap.herokuapp.com/marketplace-api/";
@@ -24,16 +27,28 @@ namespace Core
             session = new MysticSDKSession(walletAddress, authenticationToken, chainId);
         }
 
+        /// <summary>
+        /// Get the wallet address from the SDK session.
+        /// </summary>
+        /// <returns> The string of address.</returns>
         public string GetAddress()
         {
             return session.WalletAddress;
         }
 
+        /// <summary>
+        /// Set the address of the SDK session.
+        /// </summary>
+        /// <param name="address">String of address that will replace to.</param>
         public void SetAddress(string address)
         {
             session.WalletAddress = address;
         }
 
+        /// <summary>
+        /// Get the Eth and Weth Balance from the SDK session address.
+        /// </summary>
+        /// <returns>Return a string json contains Eth and Weth in String.</returns>
         public async Task<string> GetBalance()
         {
             var result = await AsyncGetRequest(
@@ -45,6 +60,10 @@ namespace Core
             return result;
         }
 
+        /// <summary>
+        /// Get Eth balance from the SDK session address.
+        /// </summary>
+        /// <returns>Eth number in string.</returns>
         public async Task<string> GetBalanceEth()
         {
             var result = await AsyncGetRequest(
@@ -57,6 +76,10 @@ namespace Core
             return balanceData.ETH;
         }
 
+        /// <summary>
+        /// Get Weth balance from the SDK session address.
+        /// </summary>
+        /// <returns>Weth number in string.</returns>
         public async Task<string> GetBalanceWeth()
         {
             var result = await AsyncGetRequest(
@@ -69,6 +92,11 @@ namespace Core
             return balanceData.WETH;
         }
 
+        /// <summary>
+        /// Get NFTs collection from particular address.
+        /// </summary>
+        /// <param name="_address">By default it will be the address on SDK session.</param>
+        /// <returns>String of json contains NFTs collection.</returns>
         public async Task<string> GetNfts(string _address = null)
         {
             _address = _address ?? session.WalletAddress;
@@ -81,6 +109,11 @@ namespace Core
             return result;
         }
 
+        /// <summary>
+        /// Get NFTs in form of OwnedNFT types (see Types.cs).
+        /// </summary>
+        /// <param name="_address">By default it will be the address on SDK session.</param>
+        /// <returns>List of NFTs items.</returns>
         public async Task<List<NFT>> GetOwnedNFTs(string _address = null)
         {
             _address = _address ?? session.WalletAddress;
@@ -90,6 +123,11 @@ namespace Core
         }
 
 
+        /// <summary>
+        /// Retrieve detailed Metadata on a single NFTItem.
+        /// </summary>
+        /// <param name="request">Metadata type of the NFTItem.</param>
+        /// <returns>Detailed Metadata in json string.</returns>
         public async Task<string> GetMetadata(Metadata request)
         {
             var requestBody = ConvertToJson(request);
@@ -98,6 +136,11 @@ namespace Core
             return result;
         }
 
+        /// <summary>
+        /// To create a new swap or offer on a listed NFT.
+        /// </summary>
+        /// <param name="request">CreateSwap type to be requested (please see GameManager.cs CreateSwap() to see the implementation.</param>
+        /// <returns>A result report of request.</returns>
         public async Task<string> CreateSwap(CreateSwap request)
         {
             /*
@@ -208,6 +251,11 @@ namespace Core
             return result;
         }
 
+        /// <summary>
+        /// Accept a listed swap / offer.
+        /// </summary>
+        /// <param name="request">SwapData type that contains swapId and takerAddress.</param>
+        /// <returns>A result of request.</returns>
         public async Task<string> AcceptSwap(SwapData request)
         {
             var requestBody = ConvertToJson(request);
@@ -233,6 +281,11 @@ namespace Core
             return result;
         }
 
+        /// <summary>
+        /// Cancel a listed swap / offer.
+        /// </summary>
+        /// <param name="request">SwapData type that contains swapId and takerAddress.</param>
+        /// <returns>A result of request.</returns>
         public async Task<string> CancelSwap(SwapData request)
         {
             var requestBody = ConvertToJson(request);
@@ -261,6 +314,12 @@ namespace Core
             return result;
         }
 
+        /// <summary>
+        /// Retrieve all existing swaps.
+        /// </summary>
+        /// <param name="page">Number of pages we want to retrieve. Default is 1.</param>
+        /// <param name="limit">Number of swaps we want to retrieve. Default is 20, limit is 100</param>
+        /// <returns>A list of swaps according to the made request. </returns>
         public async Task<string> RetrieveAllSwaps(int page = 1, int limit = 20)
         {
             var result = await AsyncGetRequest(
@@ -274,6 +333,14 @@ namespace Core
             return result;
         }
 
+        /// <summary>
+        /// Retrieve all existing swaps but only for the particular address.
+        /// </summary>
+        /// <param name="page">Number of pages we want to retrieve. Default is 1.</param>
+        /// <param name="limit">Number of swaps we want to retrieve. Default is 20, limit is 100</param>
+        /// <param name="creatorAddress">By default the address from SDK session.</param>
+        /// <param name="takerAddress">By default the address from SDK session.</param>
+        /// <returns>A list of swaps according to the made request.</returns>
         public async Task<string> RetrieveMySwaps(int page = 1, int limit = 20, string creatorAddress = null,
             string takerAddress = null)
         {
@@ -292,6 +359,11 @@ namespace Core
             return result;
         }
 
+        /// <summary>
+        /// Retrieve a single swap object.
+        /// </summary>
+        /// <param name="swapId">String of swapID.</param>
+        /// <returns>The respective swap object.</returns>
         public async Task<string> RetrieveSwap(string swapId)
         {
             var result = await AsyncGetRequest(
