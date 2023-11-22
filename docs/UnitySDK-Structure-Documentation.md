@@ -2,19 +2,8 @@
 
 ***
 
-## Getting Started
-
-### About
+## About
 * The Mystic Unity SDK is a package that enables game developers to build NFT marketplaces and swapping experiences in-game, fully leveraging blockchain capabilities with minimum complexity.
-
-### How it Works
-* Flow how MysticSwap Unity SDK (from in-game interaction to API Call)
-* Explain it with graph contains layer in Unity (game dev interact with), layer from Mystic SDK side
-* This SDK is based on this https://docs.withmystic.xyz/
-
-### Onboarding
-* How to use this docs, what should understand before building Web3 Game
-* Basic Web3 interaction such as trading NFTs collection, but don't worry since in this guide is pretty straight forward with the project samples
 
 ***
 
